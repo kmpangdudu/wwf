@@ -13,9 +13,12 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "j1",
-				"folderPath": "raw",
-				"container": "delighted-survey"
+				"fileName": {
+					"value": "@concat('survey-',\nformatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-HHMM')\n\n\n   )",
+					"type": "Expression"
+				},
+				"folderPath": "delighted/raw",
+				"container": "land"
 			}
 		},
 		"schema": {}
