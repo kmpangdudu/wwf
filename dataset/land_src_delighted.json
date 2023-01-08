@@ -1,0 +1,15 @@
+{
+	"name": "land_src_delighted",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "delighted_api",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "land/src"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
