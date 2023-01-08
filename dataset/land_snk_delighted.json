@@ -1,0 +1,23 @@
+{
+	"name": "land_snk_delighted",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "land/snk"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "j1",
+				"folderPath": "raw",
+				"container": "delighted-survey"
+			}
+		},
+		"schema": {}
+	}
+}
