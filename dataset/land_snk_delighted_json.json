@@ -14,7 +14,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@concat(\n   'survey-'\n  , formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-HHMM')\n  , '.json'\n   )",
+					"value": "@concat(\n   'survey-'\n  , formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-hhmm')\n  , '.json'\n   )",
 					"type": "Expression"
 				},
 				"folderPath": "delighted/raw",
