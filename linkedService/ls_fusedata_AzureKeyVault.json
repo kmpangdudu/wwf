@@ -1,0 +1,10 @@
+{
+	"name": "ls_fusedata_AzureKeyVault",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://kv-wildfork-nonprod.vault.azure.net/"
+		}
+	}
+}
