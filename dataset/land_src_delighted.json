@@ -2,8 +2,12 @@
 	"name": "land_src_delighted",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "delighted_api",
-			"type": "LinkedServiceReference"
+			"referenceName": "ls_delighted_api",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"ednpoint": "https://api.delighted.com/v1/survey_responses.json",
+				"UserName": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
+			}
 		},
 		"folder": {
 			"name": "land/src"

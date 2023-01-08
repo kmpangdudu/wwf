@@ -26,11 +26,26 @@
 							"supportRFC5988": "true"
 						}
 					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
 						"referenceName": "land_src_delighted",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "land_snk_delighted",
 						"type": "DatasetReference"
 					}
 				]
