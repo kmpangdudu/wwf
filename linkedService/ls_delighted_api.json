@@ -22,7 +22,7 @@
 			"password": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
-					"referenceName": "AzureKeyVault1",
+					"referenceName": "ls_fusedata_AzureKeyVault",
 					"type": "LinkedServiceReference"
 				},
 				"secretName": "Delighted"
