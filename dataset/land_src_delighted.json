@@ -14,6 +14,9 @@
 		},
 		"annotations": [],
 		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "https://api.delighted.com/v1/survey_responses.json?per_page=100&updated_since=1672549200"
+		},
 		"schema": []
 	}
 }
