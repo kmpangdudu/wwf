@@ -1,5 +1,5 @@
 {
-	"name": "land_src_last_load_delight",
+	"name": "land_src_last_success_load_delighted",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_AzureBlobStorage",
