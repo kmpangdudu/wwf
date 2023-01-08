@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "land/snk"
+			"name": "land/src"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
