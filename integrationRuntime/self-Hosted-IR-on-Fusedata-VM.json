@@ -1,0 +1,7 @@
+{
+	"name": "self-Hosted-IR-on-Fusedata-VM",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "self-Hosted-IR-on-Fusedata-VM"
+	}
+}

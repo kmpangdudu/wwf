@@ -1,0 +1,16 @@
+{
+	"name": "delighted_api",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "delighted survey rest api",
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://api.delighted.com/v1/survey_responses.json",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Basic",
+			"userName": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDhFOTc4ODk2LTAyNjctNDBENy1BNEY5LTQxREQ5QUE5QUQyNV9jYTM3ODM1Yi1mMzU1LTQwNzYtOTA5Ni1lN2U3M2JjZjllNmEiDQp9"
+		}
+	}
+}

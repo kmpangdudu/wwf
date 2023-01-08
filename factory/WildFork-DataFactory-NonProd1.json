@@ -1,0 +1,9 @@
+{
+	"name": "WildFork-DataFactory-NonProd1",
+	"location": "canadacentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "0871bcfb-267e-43a6-b004-95e965a94f3a",
+		"tenantId": "1b218b82-1cc9-4161-ad05-ca35f588fdba"
+	}
+}
