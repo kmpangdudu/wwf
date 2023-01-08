@@ -9,7 +9,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "lkp_last_load_date",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -83,7 +83,7 @@
 				}
 			},
 			{
-				"name": "Lookup1",
+				"name": "lkp_last_load_date",
 				"type": "Lookup",
 				"dependsOn": [
 					{
