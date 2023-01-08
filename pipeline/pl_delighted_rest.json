@@ -45,7 +45,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "land_snk_delighted",
+						"referenceName": "land_snk_delighted_json",
 						"type": "DatasetReference"
 					}
 				]

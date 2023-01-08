@@ -1,5 +1,5 @@
 {
-	"name": "land_snk_delighted",
+	"name": "land_snk_delighted_json",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_AzureBlobStorage",
@@ -14,7 +14,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@concat('survey-',\nformatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-HHMM')\n\n\n   )",
+					"value": "@concat(\n   'survey-'\n  , formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-HHMM')\n  , '.json'\n   )",
 					"type": "Expression"
 				},
 				"folderPath": "delighted/raw",
