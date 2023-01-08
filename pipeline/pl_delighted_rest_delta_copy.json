@@ -1,5 +1,5 @@
 {
-	"name": "pl_delighted_rest_copy1",
+	"name": "pl_delighted_rest_delta_copy",
 	"properties": {
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
@@ -21,10 +21,7 @@
 						"type": "RestSource",
 						"httpRequestTimeout": "00:01:40",
 						"requestInterval": "00.00:00:00.010",
-						"requestMethod": "GET",
-						"paginationRules": {
-							"QueryParameters": "true"
-						}
+						"requestMethod": "GET"
 					},
 					"sink": {
 						"type": "JsonSink",
@@ -35,17 +32,7 @@
 							"type": "JsonWriteSettings"
 						}
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"path": "$['Column_1']"
-								}
-							}
-						]
-					}
+					"enableStaging": false
 				},
 				"inputs": [
 					{
