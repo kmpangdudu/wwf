@@ -23,9 +23,7 @@
 		"type": "Json",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"folderPath": "delighted/raw",
-				"container": "land"
+				"type": "AzureBlobStorageLocation"
 			}
 		},
 		"schema": {}
