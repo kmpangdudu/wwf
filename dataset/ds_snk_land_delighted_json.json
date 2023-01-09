@@ -5,6 +5,17 @@
 			"referenceName": "ls_AzureBlobStorage",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"par_ds_snk_delighted_container": {
+				"type": "string"
+			},
+			"par_ds_snk_delighted_dir": {
+				"type": "string"
+			},
+			"par_ds_snk_file": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "land/snk"
 		},
