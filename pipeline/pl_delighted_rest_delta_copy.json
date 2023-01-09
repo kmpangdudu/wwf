@@ -9,7 +9,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "lkp_last_load_date",
+						"activity": "delta_start_date",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -87,13 +87,13 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "set_interval",
+						"activity": "set_1st_Day",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "set_1st_Day",
+						"activity": "set_interval",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -120,11 +120,97 @@
 						}
 					},
 					"dataset": {
-						"referenceName": "land_src_last_load_delight",
+						"referenceName": "land_src_last_success_load_delighted",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": true
 				}
+			},
+			{
+				"name": "delta_start_date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "lkp_last_load_date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_start_delta",
+					"value": {
+						"value": "@string(\n\tmul(\n\t\tdiv(\n\t\t\t\tsub(\n\t\t\t\t\t\tticks(convertToUtc(\n\t\t\t\t\t\t\t\n\nactivity('lkp_last_load_date').output.firstRow.lastdate\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t, 'Eastern Standard Time')\t \n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n\t\t\t\t\t\t\t)  \n\t\t\t\t\t)   \n\t\t\t\t\n\t\t\t\t,864000000000\n\t\t\t)\n\t\t, 86400 \n\t )\n)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "log_success_load_date",
+				"description": "log_success_load_date",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "get_delighted_responses",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "land_src_last_success_load_delighted",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "land_src_last_success_load_delighted",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"parameters": {
