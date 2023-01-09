@@ -173,7 +173,13 @@
 				"inputs": [
 					{
 						"referenceName": "ds_src_land_delighted",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"par_src_page": {
+								"value": "@pipeline().parameters.par_src_page",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
@@ -196,6 +202,16 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "delta_until_date",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_until_delta",
+					"value": ""
+				}
 			}
 		],
 		"parameters": {
@@ -218,6 +234,10 @@
 			"par_snk_filename": {
 				"type": "string",
 				"defaultValue": "survey.json"
+			},
+			"par_src_page": {
+				"type": "string",
+				"defaultValue": "100"
 			}
 		},
 		"variables": {
@@ -230,7 +250,7 @@
 			"var_start_delta": {
 				"type": "String"
 			},
-			"today_ts": {
+			"var_until_delta": {
 				"type": "String"
 			}
 		},
