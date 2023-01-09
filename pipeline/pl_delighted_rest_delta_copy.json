@@ -37,13 +37,19 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "set_1st_Day",
+						"activity": "delta_until_date",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
 						"activity": "set_interval",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "set_1st_Day",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -60,7 +66,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT \n [pl_log_id]\n      ,[pl_category]\n      ,[pl_status]\n      ,convert(varchar(10), [pl_update_date], 23) as updated\n      ,convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as created \n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'delighted' and [pl_status]  = 1\n  order by [pl_log_id] desc ",
+						"sqlReaderQuery": "SELECT \n [pl_log_id]\n      , [pl_category]\n      , [pl_status]\n      , convert(varchar(8),  [pl_create_date], 112) as lastdate\n      , convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as startdate\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'delighted' and [pl_status]  = 1\n  order by [pl_log_id] desc ",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -86,7 +92,7 @@
 				"typeProperties": {
 					"variableName": "var_start_delta",
 					"value": {
-						"value": "@string(\n\tmul(\n\t\tdiv(\n\t\t\t\tsub(\n\t\t\t\t\t\tticks(convertToUtc(\n\t\t\t\t\t\t\tactivity('lkp_last_success_load_date').output.firstRow.created\n                             \n\t\t\t\t\t\t\t, 'Eastern Standard Time')\t \n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n\t\t\t\t\t\t\t)  \n\t\t\t\t\t)   \n\t\t\t\t,864000000000\n\t\t\t)\n\t\t, 86400 \n\t )\n)",
+						"value": "@string(\n\tmul(\n\t\tdiv(\n\t\t\t\tsub(\n\t\t\t\t\t\tticks(convertToUtc(\n\t\t\t\t\t\t\tactivity('lkp_last_success_load_date').output.firstRow.startdate\n                             \n\t\t\t\t\t\t\t, 'Eastern Standard Time')\t \n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n\t\t\t\t\t\t\t)  \n\t\t\t\t\t)   \n\t\t\t\t,864000000000\n\t\t\t)\n\t\t, 86400 \n\t )\n)",
 						"type": "Expression"
 					}
 				}
@@ -97,7 +103,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "LogPLActivitySuccess",
+						"activity": "delta_start_date",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -174,7 +180,7 @@
 								"type": "Expression"
 							},
 							"par_ds_snk_delighted_file": {
-								"value": "@concat('survey'\n, '-'\n, variables('var_start_delta')\n, '-'\n, formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-HHmm')\n, '.json'\n)",
+								"value": "@concat('survey'\n, '-'\n, activity('lkp_last_success_load_date').output.firstRow.lastdate\n, '-'\n, formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-HHmm')\n, '.json'\n)",
 								"type": "Expression"
 							}
 						}
@@ -184,14 +190,7 @@
 			{
 				"name": "delta_until_date",
 				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "delta_start_date",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var_until_delta",
@@ -207,7 +206,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "delta_until_date",
+						"activity": "detlta_get_delighted_responses",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -259,7 +258,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "delta_until_date",
+						"activity": "detlta_get_delighted_responses",
 						"dependencyConditions": [
 							"Failed"
 						]
