@@ -5,7 +5,10 @@
 			"referenceName": "ls_delighted_api",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"ednpoint": "https://api.delighted.com/v1/survey_responses.json",
+				"ednpoint": {
+					"value": "@dataset().par_src_ednpoint",
+					"type": "Expression"
+				},
 				"UserName": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
 			}
 		},
@@ -18,10 +21,16 @@
 				"type": "string"
 			},
 			"par_src_updated_until": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "today"
 			},
 			"par_src_ednpoint": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "https://api.delighted.com/v1/survey_responses.json"
+			},
+			"par_src_unsername": {
+				"type": "string",
+				"defaultValue": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
 			}
 		},
 		"folder": {
