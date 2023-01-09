@@ -1,0 +1,49 @@
+{
+	"name": "ds_src_land_pipeline_log",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sqldb",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "land/src"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "pl_log_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "pl_category",
+				"type": "varchar"
+			},
+			{
+				"name": "pl_name",
+				"type": "varchar"
+			},
+			{
+				"name": "pl_status",
+				"type": "bit"
+			},
+			{
+				"name": "pl_update_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "pl_create_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "land",
+			"table": "pipeline_activity_log"
+		}
+	}
+}
