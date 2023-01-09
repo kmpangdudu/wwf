@@ -179,7 +179,21 @@
 				"outputs": [
 					{
 						"referenceName": "ds_snk_land_delighted_json",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"par_ds_snk_delighted_container": {
+								"value": "@pipeline().parameters.par_snk_container",
+								"type": "Expression"
+							},
+							"par_ds_snk_delighted_dir": {
+								"value": "@pipeline().parameters.par_snk_dir",
+								"type": "Expression"
+							},
+							"par_ds_snk_delighted_file": {
+								"value": "@concat('survey'\n, '-'\n, variables('var_start_delta')\n, '-'\n, formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-HHmm')\n, 'json'\n)",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
@@ -192,6 +206,18 @@
 			"par_delta_load_interval_day": {
 				"type": "string",
 				"defaultValue": "1"
+			},
+			"par_snk_container": {
+				"type": "string",
+				"defaultValue": "land"
+			},
+			"par_snk_dir": {
+				"type": "string",
+				"defaultValue": "delighted/raw"
+			},
+			"par_snk_filename": {
+				"type": "string",
+				"defaultValue": "survey.json"
 			}
 		},
 		"variables": {
