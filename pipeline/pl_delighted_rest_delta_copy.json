@@ -4,57 +4,6 @@
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
 			{
-				"name": "get_delighted_responses",
-				"description": "Listing survey responses from delighted rest api",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "delta_start_date",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "RestSource",
-						"httpRequestTimeout": "00:01:40",
-						"requestInterval": "00.00:00:00.010",
-						"requestMethod": "GET"
-					},
-					"sink": {
-						"type": "JsonSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "JsonWriteSettings"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "land_src_delighted",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "land_snk_delighted_json",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
 				"name": "set_interval",
 				"description": "",
 				"type": "SetVariable",
@@ -147,12 +96,11 @@
 				}
 			},
 			{
-				"name": "log_success_load_date",
-				"description": "log_success_load_date",
-				"type": "Copy",
+				"name": "log_success_load_delighted",
+				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "get_delighted_responses",
+						"activity": "delta_start_date",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -167,50 +115,19 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
+					"dataflow": {
+						"referenceName": "df_log_last_success_load_delighted",
+						"type": "DataFlowReference",
+						"parameters": {
+							"df_par_last_success_load_delighted_date": "toString(currentDate('EST'))"
 						}
 					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "land_src_last_success_load_delighted",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "land_src_last_success_load_delighted",
-						"type": "DatasetReference"
-					}
-				]
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"parameters": {
