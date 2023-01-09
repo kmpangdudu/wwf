@@ -9,28 +9,27 @@
 					"value": "@dataset().par_src_ednpoint",
 					"type": "Expression"
 				},
-				"UserName": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
+				"UserName": {
+					"value": "@dataset().par_src_unsername",
+					"type": "Expression"
+				}
 			}
 		},
 		"parameters": {
 			"par_src_page": {
-				"type": "string",
-				"defaultValue": "100"
+				"type": "string"
 			},
 			"par_src_updated_since": {
 				"type": "string"
 			},
 			"par_src_updated_until": {
-				"type": "string",
-				"defaultValue": "today"
+				"type": "string"
 			},
 			"par_src_ednpoint": {
-				"type": "string",
-				"defaultValue": "https://api.delighted.com/v1/survey_responses.json"
+				"type": "string"
 			},
 			"par_src_unsername": {
-				"type": "string",
-				"defaultValue": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
+				"type": "string"
 			}
 		},
 		"folder": {
