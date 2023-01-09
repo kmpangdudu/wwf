@@ -19,6 +19,9 @@
 			},
 			"par_src_updated_until": {
 				"type": "string"
+			},
+			"par_src_ednpoint": {
+				"type": "string"
 			}
 		},
 		"folder": {
@@ -27,7 +30,10 @@
 		"annotations": [],
 		"type": "RestResource",
 		"typeProperties": {
-			"relativeUrl": ""
+			"relativeUrl": {
+				"value": "concat(\n    'https://api.delighted.com/v1/survey_responses.json'\n    , '?per_page='\n    , dataset().par_src_page\n    , '&updated_since='dataset().par_src_page\n    , dataset().par_src_updated_since\n    , '&updated_until='\n    , dataset().par_src_updated_until\n)",
+				"type": "Expression"
+			}
 		},
 		"schema": []
 	}
