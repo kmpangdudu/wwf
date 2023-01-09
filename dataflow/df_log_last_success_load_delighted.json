@@ -1,0 +1,50 @@
+{
+	"name": "df_log_last_success_load_delighted",
+	"properties": {
+		"folder": {
+			"name": "delighted/src"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "land_src_last_success_load_delighted",
+						"type": "DatasetReference"
+					},
+					"name": "src"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "land_src_last_success_load_delighted",
+						"type": "DatasetReference"
+					},
+					"name": "logSuccessLloadDelighted"
+				}
+			],
+			"transformations": [
+				{
+					"name": "generateLastSuccessLoadDate"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     df_par_last_success_load_delighted_date as string (toString(\r",
+				"    fromUTC(currentDate(), 'Eastern Standard Time')\r",
+				")\r",
+				")",
+				"}",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> src",
+				"src derive(lastdate = $df_par_last_success_load_delighted_date) ~> generateLastSuccessLoadDate",
+				"generateLastSuccessLoadDate sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> logSuccessLloadDelighted"
+			]
+		}
+	}
+}
