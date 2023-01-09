@@ -186,6 +186,14 @@
 							"par_src_updated_until": {
 								"value": "@variables('var_until_delta')",
 								"type": "Expression"
+							},
+							"par_src_ednpoint": {
+								"value": "@pipeline().parameters.par_src_endpoint",
+								"type": "Expression"
+							},
+							"par_src_unsername": {
+								"value": "@pipeline().parameters.par_src_username",
+								"type": "Expression"
 							}
 						}
 					}
