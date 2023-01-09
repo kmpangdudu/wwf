@@ -18,7 +18,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DelimitedText1",
+						"referenceName": "ds_snk_land_log_success_load_delighted",
 						"type": "DatasetReference"
 					},
 					"name": "logSuccessLloadDelighted",
@@ -49,6 +49,7 @@
 				"     input(",
 				"          Column_1 as string",
 				"     ),",
+				"     partitionFileNames:['last_load_delighted_date.csv'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     partitionBy('hash', 1)) ~> logSuccessLloadDelighted"
