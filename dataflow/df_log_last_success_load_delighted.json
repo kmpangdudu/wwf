@@ -18,7 +18,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "land_src_last_success_load_delighted",
+						"referenceName": "DelimitedText1",
 						"type": "DatasetReference"
 					},
 					"name": "logSuccessLloadDelighted",
@@ -46,6 +46,9 @@
 				"src derive(lastdate = $df_par_last_success_load_delighted_date) ~> generateLastSuccessLoadDate",
 				"generateLastSuccessLoadDate sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          Column_1 as string",
+				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     partitionBy('hash', 1)) ~> logSuccessLloadDelighted"
