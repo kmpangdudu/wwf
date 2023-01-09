@@ -60,7 +60,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT \n [pl_log_id]\n      , [pl_category]\n      , [pl_status]\n      , convert(varchar(8),  [pl_create_date], 112) as lastdate_short\n      , convert(varchar(8),  [pl_create_date], 23) as lastdate\n      , convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as nextdate\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'delighted' and [pl_status]  = 1\n  order by [pl_log_id] desc ",
+						"sqlReaderQuery": "SELECT \n [pl_log_id]\n      , [pl_category]\n      , [pl_status]\n      , convert(varchar(8),  [pl_create_date], 112) as lastdate_short\n      , convert(varchar(10),  [pl_create_date], 23) as lastdate\n      , convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as nextdate\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'delighted' and [pl_status]  = 1\n  order by [pl_log_id] desc ",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
