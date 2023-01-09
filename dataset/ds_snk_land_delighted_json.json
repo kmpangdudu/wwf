@@ -23,7 +23,19 @@
 		"type": "Json",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation"
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().par_ds_snk_delighted_file",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().par_ds_snk_delighted_dir",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().par_ds_snk_delighted_container",
+					"type": "Expression"
+				}
 			}
 		},
 		"schema": {}
