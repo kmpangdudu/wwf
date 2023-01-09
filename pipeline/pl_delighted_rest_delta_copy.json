@@ -260,6 +260,14 @@
 			"par_src_until_date": {
 				"type": "string",
 				"defaultValue": "today"
+			},
+			"par_src_endpoint": {
+				"type": "string",
+				"defaultValue": "https://api.delighted.com/v1/survey_responses.json"
+			},
+			"par_src_username": {
+				"type": "string",
+				"defaultValue": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
 			}
 		},
 		"variables": {
