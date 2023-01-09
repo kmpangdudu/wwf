@@ -9,13 +9,22 @@
 				"UserName": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
 			}
 		},
+		"parameters": {
+			"par_src_page": {
+				"type": "string",
+				"defaultValue": "100"
+			},
+			"par_src_updated_since": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "land/src"
 		},
 		"annotations": [],
 		"type": "RestResource",
 		"typeProperties": {
-			"relativeUrl": "https://api.delighted.com/v1/survey_responses.json?per_page=100&updated_since=1672549200"
+			"relativeUrl": ""
 		},
 		"schema": []
 	}
