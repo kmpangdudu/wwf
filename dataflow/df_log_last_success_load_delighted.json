@@ -32,7 +32,7 @@
 			"scriptLines": [
 				"parameters{",
 				"     df_par_last_success_load_delighted_date as string (toString(\r",
-				"    fromUTC(currentDate(), 'Eastern Standard Time')\r",
+				"    currentDate('EST')\r",
 				")\r",
 				")",
 				"}",
