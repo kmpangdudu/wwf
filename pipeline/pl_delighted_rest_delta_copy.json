@@ -90,7 +90,7 @@
 				"typeProperties": {
 					"variableName": "var_start_delta",
 					"value": {
-						"value": "@string(\n\tmul(\n\t\tdiv(\n\t\t\t\tsub(\n\t\t\t\t\t\tticks(convertToUtc(\n\t\t\t\t\t\t\t\n\nactivity('lkp_last_load_date').output.firstRow.lastdate\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t, 'Eastern Standard Time')\t \n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n\t\t\t\t\t\t\t)  \n\t\t\t\t\t)   \n\t\t\t\t\n\t\t\t\t,864000000000\n\t\t\t)\n\t\t, 86400 \n\t )\n)",
+						"value": "@string(\n\tmul(\n\t\tdiv(\n\t\t\t\tsub(\n\t\t\t\t\t\tticks(convertToUtc(\nactivity('lkp_last_load_date').output.firstRow.lastdate\n\t\t\t\t\t\t\t, 'Eastern Standard Time')\t \n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n\t\t\t\t\t\t\t)  \n\t\t\t\t\t)   \n\t\t\t\t,864000000000\n\t\t\t)\n\t\t, 86400 \n\t )\n)",
 						"type": "Expression"
 					}
 				}
