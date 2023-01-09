@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText1",
+	"name": "ds_snk_land_log_success_load_delighted",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_AzureBlobStorage",
