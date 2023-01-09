@@ -174,7 +174,7 @@
 								"type": "Expression"
 							},
 							"par_ds_snk_delighted_file": {
-								"value": "@concat('survey'\n, '-'\n, activity('lkp_last_success_load_date').output.firstRow.lastdate_short\n, '-'\n, formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-HHmm')\n, '.json'\n)",
+								"value": "@concat('survey'\n, '-'\n, activity('lkp_last_success_load_date').output.firstRow.lastdate_short\n, '-'\n, if(lessOrEquals(pipeline().parameters.par_src_until_date, string(formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-HHmm'))),\n             replace(pipeline().parameters.par_src_until_date,'-','')\n            ,formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-HHmm')\n    )\n, '.json'\n)",
 								"type": "Expression"
 							}
 						}
@@ -333,7 +333,7 @@
 			},
 			"par_src_until_date": {
 				"type": "string",
-				"defaultValue": "2023-01-05"
+				"defaultValue": "today"
 			},
 			"par_src_endpoint": {
 				"type": "string",
