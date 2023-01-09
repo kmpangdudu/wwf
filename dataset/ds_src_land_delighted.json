@@ -16,6 +16,9 @@
 			},
 			"par_src_updated_since": {
 				"type": "string"
+			},
+			"par_src_updated_until": {
+				"type": "string"
 			}
 		},
 		"folder": {
