@@ -12,7 +12,7 @@
 			"par_ds_snk_delighted_dir": {
 				"type": "string"
 			},
-			"par_ds_snk_file": {
+			"par_ds_snk_delighted_file": {
 				"type": "string"
 			}
 		},
