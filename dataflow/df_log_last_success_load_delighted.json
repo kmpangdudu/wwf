@@ -21,7 +21,11 @@
 						"referenceName": "land_src_last_success_load_delighted",
 						"type": "DatasetReference"
 					},
-					"name": "logSuccessLloadDelighted"
+					"name": "logSuccessLloadDelighted",
+					"rejectedDataLinkedService": {
+						"referenceName": "ls_AzureBlobStorage",
+						"type": "LinkedServiceReference"
+					}
 				}
 			],
 			"transformations": [
@@ -43,7 +47,8 @@
 				"generateLastSuccessLoadDate sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> logSuccessLloadDelighted"
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> logSuccessLloadDelighted"
 			]
 		}
 	}
