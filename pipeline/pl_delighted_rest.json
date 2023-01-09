@@ -39,13 +39,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "land_src_delighted",
+						"referenceName": "ds_src_land_delighted",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "land_snk_delighted_json",
+						"referenceName": "ds_snk_land_delighted_json",
 						"type": "DatasetReference"
 					}
 				]

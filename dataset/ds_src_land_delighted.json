@@ -1,5 +1,5 @@
 {
-	"name": "land_src_delighted",
+	"name": "ds_src_land_delighted",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_delighted_api",
