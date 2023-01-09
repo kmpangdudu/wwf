@@ -32,7 +32,8 @@
 				}
 			},
 			{
-				"name": "lkp_last_load_date",
+				"name": "lkp_last_success_load_date",
+				"description": "",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -58,21 +59,16 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT TOP (1)  \n      [pl_category]\n      ,[pl_status]\n      ,convert (date, [pl_update_date])\n      ,convert(date, [pl_create_date])\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'delighted' and [pl_status]  = 1\n  order by [pl_log_id] desc ",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ds_src_land_last_success_load_delighted",
+						"referenceName": "ds_src_land_pipeline_log",
 						"type": "DatasetReference"
 					},
-					"firstRowOnly": true
+					"firstRowOnly": false
 				}
 			},
 			{
@@ -80,7 +76,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "lkp_last_load_date",
+						"activity": "lkp_last_success_load_date",
 						"dependencyConditions": [
 							"Succeeded"
 						]
