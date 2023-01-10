@@ -12,7 +12,7 @@
 				"typeProperties": {
 					"variableName": "var_period_start",
 					"value": {
-						"value": "@string(\nactivity('lkp_last_success_load_date').output.firstRow.nextStart_timestamp)\n)",
+						"value": "@string(\n\nconvertToUtc( pipeline().parameters.par_src_start_date, 'Eastern Standard Time')\n\n\n)",
 						"type": "Expression"
 					}
 				}
