@@ -19,7 +19,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT \n        [pl_log_id]\n      , [pl_category]\n      , [pl_status]\n      , [pl_Createdtimestamp] as [last_timestamp]\n\t  , [pl_Createdtimestamp] + 1     as [nextStart_timestamp]\n      , [pl_Createdtimestamp] + 86400 as [tomorrow_timestamp]\n      , convert(varchar(10),  [pl_create_date], 112) as lastdate_short\n      , convert(varchar(10),  [pl_create_date], 23) as lastdate\n      , convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as nextdate\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'delighted' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc \n",
+						"sqlReaderQuery": "SELECT \n        [pl_log_id]\n      , [pl_category]\n      , [pl_status]\n      , [pl_Createdtimestamp] as [last_timestamp]\n      , [pl_Createdtimestamp] + 1     as [nextStart_timestamp]\n      , [pl_Createdtimestamp] + 86400 as [tomorrow_timestamp]\n      , convert(varchar(10),  [pl_create_date], 112) as lastdate_short\n      , convert(varchar(10),  [pl_create_date], 23) as lastdate\n      , convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as nextdate\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'delighted' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc \n",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -52,7 +52,7 @@
 				}
 			},
 			{
-				"name": "detlta_get_delighted_responses",
+				"name": "delta_get_delighted_survey_responses",
 				"description": "Listing survey responses from delighted rest api",
 				"type": "Copy",
 				"dependsOn": [
@@ -147,7 +147,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "detlta_get_delighted_responses",
+						"activity": "delta_get_delighted_survey_responses",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -191,7 +191,10 @@
 							"type": "String"
 						},
 						"pl_load_start_date": {
-							"value": "",
+							"value": {
+								"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"pl_load_until_date": {
@@ -214,7 +217,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "detlta_get_delighted_responses",
+						"activity": "delta_get_delighted_survey_responses",
 						"dependencyConditions": [
 							"Failed"
 						]
@@ -258,7 +261,10 @@
 							"type": "String"
 						},
 						"pl_load_start_date": {
-							"value": "",
+							"value": {
+								"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"pl_load_until_date": {
