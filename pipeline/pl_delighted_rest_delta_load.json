@@ -192,7 +192,7 @@
 						},
 						"pl_load_start_date": {
 							"value": {
-								"value": "@formatDateTime(convertFromUtc(activity('lkp_last_success_load_date').output.firstRow.lastdate\n, 'Eastern Standard Time')\n,'yyyy-MM-dd'  \n)\n\n",
+								"value": "@formatDateTime(\nconvertFromUtc(activity('lkp_last_success_load_date').output.firstRow.lastdate,'Eastern Standard Time')\n,'yyyy-MM-dd'  \n)\n\n",
 								"type": "Expression"
 							},
 							"type": "String"
