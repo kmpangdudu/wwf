@@ -5,11 +5,10 @@
 		"parameters": {
 			"ednpoint": {
 				"type": "string",
-				"defaultValue": "https://api.delighted.com/v1/survey_responses.json"
+				"defaultValue": "https://api.delighted.com/v1/"
 			},
-			"UserName": {
-				"type": "string",
-				"defaultValue": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
+			"APIkey": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -18,7 +17,7 @@
 			"url": "@{linkedService().ednpoint}",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Basic",
-			"userName": "@{linkedService().UserName}",
+			"userName": "@{linkedService().APIkey}",
 			"password": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
