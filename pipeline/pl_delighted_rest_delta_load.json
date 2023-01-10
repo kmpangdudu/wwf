@@ -44,7 +44,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "var_start_delta",
+					"variableName": "var_period_start",
 					"value": {
 						"value": "@string(\n    activity('lkp_last_success_load_date').output.firstRow.nextStart_timestamp\n)",
 						"type": "Expression"
@@ -237,6 +237,17 @@
 						"pl_status": {
 							"value": "0",
 							"type": "Int32"
+						},
+						"pl_load_type": {
+							"value": "delta",
+							"type": "String"
+						},
+						"pl_load_start_date": {
+							"value": "",
+							"type": "String"
+						},
+						"": {
+							"value": ""
 						}
 					}
 				},
@@ -259,7 +270,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "var_until_delta",
+					"variableName": "var_period_until",
 					"value": {
 						"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
 						"type": "Expression"
@@ -268,7 +279,7 @@
 			}
 		],
 		"parameters": {
-			"par_firstday": {
+			"par_src_start_date": {
 				"type": "string",
 				"defaultValue": "2023-01-01"
 			},
