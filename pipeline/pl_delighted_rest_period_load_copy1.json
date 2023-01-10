@@ -1,0 +1,367 @@
+{
+	"name": "pl_delighted_rest_period_load_copy1",
+	"properties": {
+		"description": "Listing survey responses from delighted rest api",
+		"activities": [
+			{
+				"name": "set_interval",
+				"description": "",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_delta_load_interval_day",
+					"value": {
+						"value": "@string(\nmul(\nint(pipeline().parameters.par_delta_load_interval_day) \n,86400\n)\n)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "set_1st_Day",
+				"description": "set first day UNIX timestamp ",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_1st_day",
+					"value": {
+						"value": "@string(\n\tmul(\n\t\tdiv(\n\t\t\t\tsub(\n\t\t\t\t\t\tticks(convertToUtc(pipeline().parameters.par_firstday, 'Eastern Standard Time')\t \n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n\t\t\t\t\t\t\t)  \n\t\t\t\t\t)   \n\t\t\t\t\n\t\t\t\t,864000000000\n\t\t\t)\n\t\t, 86400 \n\t )\n)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "lkp_last_success_load_date",
+				"description": "logged created date will be added one day as the new loading start date.",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "set_interval",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "set_1st_Day",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT \n        [pl_log_id]\n      , [pl_category]\n      , [pl_status]\n      , [pl_Createdtimestamp] as [last_timestamp]\n\t  , [pl_Createdtimestamp] + 1     as [nextStart_timestamp]\n      , [pl_Createdtimestamp] + 86400 as [tomorrow_timestamp]\n      , convert(varchar(10),  [pl_create_date], 112) as lastdate_short\n      , convert(varchar(10),  [pl_create_date], 23) as lastdate\n      , convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as nextdate\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'delighted' and [pl_status]  = 1\n  order by [pl_log_id] desc \n",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_src_land_pipeline_log",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "delta_start_date",
+				"description": "last success load plus 1 second as new load start.",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "lkp_last_success_load_date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_start_delta",
+					"value": {
+						"value": "@string(\nactivity('lkp_last_success_load_date').output.firstRow.nextStart_timestamp)\n)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "detlta_get_delighted_responses",
+				"description": "Listing survey responses from delighted rest api",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "delta_until_date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_src_land_delighted",
+						"type": "DatasetReference",
+						"parameters": {
+							"par_src_page": {
+								"value": "@pipeline().parameters.par_src_page",
+								"type": "Expression"
+							},
+							"par_src_updated_since": {
+								"value": "@variables('var_start_delta')",
+								"type": "Expression"
+							},
+							"par_src_updated_until": {
+								"value": "@variables('var_until_delta')",
+								"type": "Expression"
+							},
+							"par_src_ednpoint": {
+								"value": "@pipeline().parameters.par_src_endpoint",
+								"type": "Expression"
+							},
+							"par_src_unsername": {
+								"value": "@pipeline().parameters.par_src_username",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_snk_land_delighted_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"par_ds_snk_delighted_container": {
+								"value": "@pipeline().parameters.par_snk_container",
+								"type": "Expression"
+							},
+							"par_ds_snk_delighted_dir": {
+								"value": "@pipeline().parameters.par_snk_dir",
+								"type": "Expression"
+							},
+							"par_ds_snk_delighted_file": {
+								"value": "@concat('survey'\n, '-'\n, activity('lkp_last_success_load_date').output.firstRow.lastdate_short\n, '-'\n, if(lessOrEquals(pipeline().parameters.par_src_until_date, string(formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-HHmm'))),\n             replace(pipeline().parameters.par_src_until_date,'-','')\n            ,formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyyMMdd-HHmm')\n    )\n, '.json'\n)",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "delta_until_date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "delta_start_date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_until_delta",
+					"value": {
+						"value": "@if( \n equals( pipeline().parameters.par_src_until_date,'today')\n  , string(\n            mul(\n              div(\n                  sub(\n                      ticks(formatDateTime(utcNow(), 'yyyy-MM-dd')\n                        )\n                      ,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n                        )  \n                    )\n                  ,864000000000\n                )\n              , 86400 \n            )\n          )\n  , string(\n\tmul(\n\t\tdiv(\n\t\t\t\tsub(\n\t\t\t\t\t\tticks(convertToUtc(\n                           pipeline().parameters.par_src_until_date\n\t\t\t\t\t\t\t             , 'Eastern Standard Time')\t \n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n\t\t\t\t\t\t\t)  \n\t\t\t\t\t)   \n\t\t\t\t,864000000000\n\t\t\t)\n\t\t, 86400 \n\t )\n)\n  \n)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "LogPLActivitySuccess",
+				"description": "log pipeline activity",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "detlta_get_delighted_responses",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[land].[udsp_logpipeline]",
+					"storedProcedureParameters": {
+						"pl_category": {
+							"value": "delighted",
+							"type": "String"
+						},
+						"pl_name": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"adf_name": {
+							"value": {
+								"value": "@pipeline().DataFactory",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"pl_status": {
+							"value": "1",
+							"type": "Int32"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sqldb",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "LogPLActivityfailed",
+				"description": "log pipeline activity failed",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "detlta_get_delighted_responses",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[land].[udsp_logpipeline]",
+					"storedProcedureParameters": {
+						"pl_category": {
+							"value": "delighted",
+							"type": "String"
+						},
+						"pl_name": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"adf_name": {
+							"value": {
+								"value": "@pipeline().DataFactory",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"pl_status": {
+							"value": "0",
+							"type": "Int32"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sqldb",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"par_firstday": {
+				"type": "string",
+				"defaultValue": "2023-01-01"
+			},
+			"par_delta_load_interval_day": {
+				"type": "string",
+				"defaultValue": "1"
+			},
+			"par_snk_container": {
+				"type": "string",
+				"defaultValue": "land"
+			},
+			"par_snk_dir": {
+				"type": "string",
+				"defaultValue": "delighted/raw"
+			},
+			"par_snk_filename": {
+				"type": "string",
+				"defaultValue": "survey.json"
+			},
+			"par_src_page": {
+				"type": "string",
+				"defaultValue": "100"
+			},
+			"par_src_until_date": {
+				"type": "string",
+				"defaultValue": "2023-01-02"
+			},
+			"par_src_endpoint": {
+				"type": "string",
+				"defaultValue": "https://api.delighted.com/v1/survey_responses.json"
+			},
+			"par_src_username": {
+				"type": "string",
+				"defaultValue": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
+			}
+		},
+		"variables": {
+			"var_1st_day": {
+				"type": "String"
+			},
+			"var_delta_load_interval_day": {
+				"type": "String"
+			},
+			"var_start_delta": {
+				"type": "String"
+			},
+			"var_until_delta": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "land"
+		},
+		"annotations": []
+	}
+}
