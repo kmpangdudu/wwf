@@ -195,7 +195,10 @@
 							"type": "String"
 						},
 						"pl_load_until_date": {
-							"value": "",
+							"value": {
+								"value": "@formatDateTime(convertFromUtc(utcNow(), 'Eastern Standard Time'),\r\n'yyyy-MM-dd'\r\n)",
+								"type": "Expression"
+							},
 							"type": "String"
 						}
 					}
@@ -259,7 +262,10 @@
 							"type": "String"
 						},
 						"pl_load_until_date": {
-							"value": "",
+							"value": {
+								"value": "@formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyy-MM-dd')",
+								"type": "Expression"
+							},
 							"type": "String"
 						}
 					}
