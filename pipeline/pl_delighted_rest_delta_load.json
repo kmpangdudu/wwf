@@ -192,7 +192,7 @@
 						},
 						"pl_load_start_date": {
 							"value": {
-								"value": "@formatDateTime(\nconvertFromUtc(\n    string(activity('lkp_last_success_load_date').output.firstRow.lastdate)\n    ,'Eastern Standard Time')\n,'yyyy-MM-dd')\n \n",
+								"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -262,7 +262,7 @@
 						},
 						"pl_load_start_date": {
 							"value": {
-								"value": "@formatDateTime(convertFromUtc(activity('lkp_last_success_load_date').output.firstRow.lastdate\n, 'Eastern Standard Time')\n,'yyyy-MM-dd'  \n)\n",
+								"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate\n",
 								"type": "Expression"
 							},
 							"type": "String"
