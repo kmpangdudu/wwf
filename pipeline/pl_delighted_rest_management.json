@@ -2,6 +2,52 @@
 	"name": "pl_delighted_rest_management",
 	"properties": {
 		"description": "Listing survey responses from delighted rest api",
+		"activities": [
+			{
+				"name": "check_load_type",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals('y',\npipeline().parameters.is_delta_load\n)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Execute_period_load_Pipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_delighted_rest_period_load",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Execute delta load pipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitOnCompletion": true
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"is_delta_load": {
+				"type": "string",
+				"defaultValue": "y"
+			}
+		},
 		"folder": {
 			"name": "land"
 		},
