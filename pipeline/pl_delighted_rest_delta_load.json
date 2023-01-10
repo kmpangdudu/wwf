@@ -4,51 +4,10 @@
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
 			{
-				"name": "set_interval",
-				"description": "",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_delta_load_interval_day",
-					"value": {
-						"value": "@string(\nmul(\nint(pipeline().parameters.par_delta_load_interval_day) \n,86400\n)\n)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "set_1st_Day",
-				"description": "set first day UNIX timestamp ",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_1st_day",
-					"value": {
-						"value": "@string(\n\tmul(\n\t\tdiv(\n\t\t\t\tsub(\n\t\t\t\t\t\tticks(convertToUtc(pipeline().parameters.par_firstday, 'Eastern Standard Time')\t \n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n\t\t\t\t\t\t\t)  \n\t\t\t\t\t)   \n\t\t\t\t\n\t\t\t\t,864000000000\n\t\t\t)\n\t\t, 86400 \n\t )\n)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "lkp_last_success_load_date",
 				"description": "logged created date will be added one day as the new loading start date.",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "set_interval",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "set_1st_Day",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -98,7 +57,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "delta_until_date",
+						"activity": "delta_start_date",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -181,26 +140,6 @@
 						}
 					}
 				]
-			},
-			{
-				"name": "delta_until_date",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "delta_start_date",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_until_delta",
-					"value": {
-						"value": "@if( \n equals( pipeline().parameters.par_src_until_date,'today')\n  , string(\n            mul(\n              div(\n                  sub(\n                      ticks(formatDateTime(utcNow(), 'yyyy-MM-dd')\n                        )\n                      ,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n                        )  \n                    )\n                  ,864000000000\n                )\n              , 86400 \n            )\n          )\n  , string(\n\tmul(\n\t\tdiv(\n\t\t\t\tsub(\n\t\t\t\t\t\tticks(convertToUtc(\n                           pipeline().parameters.par_src_until_date\n\t\t\t\t\t\t\t             , 'Eastern Standard Time')\t \n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n\t\t\t\t\t\t\t)  \n\t\t\t\t\t)   \n\t\t\t\t,864000000000\n\t\t\t)\n\t\t, 86400 \n\t )\n)\n  \n)",
-						"type": "Expression"
-					}
-				}
 			},
 			{
 				"name": "LogPLActivitySuccess",
