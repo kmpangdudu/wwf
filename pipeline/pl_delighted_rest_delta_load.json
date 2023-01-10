@@ -185,6 +185,18 @@
 						"pl_status": {
 							"value": "1",
 							"type": "Int32"
+						},
+						"pl_load_type": {
+							"value": "delta",
+							"type": "String"
+						},
+						"pl_load_start_date": {
+							"value": "",
+							"type": "String"
+						},
+						"pl_load_until_date": {
+							"value": "",
+							"type": "String"
 						}
 					}
 				},
