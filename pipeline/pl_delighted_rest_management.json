@@ -10,7 +10,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals('y',\npipeline().parameters.is_delta_load\n)",
+						"value": "@or(\n    or(\n        or(\n        or(equals('y',pipeline().parameters.is_delta_load),equals('Y',pipeline().parameters.is_delta_load)),\n        or(equals('yes',pipeline().parameters.is_delta_load),equals('YES',pipeline().parameters.is_delta_load))\n        ),\n        or(\n        or(equals('t',pipeline().parameters.is_delta_load),equals('T',pipeline().parameters.is_delta_load)),\n        or(equals('ture',pipeline().parameters.is_delta_load),equals('TURE',pipeline().parameters.is_delta_load))\n        )\n    )\n, equals(1, '1')\n)",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
