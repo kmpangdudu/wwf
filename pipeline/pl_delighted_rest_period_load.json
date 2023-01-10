@@ -100,7 +100,7 @@
 								"type": "Expression"
 							},
 							"par_ds_snk_delighted_file": {
-								"value": "@concat('survey'\n, '-'\n, pipeline().parameters.par_src_start_date\n, '-'\n, pipeline().parameters.par_src_until_date, '-2359'\n, '.json'\n)",
+								"value": "@concat('survey'\n, '-'\n, replace(pipeline().parameters.par_src_start_date,'-','')\n, '-'\n, replace(pipeline().parameters.par_src_until_date,'-',''), '-2359'\n, '.json'\n)",
 								"type": "Expression"
 							}
 						}
