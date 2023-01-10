@@ -12,7 +12,7 @@
 				"typeProperties": {
 					"variableName": "var_period_start",
 					"value": {
-						"value": "@string(\n\nconvertToUtc( pipeline().parameters.par_src_start_date, 'Eastern Standard Time')\n\n\n)",
+						"value": "@string(\ndiv(sub(ticks(convertToUtc(pipeline().parameters.par_src_start_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000)\n)",
 						"type": "Expression"
 					}
 				}
@@ -68,11 +68,11 @@
 								"type": "Expression"
 							},
 							"par_src_updated_since": {
-								"value": "@variables('var_start_delta')",
+								"value": "@variables('var_period_start')",
 								"type": "Expression"
 							},
 							"par_src_updated_until": {
-								"value": "@variables('var_until_delta')",
+								"value": "@variables('var_period_until')",
 								"type": "Expression"
 							},
 							"par_src_ednpoint": {
@@ -123,7 +123,7 @@
 				"typeProperties": {
 					"variableName": "var_period_until",
 					"value": {
-						"value": "@if( \n equals( pipeline().parameters.par_src_until_date,'today')\n  , string(\n            mul(\n              div(\n                  sub(\n                      ticks(formatDateTime(utcNow(), 'yyyy-MM-dd')\n                        )\n                      ,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n                        )  \n                    )\n                  ,864000000000\n                )\n              , 86400 \n            )\n          )\n  , string(\n\tmul(\n\t\tdiv(\n\t\t\t\tsub(\n\t\t\t\t\t\tticks(convertToUtc(\n                           pipeline().parameters.par_src_until_date\n\t\t\t\t\t\t\t             , 'Eastern Standard Time')\t \n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t,ticks(convertToUtc( '1970-01-01','Eastern Standard Time' )\n\t\t\t\t\t\t\t)  \n\t\t\t\t\t)   \n\t\t\t\t,864000000000\n\t\t\t)\n\t\t, 86400 \n\t )\n)\n  \n)",
+						"value": "@string(\nadd(86390,div(sub(ticks(convertToUtc(pipeline().parameters.par_src_until_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000))\n)",
 						"type": "Expression"
 					}
 				}
