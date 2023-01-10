@@ -35,6 +35,10 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_delighted_rest_delta_load",
+									"type": "PipelineReference"
+								},
 								"waitOnCompletion": true
 							}
 						}
