@@ -18,7 +18,7 @@
 				}
 			},
 			{
-				"name": "detlta_get_delighted_responses",
+				"name": "period_get_delighted_responses",
 				"description": "Listing survey responses from delighted rest api",
 				"type": "Copy",
 				"dependsOn": [
@@ -134,7 +134,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "detlta_get_delighted_responses",
+						"activity": "period_get_delighted_responses",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -204,7 +204,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "detlta_get_delighted_responses",
+						"activity": "period_get_delighted_responses",
 						"dependencyConditions": [
 							"Failed"
 						]
