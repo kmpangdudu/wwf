@@ -44,7 +44,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "var_period_start",
+					"variableName": "var_start_delta",
 					"value": {
 						"value": "@string(\n    activity('lkp_last_success_load_date').output.firstRow.nextStart_timestamp\n)",
 						"type": "Expression"
