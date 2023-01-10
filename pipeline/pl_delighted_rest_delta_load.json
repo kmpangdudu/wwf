@@ -258,8 +258,9 @@
 							"value": "",
 							"type": "String"
 						},
-						"": {
-							"value": ""
+						"pl_load_until_date": {
+							"value": "",
+							"type": "String"
 						}
 					}
 				},
@@ -282,7 +283,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "var_period_until",
+					"variableName": "var_until_delta",
 					"value": {
 						"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
 						"type": "Expression"
