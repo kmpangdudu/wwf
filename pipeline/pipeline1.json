@@ -1,0 +1,15 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"parameters": {
+			"par_src_until_date": {
+				"type": "string",
+				"defaultValue": "2023-01-05"
+			}
+		},
+		"folder": {
+			"name": "land"
+		},
+		"annotations": []
+	}
+}
