@@ -370,7 +370,7 @@
 			},
 			"cc": {
 				"type": "string",
-				"defaultValue": "erjun.chen@teamfuse.ca"
+				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
 			}
 		},
 		"variables": {
