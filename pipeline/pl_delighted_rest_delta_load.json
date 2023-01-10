@@ -57,7 +57,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "delta_start_date",
+						"activity": "timestamp now",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -243,6 +243,27 @@
 				"linkedServiceName": {
 					"referenceName": "ls_azure_sqldb",
 					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "timestamp now",
+				"description": "by default, it is current timestamp",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "delta_start_date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_until_delta",
+					"value": {
+						"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
+						"type": "Expression"
+					}
 				}
 			}
 		],
