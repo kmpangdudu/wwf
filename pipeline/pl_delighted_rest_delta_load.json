@@ -7,7 +7,14 @@
 				"name": "lkp_last_success_load_date",
 				"description": "logged created date will be added one day as the new loading start date.",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -360,6 +367,53 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_snk_land_delighted_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"par_ds_snk_delighted_container": {
+								"value": "@pipeline().parameters.par_snk_container",
+								"type": "Expression"
+							},
+							"par_ds_snk_delighted_dir": {
+								"value": "@pipeline().parameters.par_snk_dir",
+								"type": "Expression"
+							},
+							"par_ds_snk_delighted_file": {
+								"value": "@pipeline().parameters.par_snk_filename",
+								"type": "Expression"
+							}
+						}
+					}
+				]
 			}
 		],
 		"parameters": {

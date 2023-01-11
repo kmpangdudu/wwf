@@ -8,10 +8,6 @@
 				"ednpoint": {
 					"value": "@dataset().par_src_ednpoint",
 					"type": "Expression"
-				},
-				"UserName": {
-					"value": "@dataset().par_src_unsername",
-					"type": "Expression"
 				}
 			}
 		},

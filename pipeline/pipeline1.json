@@ -15,10 +15,34 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
-					"method": "POST",
+					"url": "https://kv-wildfork-nonprod.vault.azure.net/secrets/delighted-apikey/177d9c82363448c7a5b3a7da1714a128?api-version=7.0",
+					"method": "GET",
 					"body": {
 						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The dumping survey answer from delighted processing is success at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The Data dumping is success.\"\n   }",
+						"type": "Expression"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "apikey",
+					"value": {
+						"value": "@activity('Web1').output.value",
 						"type": "Expression"
 					}
 				}
