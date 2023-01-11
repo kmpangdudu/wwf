@@ -38,6 +38,11 @@
 				"defaultValue": "No-Reply: The Data dumping is success."
 			}
 		},
+		"variables": {
+			"apikey": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "land"
 		},
