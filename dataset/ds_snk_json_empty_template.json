@@ -1,6 +1,7 @@
 {
-	"name": "ds_snk_json_template",
+	"name": "ds_snk_json_empty_template",
 	"properties": {
+		"description": "dynamic file name",
 		"linkedServiceName": {
 			"referenceName": "ls_AzureBlobStorage",
 			"type": "LinkedServiceReference"
@@ -9,6 +10,9 @@
 			"p": {
 				"type": "string"
 			}
+		},
+		"folder": {
+			"name": "land/snk"
 		},
 		"annotations": [],
 		"type": "Json",
