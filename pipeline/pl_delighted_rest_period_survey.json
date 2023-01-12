@@ -4,38 +4,10 @@
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
 			{
-				"name": "period_start_date",
-				"description": "load delighted survey data from this date at 12:00 AM",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Saving API-Key",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_m_period_start",
-					"value": {
-						"value": "@string(\ndiv(sub(ticks(convertToUtc(pipeline().parameters.par_src_start_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000)\n)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "period_get_delighted_responses",
 				"description": "Listing survey responses from delighted rest api",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "period_until_date",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -114,27 +86,6 @@
 						}
 					}
 				]
-			},
-			{
-				"name": "period_until_date",
-				"description": "period load until this date at 11:59 PM",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "period_start_date",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_m_period_until",
-					"value": {
-						"value": "@string(\nadd(86390,div(sub(ticks(convertToUtc(pipeline().parameters.par_src_until_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000))\n)",
-						"type": "Expression"
-					}
-				}
 			},
 			{
 				"name": "LogPLActivitySuccess",
@@ -330,51 +281,6 @@
 					"method": "POST",
 					"body": {
 						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The periodical dumping survey answer from delighted processing failed at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The survey Data periodical dumping failed.\"\n   }",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Get API-Key from Key-Vault",
-				"type": "WebActivity",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://kv-wildfork-nonprod.vault.azure.net/secrets/delighted-apikey/177d9c82363448c7a5b3a7da1714a128?api-version=7.0",
-					"method": "GET",
-					"body": {
-						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The dumping survey answer from delighted processing is success at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The Data dumping is success.\"\n   }",
-						"type": "Expression"
-					},
-					"authentication": {
-						"type": "MSI",
-						"resource": "https://vault.azure.net"
-					}
-				}
-			},
-			{
-				"name": "Saving API-Key",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Get API-Key from Key-Vault",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_API-Key",
-					"value": {
-						"value": "@activity('Get API-Key from Key-Vault').output.value",
 						"type": "Expression"
 					}
 				}
