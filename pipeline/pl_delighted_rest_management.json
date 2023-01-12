@@ -6,7 +6,14 @@
 			{
 				"name": "check_load_type",
 				"type": "IfCondition",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Saving API-Key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
@@ -44,12 +51,58 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Saving API-Key",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "API_Key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_API-Key",
+					"value": {
+						"value": "@activity('API_Key').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "API_Key",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://kv-wildfork-nonprod.vault.azure.net/secrets/delighted-apikey/177d9c82363448c7a5b3a7da1714a128?api-version=7.0",
+					"method": "GET",
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
 			}
 		],
 		"parameters": {
 			"is_delta_load": {
 				"type": "string",
 				"defaultValue": "y"
+			}
+		},
+		"variables": {
+			"var_API-Key": {
+				"type": "String"
 			}
 		},
 		"folder": {
