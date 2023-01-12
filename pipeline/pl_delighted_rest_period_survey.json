@@ -181,7 +181,7 @@
 					"storedProcedureName": "[land].[udsp_logpipeline]",
 					"storedProcedureParameters": {
 						"pl_category": {
-							"value": "delighted",
+							"value": "survey",
 							"type": "String"
 						},
 						"pl_name": {
@@ -208,14 +208,14 @@
 						},
 						"pl_load_start_date": {
 							"value": {
-								"value": "@pipeline().parameters.par_src_start_date",
+								"value": "@pipeline().parameters.par_ps_src_start_date",
 								"type": "Expression"
 							},
 							"type": "String"
 						},
 						"pl_load_until_date": {
 							"value": {
-								"value": "@pipeline().parameters.par_src_until_date",
+								"value": "@pipeline().parameters.par_ps_src_until_date",
 								"type": "Expression"
 							},
 							"type": "String"
