@@ -125,6 +125,19 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "people",
+									"type": "String"
+								},
+								"sink": {
+									"name": "people",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -137,7 +150,7 @@
 						"referenceName": "ds_csv_dummy_1col",
 						"type": "DatasetReference",
 						"parameters": {
-							"fn": "dummy.sv",
+							"fn": "dummy.csv",
 							"dir": "delighted",
 							"cont": "land"
 						}
@@ -148,7 +161,7 @@
 						"referenceName": "ds_csv_dummy_1col",
 						"type": "DatasetReference",
 						"parameters": {
-							"fn": "p1",
+							"fn": "p1.json",
 							"dir": "delighted/temp",
 							"cont": "land"
 						}
