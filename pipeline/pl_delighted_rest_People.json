@@ -95,7 +95,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": {
-									"value": "@concat(variables('var_endpoint'),'?'\n, 'since=', variables('var_src_start_date')\n, '&until=', variables('var_src_until_date')\n)",
+									"value": "@concat(variables('var_endpoint'),'?'\n, 'since=', pipeline().parameters.par_src_start_date\n, '&until=', pipeline().parameters.par_src_until_date\n)",
 									"type": "Expression"
 								},
 								"method": "GET",
@@ -275,6 +275,12 @@
 			"cc": {
 				"type": "string",
 				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
+			},
+			"par_src_start_date": {
+				"type": "string"
+			},
+			"par_src_until_date": {
+				"type": "string"
 			}
 		},
 		"variables": {
@@ -288,12 +294,6 @@
 				"type": "String"
 			},
 			"var_endpoint": {
-				"type": "String"
-			},
-			"var_src_start_date": {
-				"type": "String"
-			},
-			"var_src_until_date": {
 				"type": "String"
 			}
 		},
