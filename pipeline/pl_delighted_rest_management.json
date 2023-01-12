@@ -198,6 +198,10 @@
 			"par_m_cc": {
 				"type": "string",
 				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
+			},
+			"par_m_init_endpoint": {
+				"type": "string",
+				"defaultValue": "https://api.delighted.com/v1/"
 			}
 		},
 		"variables": {
