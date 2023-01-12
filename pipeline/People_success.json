@@ -171,7 +171,7 @@
 						"referenceName": "ds_csv_dummy_1col",
 						"type": "DatasetReference",
 						"parameters": {
-							"fn": "p_234.json",
+							"fn": "p_243.json",
 							"dir": "delighted/temp",
 							"cont": "land"
 						}
@@ -179,7 +179,27 @@
 				]
 			},
 			{
-				"name": "Get API-Key from Key-Vault",
+				"name": "Saving API-Key",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "API_Key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_API-Key",
+					"value": {
+						"value": "@activity('API_Key').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "API_Key",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
@@ -193,33 +213,9 @@
 				"typeProperties": {
 					"url": "https://kv-wildfork-nonprod.vault.azure.net/secrets/delighted-apikey/177d9c82363448c7a5b3a7da1714a128?api-version=7.0",
 					"method": "GET",
-					"body": {
-						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The dumping survey answer from delighted processing is success at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The Data dumping is success.\"\n   }",
-						"type": "Expression"
-					},
 					"authentication": {
 						"type": "MSI",
 						"resource": "https://vault.azure.net"
-					}
-				}
-			},
-			{
-				"name": "Saving API-Key",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Get API-Key from Key-Vault",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_API-Key",
-					"value": {
-						"value": "@activity('Get API-Key from Key-Vault').output.value",
-						"type": "Expression"
 					}
 				}
 			}
