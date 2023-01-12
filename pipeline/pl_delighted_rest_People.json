@@ -95,7 +95,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": {
-									"value": "@variables('var_endpoint')",
+									"value": "@concat(variables('var_endpoint'),'?'\n, 'since=', variables('var_src_start_date')\n, '&until=', variables('var_src_until_date')\n)",
 									"type": "Expression"
 								},
 								"method": "GET",
@@ -268,14 +268,6 @@
 				"type": "string",
 				"defaultValue": "https://api.delighted.com/v1/"
 			},
-			"par_src_start_date": {
-				"type": "string",
-				"defaultValue": "2023-01-01"
-			},
-			"par_src_until_date": {
-				"type": "string",
-				"defaultValue": "2023-01-07"
-			},
 			"receiver": {
 				"type": "string",
 				"defaultValue": "chenerjun@gmail.com"
@@ -296,6 +288,12 @@
 				"type": "String"
 			},
 			"var_endpoint": {
+				"type": "String"
+			},
+			"var_src_start_date": {
+				"type": "String"
+			},
+			"var_src_until_date": {
 				"type": "String"
 			}
 		},
