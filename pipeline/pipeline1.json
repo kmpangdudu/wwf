@@ -96,13 +96,14 @@
 						}
 					},
 					"sink": {
-						"type": "JsonSink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"filePattern": "setOfObjects"
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ""
 						}
 					},
 					"enableStaging": false,
@@ -115,24 +116,29 @@
 									"type": "String"
 								},
 								"sink": {
-									"path": "$"
+									"ordinal": 1
 								}
 							}
-						]
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
 					}
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_src_land_last_success_load_delighted",
+						"referenceName": "ds_src_csv_empty_template",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_snk_json_empty_template",
+						"referenceName": "ds_snk_csv_empty_template",
 						"type": "DatasetReference",
 						"parameters": {
-							"p": "p1.json"
+							"snk_filename": "p1.json"
 						}
 					}
 				]
