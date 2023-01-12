@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Web1",
+				"name": "list_people",
 				"type": "WebActivity",
 				"dependsOn": [
 					{
@@ -46,7 +46,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Web1",
+						"activity": "list_people",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -56,7 +56,7 @@
 				"typeProperties": {
 					"variableName": "response_body",
 					"value": {
-						"value": "@activity('Web1').output.Response",
+						"value": "@activity('list_people').output.Response",
 						"type": "Expression"
 					}
 				}
@@ -66,7 +66,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Web1",
+						"activity": "list_people",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -76,7 +76,7 @@
 				"typeProperties": {
 					"variableName": "response_header",
 					"value": {
-						"value": "@activity('Web1').output.ADFWebActivityResponseHeaders.Link",
+						"value": "@activity('list_people').output.ADFWebActivityResponseHeaders.Link",
 						"type": "Expression"
 					}
 				}
@@ -224,7 +224,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Web1",
+						"activity": "list_people",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -243,7 +243,7 @@
 					"storedProcedureParameters": {
 						"r": {
 							"value": {
-								"value": "@activity('Web1').output.Response",
+								"value": "@activity('list_people').output.Response",
 								"type": "Expression"
 							},
 							"type": "String"
