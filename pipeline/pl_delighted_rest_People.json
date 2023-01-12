@@ -253,7 +253,7 @@
 					{
 						"activity": "loop_list_people",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
