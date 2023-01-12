@@ -7,14 +7,7 @@
 				"name": "lkp_last_success_load_date",
 				"description": "logged created date will be added one day as the new loading start date.",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "Wait1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -64,7 +57,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "timestamp now",
+						"activity": "Wait1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -531,6 +524,12 @@
 				"dependsOn": [
 					{
 						"activity": "Saving API-Key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "timestamp now",
 						"dependencyConditions": [
 							"Succeeded"
 						]
