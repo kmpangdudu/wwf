@@ -16,19 +16,16 @@
 			}
 		},
 		"parameters": {
-			"par_src_page": {
+			"par_ds_src__since": {
 				"type": "string"
 			},
-			"par_src_updated_since": {
+			"par_ds_src_until": {
 				"type": "string"
 			},
-			"par_src_updated_until": {
+			"par_ds_src_ednpoint": {
 				"type": "string"
 			},
-			"par_src_ednpoint": {
-				"type": "string"
-			},
-			"par_src_apikey": {
+			"par_ds_src_apikey": {
 				"type": "string"
 			}
 		},
