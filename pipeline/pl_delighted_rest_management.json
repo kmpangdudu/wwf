@@ -168,6 +168,14 @@
 			"par_m_until_date": {
 				"type": "string",
 				"defaultValue": "2023-01-07"
+			},
+			"par_m_receiver": {
+				"type": "string",
+				"defaultValue": "chenerjun@gmail.com"
+			},
+			"par_m_cc": {
+				"type": "string",
+				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
 			}
 		},
 		"variables": {
