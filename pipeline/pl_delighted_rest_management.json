@@ -4,7 +4,7 @@
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
 			{
-				"name": "check_load_type",
+				"name": "check_load_type_Is_delta",
 				"type": "IfCondition",
 				"dependsOn": [
 					{
@@ -24,7 +24,14 @@
 						{
 							"name": "Execute_period_load_Pipeline",
 							"type": "ExecutePipeline",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "period_until_date",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
@@ -32,6 +39,41 @@
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true
+							}
+						},
+						{
+							"name": "period_start_date",
+							"description": "load delighted survey data from this date at 12:00 AM",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_period_start",
+								"value": {
+									"value": "@string(\ndiv(sub(ticks(convertToUtc(pipeline().parameters.par_src_start_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000)\n)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "period_until_date",
+							"description": "period load until this date at 11:59 PM",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "period_start_date",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_period_until",
+								"value": {
+									"value": "@string(\nadd(86390,div(sub(ticks(convertToUtc(pipeline().parameters.par_src_until_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000))\n)",
+									"type": "Expression"
+								}
 							}
 						}
 					],
@@ -98,10 +140,24 @@
 			"is_delta_load": {
 				"type": "string",
 				"defaultValue": "y"
+			},
+			"var_start_date": {
+				"type": "string",
+				"defaultValue": "2023-01-01"
+			},
+			"var_until_date": {
+				"type": "string",
+				"defaultValue": "2023-01-07"
 			}
 		},
 		"variables": {
 			"var_API-Key": {
+				"type": "String"
+			},
+			"var_period_start": {
+				"type": "String"
+			},
+			"var_period_until": {
 				"type": "String"
 			}
 		},
