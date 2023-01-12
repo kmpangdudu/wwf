@@ -5,14 +5,7 @@
 			{
 				"name": "next_page_url",
 				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "ingest_people",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var",
@@ -109,35 +102,6 @@
 						}
 					}
 				]
-			},
-			{
-				"name": "ingest_people",
-				"type": "WebActivity",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://api.delighted.com/v1/people.json",
-					"method": "GET",
-					"authentication": {
-						"type": "Basic",
-						"username": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ",
-						"password": {
-							"type": "AzureKeyVaultSecret",
-							"store": {
-								"referenceName": "ls_fusedata_AzureKeyVault",
-								"type": "LinkedServiceReference"
-							},
-							"secretName": "Delighted"
-						}
-					}
-				}
 			}
 		],
 		"variables": {
