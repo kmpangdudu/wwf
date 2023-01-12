@@ -24,7 +24,7 @@
 			"par_src_ednpoint": {
 				"type": "string"
 			},
-			"par_src_unsername": {
+			"par_src_apikey": {
 				"type": "string"
 			}
 		},
