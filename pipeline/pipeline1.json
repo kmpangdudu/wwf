@@ -130,7 +130,10 @@
 				"inputs": [
 					{
 						"referenceName": "ds_src_csv_empty_template",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"src_file_name": "anyone"
+						}
 					}
 				],
 				"outputs": [
