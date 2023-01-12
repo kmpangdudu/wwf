@@ -321,19 +321,16 @@
 			}
 		},
 		"variables": {
-			"var_1st_day": {
+			"var__ps_delta_interval_day": {
 				"type": "String"
 			},
-			"var_delta_load_interval_day": {
+			"var_ps_period_start": {
 				"type": "String"
 			},
-			"var_period_start": {
+			"var_ps_period_until": {
 				"type": "String"
 			},
-			"var_period_until": {
-				"type": "String"
-			},
-			"var_API-Key": {
+			"var_ps_API_Key": {
 				"type": "String"
 			}
 		},
