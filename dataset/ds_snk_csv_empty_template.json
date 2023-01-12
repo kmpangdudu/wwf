@@ -15,10 +15,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": {
-					"value": "@dataset().snk_filename",
-					"type": "Expression"
-				},
 				"folderPath": "delighted/temp",
 				"container": "land"
 			},
