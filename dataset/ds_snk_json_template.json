@@ -1,0 +1,24 @@
+{
+	"name": "ds_snk_json_template",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"p": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "delighted/temp",
+				"container": "land"
+			}
+		},
+		"schema": {}
+	}
+}
