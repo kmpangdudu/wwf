@@ -1,0 +1,65 @@
+{
+	"name": "pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://api.delighted.com/v1/people.json",
+					"method": "GET",
+					"authentication": {
+						"type": "Basic",
+						"username": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ",
+						"password": {
+							"type": "AzureKeyVaultSecret",
+							"store": {
+								"referenceName": "ls_fusedata_AzureKeyVault",
+								"type": "LinkedServiceReference"
+							},
+							"secretName": "Delighted"
+						}
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "WebActvityOutput",
+					"value": {
+						"value": "@activity('Web1').output.Response",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"WebActvityOutput": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "land/test"
+		},
+		"annotations": []
+	}
+}
