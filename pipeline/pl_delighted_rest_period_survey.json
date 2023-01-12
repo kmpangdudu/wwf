@@ -72,15 +72,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"par_ds_snk_delighted_container": {
-								"value": "@pipeline().parameters.par_snk_container",
+								"value": "@pipeline().parameters.par_ps_snk_container",
 								"type": "Expression"
 							},
 							"par_ds_snk_delighted_dir": {
-								"value": "@pipeline().parameters.par_snk_dir",
+								"value": "@pipeline().parameters.par_ps_snk_dir",
 								"type": "Expression"
 							},
 							"par_ds_snk_delighted_file": {
-								"value": "@concat('survey'\n, '-'\n, replace(pipeline().parameters.par_src_start_date,'-','')\n, '-'\n, replace(pipeline().parameters.par_src_until_date,'-',''), '-2359'\n, '.json'\n)",
+								"value": "@concat('survey'\n, '-'\n, replace(pipeline().parameters.par_ps_src_start_date,'-','')\n, '-'\n, replace(pipeline().parameters.par_ps_src_until_date,'-',''), '-2359'\n, '.json'\n)",
 								"type": "Expression"
 							}
 						}
