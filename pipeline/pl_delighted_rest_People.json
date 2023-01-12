@@ -275,6 +275,14 @@
 			"par_src_until_date": {
 				"type": "string",
 				"defaultValue": "2023-01-07"
+			},
+			"receiver": {
+				"type": "string",
+				"defaultValue": "chenerjun@gmail.com"
+			},
+			"cc": {
+				"type": "string",
+				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
 			}
 		},
 		"variables": {
