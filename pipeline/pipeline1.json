@@ -55,7 +55,7 @@
 						],
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -96,11 +96,8 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_src_csv_empty_template",
-						"type": "DatasetReference",
-						"parameters": {
-							"src_file_name": "anyone"
-						}
+						"referenceName": "ds_src_land_last_success_load_delighted",
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
