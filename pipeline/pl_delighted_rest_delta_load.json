@@ -466,6 +466,31 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "ingest_people",
+				"type": "Until",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@less(length(variables('var_API_pagination ')), 1)",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "reset_var_pagination",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_API_pagination ",
+								"value": "'a'"
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
 			}
 		],
 		"parameters": {
@@ -499,12 +524,6 @@
 			}
 		},
 		"variables": {
-			"var_1st_day": {
-				"type": "String"
-			},
-			"var_delta_load_interval_day": {
-				"type": "String"
-			},
 			"var_start_delta": {
 				"type": "String"
 			},
@@ -512,6 +531,9 @@
 				"type": "String"
 			},
 			"var_API-Key": {
+				"type": "String"
+			},
+			"var_API_pagination ": {
 				"type": "String"
 			}
 		},
