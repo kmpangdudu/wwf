@@ -15,7 +15,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "p.csv",
 				"folderPath": "delighted/temp",
 				"container": "land"
 			},
