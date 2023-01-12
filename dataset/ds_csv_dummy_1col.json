@@ -12,7 +12,7 @@
 			"dir": {
 				"type": "string"
 			},
-			"container": {
+			"cont": {
 				"type": "string"
 			}
 		},
