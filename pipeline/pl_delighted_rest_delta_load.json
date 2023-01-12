@@ -479,7 +479,8 @@
 					},
 					"activities": [
 						{
-							"name": "reset_var_pagination",
+							"name": "reset_var_api_pagination",
+							"description": "reset Var_API_Pagination to empty",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
