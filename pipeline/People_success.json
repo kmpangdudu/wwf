@@ -239,7 +239,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[udsp_insert_temp]",
+					"storedProcedureName": "[dbo].[udsp_insert_raw]",
 					"storedProcedureParameters": {
 						"body": {
 							"value": {
