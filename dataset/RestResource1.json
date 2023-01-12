@@ -1,0 +1,16 @@
+{
+	"name": "RestResource1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_delighted_api",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"ednpoint": "https://api.delighted.com/v1/people.json",
+				"APIkey": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
