@@ -87,8 +87,8 @@
 								"value": "@pipeline().parameters.par_src_endpoint",
 								"type": "Expression"
 							},
-							"par_src_unsername": {
-								"value": "@pipeline().parameters.par_src_username",
+							"par_src_apikey": {
+								"value": "@variables('var_API-Key')",
 								"type": "Expression"
 							}
 						}
@@ -385,10 +385,6 @@
 				"type": "string",
 				"defaultValue": "2023-01-01"
 			},
-			"par_delta_load_interval_day": {
-				"type": "string",
-				"defaultValue": "1"
-			},
 			"par_snk_container": {
 				"type": "string",
 				"defaultValue": "land"
@@ -412,10 +408,6 @@
 			"par_src_endpoint": {
 				"type": "string",
 				"defaultValue": "https://api.delighted.com/v1/survey_responses.json"
-			},
-			"par_src_username": {
-				"type": "string",
-				"defaultValue": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
 			},
 			"receiver": {
 				"type": "string",
