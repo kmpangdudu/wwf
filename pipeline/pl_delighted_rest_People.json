@@ -267,6 +267,14 @@
 			"par_init_endpoint": {
 				"type": "string",
 				"defaultValue": "https://api.delighted.com/v1/"
+			},
+			"par_src_start_date": {
+				"type": "string",
+				"defaultValue": "2023-01-01"
+			},
+			"par_src_until_date": {
+				"type": "string",
+				"defaultValue": "2023-01-07"
 			}
 		},
 		"variables": {
