@@ -1,5 +1,5 @@
 {
-	"name": "pl_delighted_rest_period_load",
+	"name": "pl_delighted_rest_period_survey",
 	"properties": {
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
@@ -17,7 +17,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "var_period_start",
+					"variableName": "var_m_period_start",
 					"value": {
 						"value": "@string(\ndiv(sub(ticks(convertToUtc(pipeline().parameters.par_src_start_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000)\n)",
 						"type": "Expression"
@@ -129,7 +129,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "var_period_until",
+					"variableName": "var_m_period_until",
 					"value": {
 						"value": "@string(\nadd(86390,div(sub(ticks(convertToUtc(pipeline().parameters.par_src_until_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000))\n)",
 						"type": "Expression"
