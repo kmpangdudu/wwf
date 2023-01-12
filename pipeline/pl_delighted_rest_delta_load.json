@@ -9,7 +9,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "ingest_people",
+						"activity": "Wait1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -418,7 +418,7 @@
 				"type": "Until",
 				"dependsOn": [
 					{
-						"activity": "Saving API-Key",
+						"activity": "initial_var_api_pagination",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -432,18 +432,117 @@
 					},
 					"activities": [
 						{
-							"name": "reset_var_api_pagination",
-							"description": "reset Var_API_Pagination to empty",
-							"type": "SetVariable",
+							"name": "consuming_listPeople",
+							"type": "WebActivity",
 							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": {
+									"value": "@variables('var_API_pagination ')",
+									"type": "Expression"
+								},
+								"method": "GET",
+								"authentication": {
+									"type": "Basic",
+									"username": {
+										"value": "@variables('var_API-Key')",
+										"type": "Expression"
+									},
+									"password": {
+										"type": "AzureKeyVaultSecret",
+										"store": {
+											"referenceName": "ls_fusedata_AzureKeyVault",
+											"type": "LinkedServiceReference"
+										},
+										"secretName": "Delighted"
+									}
+								}
+							}
+						},
+						{
+							"name": "update_var_api_pagination",
+							"description": "using response header information to see whether or not sends next request",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "consuming_listPeople",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "var_API_pagination ",
-								"value": "'a'"
+								"value": {
+									"value": "@activity('consuming_listPeople').output",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "list_pipeline failed",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "consuming_listPeople",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "ListPeople failed",
+								"errorCode": "500"
 							}
 						}
 					],
 					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "ingest_people",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			},
+			{
+				"name": "initial_var_api_pagination",
+				"description": "reset Var_API_Pagination to empty",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Saving API-Key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_API_pagination ",
+					"value": {
+						"value": "@concat(pipeline().parameters.par_src_endpoint\n, 'people.json'\n)",
+						"type": "Expression"
+					}
 				}
 			}
 		],
