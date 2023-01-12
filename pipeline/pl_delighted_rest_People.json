@@ -141,7 +141,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "get_response_header",
+									"activity": "list_people",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -177,7 +177,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Stored_response_to_tb",
+									"activity": "get_response_header",
 									"dependencyConditions": [
 										"Succeeded"
 									]
