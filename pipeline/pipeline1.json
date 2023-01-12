@@ -60,7 +60,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "ingest_people",
+						"activity": "next_page_url",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -147,20 +147,6 @@
 				]
 			}
 		],
-		"parameters": {
-			"receiver": {
-				"type": "string",
-				"defaultValue": "chenerjun@gmail.com"
-			},
-			"cc": {
-				"type": "string",
-				"defaultValue": "erjun.chen@teamfuse.ca"
-			},
-			"subject": {
-				"type": "string",
-				"defaultValue": "No-Reply: The Data dumping is success."
-			}
-		},
 		"variables": {
 			"apikey": {
 				"type": "String"
