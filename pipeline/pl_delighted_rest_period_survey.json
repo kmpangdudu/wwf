@@ -4,7 +4,7 @@
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
 			{
-				"name": "period_get_delighted_responses",
+				"name": "period_get_survey_responses",
 				"description": "Listing survey responses from delighted rest api",
 				"type": "Copy",
 				"dependsOn": [],
@@ -93,7 +93,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "period_get_delighted_responses",
+						"activity": "period_get_survey_responses",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -163,7 +163,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "period_get_delighted_responses",
+						"activity": "period_get_survey_responses",
 						"dependencyConditions": [
 							"Failed"
 						]
@@ -228,7 +228,7 @@
 				}
 			},
 			{
-				"name": "Success notice",
+				"name": "Survey_Success notice",
 				"description": "successful lod survey notification",
 				"type": "WebActivity",
 				"dependsOn": [
@@ -251,13 +251,13 @@
 					"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
 					"method": "POST",
 					"body": {
-						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The periodical dumping survey answer from delighted processing is success at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The survey Data periodical dumping success.\"\n   }",
+						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The periodical dumping survey answer from delighted processing is success at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.par_ps_receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.par_ps_cc}\",\n    \"subject\" : \"No-Reply: The survey Data periodical dumping success.\"\n   }",
 						"type": "Expression"
 					}
 				}
 			},
 			{
-				"name": "Faiure notice",
+				"name": "Survey Faiure notice",
 				"description": "successful lod survey notification",
 				"type": "WebActivity",
 				"dependsOn": [
