@@ -1,0 +1,29 @@
+{
+	"name": "ds_src_template",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "land/snk"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "delighted",
+				"container": "land"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"type": "String"
+			}
+		]
+	}
+}
