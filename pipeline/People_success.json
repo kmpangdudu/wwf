@@ -241,7 +241,7 @@
 				"typeProperties": {
 					"storedProcedureName": "[dbo].[udsp_insert_temp]",
 					"storedProcedureParameters": {
-						"@temp": {
+						"body": {
 							"value": {
 								"value": "@activity('Web1').output.Response",
 								"type": "Expression"
