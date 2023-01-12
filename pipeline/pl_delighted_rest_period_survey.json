@@ -287,11 +287,11 @@
 			}
 		],
 		"parameters": {
-			"par_src_start_date": {
+			"par_ps_src_start_date": {
 				"type": "string",
 				"defaultValue": "2023-01-01"
 			},
-			"par_snk_container": {
+			"par_ps_snk_container": {
 				"type": "string",
 				"defaultValue": "land"
 			},
@@ -302,10 +302,6 @@
 			"par_snk_filename": {
 				"type": "string",
 				"defaultValue": "survey.json"
-			},
-			"par_src_page": {
-				"type": "string",
-				"defaultValue": "100"
 			},
 			"par_src_until_date": {
 				"type": "string",
