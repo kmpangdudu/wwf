@@ -56,7 +56,7 @@
 				"typeProperties": {
 					"variableName": "response_body",
 					"value": {
-						"value": "@replace(string(json(activity('Web1').output.Response)),'\\,','')",
+						"value": "@activity('Web1').output.Response",
 						"type": "Expression"
 					}
 				}
@@ -217,6 +217,42 @@
 						"type": "MSI",
 						"resource": "https://vault.azure.net"
 					}
+				}
+			},
+			{
+				"name": "save_to SQLDB",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[udsp_insert_temp]",
+					"storedProcedureParameters": {
+						"@tmp": {
+							"value": {
+								"value": "@activity('Web1').output.Response",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sqldb",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
