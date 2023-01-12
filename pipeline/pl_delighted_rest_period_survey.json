@@ -228,7 +228,7 @@
 				}
 			},
 			{
-				"name": "Survey_Success notice",
+				"name": "period_Survey_Success notice",
 				"description": "successful lod survey notification",
 				"type": "WebActivity",
 				"dependsOn": [
@@ -257,7 +257,7 @@
 				}
 			},
 			{
-				"name": "Survey Faiure notice",
+				"name": "period_Survey Faiure notice",
 				"description": "successful lod survey notification",
 				"type": "WebActivity",
 				"dependsOn": [
