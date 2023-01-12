@@ -224,7 +224,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "response_header",
+						"activity": "response_body",
 						"dependencyConditions": [
 							"Succeeded"
 						]
