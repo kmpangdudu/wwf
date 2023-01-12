@@ -224,7 +224,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Web1",
+						"activity": "response_header",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -241,7 +241,7 @@
 				"typeProperties": {
 					"storedProcedureName": "[dbo].[udsp_insert_temp]",
 					"storedProcedureParameters": {
-						"@tmp": {
+						"@temp": {
 							"value": {
 								"value": "@activity('Web1').output.Response",
 								"type": "Expression"
