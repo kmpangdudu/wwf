@@ -220,7 +220,7 @@
 				}
 			},
 			{
-				"name": "save_body_to_DB",
+				"name": "Stored_response_to_tb",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
@@ -241,8 +241,11 @@
 				"typeProperties": {
 					"storedProcedureName": "[dbo].[udsp_insert_raw]",
 					"storedProcedureParameters": {
-						"raw": {
-							"value": "",
+						"r": {
+							"value": {
+								"value": "@activity('Web1').output.Response",
+								"type": "Expression"
+							},
 							"type": "String"
 						}
 					}
