@@ -95,6 +95,10 @@
 								},
 								"waitOnCompletion": true,
 								"parameters": {
+									"par_init_endpoint": {
+										"value": "@pipeline().parameters.par_m_init_endpoint",
+										"type": "Expression"
+									},
 									"receiver": {
 										"value": "@pipeline().parameters.par_m_receiver",
 										"type": "Expression"
