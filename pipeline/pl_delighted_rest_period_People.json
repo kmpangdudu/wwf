@@ -3,57 +3,9 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Saving API-Key",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "API_Key",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_API-Key",
-					"value": {
-						"value": "@activity('API_Key').output.value",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "API_Key",
-				"type": "WebActivity",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://kv-wildfork-nonprod.vault.azure.net/secrets/delighted-apikey/177d9c82363448c7a5b3a7da1714a128?api-version=7.0",
-					"method": "GET",
-					"authentication": {
-						"type": "MSI",
-						"resource": "https://vault.azure.net"
-					}
-				}
-			},
-			{
 				"name": "initial_endpoint",
 				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Saving API-Key",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var_endpoint",
@@ -95,14 +47,14 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": {
-									"value": "@concat(variables('var_endpoint'),'?'\n, 'since=', pipeline().parameters.par_src_start_date\n, '&until=', pipeline().parameters.par_src_until_date\n)",
+									"value": "@concat(variables('var_endpoint'),'?'\n, 'since=', pipeline().parameters.par_p_start_date\n, '&until=', pipeline().parameters.par_p_until_date\n)",
 									"type": "Expression"
 								},
 								"method": "GET",
 								"authentication": {
 									"type": "Basic",
 									"username": {
-										"value": "@variables('var_API-Key')",
+										"value": "@pipeline().parameters.par_p_API_Key",
 										"type": "Expression"
 									},
 									"password": {
@@ -276,10 +228,13 @@
 				"type": "string",
 				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
 			},
-			"par_src_start_date": {
+			"par_p_start_date": {
 				"type": "string"
 			},
-			"par_src_until_date": {
+			"par_p_until_date": {
+				"type": "string"
+			},
+			"par_p_API_Key": {
 				"type": "string"
 			}
 		},
@@ -288,9 +243,6 @@
 				"type": "String"
 			},
 			"response_header": {
-				"type": "String"
-			},
-			"var_API-Key": {
 				"type": "String"
 			},
 			"var_endpoint": {
