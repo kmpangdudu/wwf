@@ -48,9 +48,9 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_period_start",
+								"variableName": "var_m_period_start",
 								"value": {
-									"value": "@string(\ndiv(sub(ticks(convertToUtc(pipeline().parameters.par_src_start_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000)\n)",
+									"value": "@string(\ndiv(sub(ticks(convertToUtc(pipeline().parameters.par_m_start_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000)\n)",
 									"type": "Expression"
 								}
 							}
@@ -69,9 +69,9 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_period_until",
+								"variableName": "var_m_period_until",
 								"value": {
-									"value": "@string(\nadd(86390,div(sub(ticks(convertToUtc(pipeline().parameters.par_src_until_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000))\n)",
+									"value": "@string(\nadd(86390,div(sub(ticks(convertToUtc(pipeline().parameters.par_m_until_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000))\n)",
 									"type": "Expression"
 								}
 							}
@@ -107,7 +107,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "var_API-Key",
+					"variableName": "var_m_API-Key",
 					"value": {
 						"value": "@activity('API_Key').output.value",
 						"type": "Expression"
@@ -141,23 +141,23 @@
 				"type": "string",
 				"defaultValue": "y"
 			},
-			"var_start_date": {
+			"par_m_start_date": {
 				"type": "string",
 				"defaultValue": "2023-01-01"
 			},
-			"var_until_date": {
+			"par_m_until_date": {
 				"type": "string",
 				"defaultValue": "2023-01-07"
 			}
 		},
 		"variables": {
-			"var_API-Key": {
+			"var_m_API-Key": {
 				"type": "String"
 			},
-			"var_period_start": {
+			"var_m_period_start": {
 				"type": "String"
 			},
-			"var_period_until": {
+			"var_m_period_until": {
 				"type": "String"
 			}
 		},
