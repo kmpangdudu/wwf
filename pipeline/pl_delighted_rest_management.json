@@ -22,7 +22,7 @@
 					},
 					"ifFalseActivities": [
 						{
-							"name": "Execute_period_load_Pipeline",
+							"name": "Execute_period_load_survey",
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
@@ -74,6 +74,26 @@
 									"value": "@string(\nadd(86390,div(sub(ticks(convertToUtc(pipeline().parameters.par_m_until_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000))\n)",
 									"type": "Expression"
 								}
+							}
+						},
+						{
+							"name": "Execute_period_load_people",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "period_until_date",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_delighted_rest_period_People",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
 							}
 						}
 					],
