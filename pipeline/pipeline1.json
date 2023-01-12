@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Web1",
+				"name": "ingest_people",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
@@ -36,11 +36,11 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "next_page_url",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Web1",
+						"activity": "ingest_people",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -50,10 +50,92 @@
 				"typeProperties": {
 					"variableName": "var",
 					"value": {
-						"value": "@substring(activity('Web1').output.ADFWebActivityResponseHeaders.Link\n,1,sub(length(activity('Web1').output.ADFWebActivityResponseHeaders.Link),13))",
+						"value": "@substring(activity('ingest_people').output.ADFWebActivityResponseHeaders.Link\n,1,sub(length(activity('ingest_people').output.ADFWebActivityResponseHeaders.Link),13))",
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "save_people_to_temp",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "ingest_people",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"additionalColumns": [
+							{
+								"name": "people",
+								"value": {
+									"value": "@activity('ingest_people').output.Response",
+									"type": "Expression"
+								}
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"filePattern": "setOfObjects"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "people",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_src_land_last_success_load_delighted",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_snk_json_empty_template",
+						"type": "DatasetReference",
+						"parameters": {
+							"p": "p1.json"
+						}
+					}
+				]
 			}
 		],
 		"parameters": {
