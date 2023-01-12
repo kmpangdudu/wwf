@@ -33,7 +33,23 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://api.delighted.com/v1/people.json",
+					"method": "GET",
+					"authentication": {
+						"type": "Basic",
+						"username": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ",
+						"password": {
+							"type": "AzureKeyVaultSecret",
+							"store": {
+								"referenceName": "ls_fusedata_AzureKeyVault",
+								"type": "LinkedServiceReference"
+							},
+							"secretName": "Delighted"
+						}
+					}
+				}
 			}
 		],
 		"variables": {
