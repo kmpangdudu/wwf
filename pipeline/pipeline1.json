@@ -36,11 +36,31 @@
 				}
 			},
 			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var",
+					"value": {
+						"value": "@substring(activity('Web1').output.ADFWebActivityResponseHeaders.Link\n,1,sub(length(activity('Web1').output.ADFWebActivityResponseHeaders.Link),13))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
 				"name": "Wait1",
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "Web1",
+						"activity": "Set variable1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -68,6 +88,9 @@
 		},
 		"variables": {
 			"apikey": {
+				"type": "String"
+			},
+			"var": {
 				"type": "String"
 			}
 		},
