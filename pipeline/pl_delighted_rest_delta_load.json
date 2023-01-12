@@ -469,21 +469,13 @@
 			}
 		],
 		"parameters": {
-			"par_src_start_date": {
-				"type": "string",
-				"defaultValue": "2023-01-01"
-			},
-			"par_delta_load_interval_day": {
-				"type": "string",
-				"defaultValue": "1"
-			},
 			"par_snk_container": {
 				"type": "string",
 				"defaultValue": "land"
 			},
 			"par_snk_dir": {
 				"type": "string",
-				"defaultValue": "delighted/raw"
+				"defaultValue": "delighted/temp"
 			},
 			"par_snk_filename": {
 				"type": "string",
@@ -493,17 +485,9 @@
 				"type": "string",
 				"defaultValue": "100"
 			},
-			"par_src_until_date": {
-				"type": "string",
-				"defaultValue": "2023-01-02"
-			},
 			"par_src_endpoint": {
 				"type": "string",
-				"defaultValue": "https://api.delighted.com/v1/survey_responses.json"
-			},
-			"par_src_username": {
-				"type": "string",
-				"defaultValue": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
+				"defaultValue": "https://api.delighted.com/v1/"
 			},
 			"receiver": {
 				"type": "string",
