@@ -56,7 +56,7 @@
 				"typeProperties": {
 					"variableName": "response_body",
 					"value": {
-						"value": "@string(json(activity('Web1').output.Response))",
+						"value": "@replace(string(json(activity('Web1').output.Response)),'\\,','')",
 						"type": "Expression"
 					}
 				}
