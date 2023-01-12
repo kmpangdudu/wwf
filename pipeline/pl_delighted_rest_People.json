@@ -3,185 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "list_people",
-				"type": "WebActivity",
-				"dependsOn": [
-					{
-						"activity": "initial_endpoint",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": {
-						"value": "@variables('var_endpoint')",
-						"type": "Expression"
-					},
-					"method": "GET",
-					"authentication": {
-						"type": "Basic",
-						"username": {
-							"value": "@variables('var_API-Key')",
-							"type": "Expression"
-						},
-						"password": {
-							"type": "AzureKeyVaultSecret",
-							"store": {
-								"referenceName": "ls_fusedata_AzureKeyVault",
-								"type": "LinkedServiceReference"
-							},
-							"secretName": "Delighted"
-						}
-					}
-				}
-			},
-			{
-				"name": "response_body",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Wait1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "response_body",
-					"value": {
-						"value": "@activity('list_people').output.Response",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "response_header",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "list_people",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "response_header",
-					"value": {
-						"value": "@activity('list_people').output.ADFWebActivityResponseHeaders.Link",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "save_body",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "response_body",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"additionalColumns": [
-							{
-								"name": "people123",
-								"value": {
-									"value": "@variables('response_body')",
-									"type": "Expression"
-								}
-							}
-						],
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".json"
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "people123",
-									"type": "String"
-								},
-								"sink": {
-									"type": "String",
-									"physicalType": "String",
-									"ordinal": 1
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_csv_dummy_1col",
-						"type": "DatasetReference",
-						"parameters": {
-							"fn": "dummy.csv",
-							"dir": "delighted",
-							"cont": "land"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_csv_dummy_1col",
-						"type": "DatasetReference",
-						"parameters": {
-							"fn": "p_708.json",
-							"dir": "delighted/temp",
-							"cont": "land"
-						}
-					}
-				]
-			},
-			{
 				"name": "Saving API-Key",
 				"type": "SetVariable",
 				"dependsOn": [
@@ -223,42 +44,6 @@
 				}
 			},
 			{
-				"name": "Stored_response_to_tb",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "list_people",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[udsp_insert_raw]",
-					"storedProcedureParameters": {
-						"r": {
-							"value": {
-								"value": "@activity('list_people').output.Response",
-								"type": "Expression"
-							},
-							"type": "String"
-						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "ls_azure_sqldb",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
 				"name": "initial_endpoint",
 				"type": "SetVariable",
 				"dependsOn": [
@@ -279,11 +64,11 @@
 				}
 			},
 			{
-				"name": "Wait1",
-				"type": "Wait",
+				"name": "loop_list_people",
+				"type": "Until",
 				"dependsOn": [
 					{
-						"activity": "list_people",
+						"activity": "initial_endpoint",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -291,7 +76,141 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"waitTimeInSeconds": 1
+					"expression": {
+						"value": "@lessOrEquals(length(variables('var_endpoint')),1)",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "list_people",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": {
+									"value": "@variables('var_endpoint')",
+									"type": "Expression"
+								},
+								"method": "GET",
+								"authentication": {
+									"type": "Basic",
+									"username": {
+										"value": "@variables('var_API-Key')",
+										"type": "Expression"
+									},
+									"password": {
+										"type": "AzureKeyVaultSecret",
+										"store": {
+											"referenceName": "ls_fusedata_AzureKeyVault",
+											"type": "LinkedServiceReference"
+										},
+										"secretName": "Delighted"
+									}
+								}
+							}
+						},
+						{
+							"name": "response_header",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "list_people",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "response_header",
+								"value": {
+									"value": "@activity('list_people').output.ADFWebActivityResponseHeaders.Link",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Stored_response_to_tb",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "list_people",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[udsp_insert_raw]",
+								"storedProcedureParameters": {
+									"r": {
+										"value": {
+											"value": "@activity('list_people').output.Response",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_azure_sqldb",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "update_endpoint",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "response_header",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_endpoint",
+								"value": {
+									"value": "@substring(variables('response_header'),1\n,sub(length(variables('response_header')),14)\n)\n ",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "reset_endpoint_to_empty",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "response_header",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_endpoint",
+								"value": "''"
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
 				}
 			}
 		],
