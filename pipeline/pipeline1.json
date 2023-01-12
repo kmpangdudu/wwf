@@ -121,6 +121,17 @@
 									"type": "String",
 									"physicalType": "String"
 								}
+							},
+							{
+								"source": {
+									"name": "people",
+									"type": "String"
+								},
+								"sink": {
+									"name": "people",
+									"type": "String",
+									"physicalType": "String"
+								}
 							}
 						],
 						"typeConversion": true,
