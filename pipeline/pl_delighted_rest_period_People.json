@@ -16,7 +16,7 @@
 				}
 			},
 			{
-				"name": "loop_list_people",
+				"name": "loop_list_people_period",
 				"type": "Until",
 				"dependsOn": [
 					{
@@ -203,7 +203,7 @@
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "loop_list_people",
+						"activity": "loop_list_people_period",
 						"dependencyConditions": [
 							"Completed"
 						]
