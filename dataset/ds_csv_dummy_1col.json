@@ -8,15 +8,19 @@
 		"parameters": {
 			"fn": {
 				"type": "string"
+			},
+			"dir": {
+				"type": "string"
+			},
+			"container": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"folderPath": "delighted/temp",
-				"container": "land"
+				"type": "AzureBlobStorageLocation"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
