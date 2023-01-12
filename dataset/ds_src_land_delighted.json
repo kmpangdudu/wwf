@@ -8,6 +8,10 @@
 				"ednpoint": {
 					"value": "@dataset().par_src_ednpoint",
 					"type": "Expression"
+				},
+				"APIkey": {
+					"value": "@dataset().par_src_apikey",
+					"type": "Expression"
 				}
 			}
 		},
@@ -35,7 +39,7 @@
 		"type": "RestResource",
 		"typeProperties": {
 			"relativeUrl": {
-				"value": "@concat(\n    dataset().par_src_ednpoint\n    , '?per_page=', dataset().par_src_page\n    , '&updated_since=', dataset().par_src_updated_since\n    , '&updated_until=', dataset().par_src_updated_until\n)",
+				"value": "@concat(\n    dataset().par_src_ednpoint\n    , '&since=', dataset().par_src_updated_since\n    , '&until=', dataset().par_src_updated_until\n)",
 				"type": "Expression"
 			}
 		},
