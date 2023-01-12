@@ -7,7 +7,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "Saving API-Key",
+						"activity": "initial_endpoint",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -22,7 +22,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://api.delighted.com/v1/people.json",
+					"url": {
+						"value": "@variables('var_endpoint')",
+						"type": "Expression"
+					},
 					"method": "GET",
 					"authentication": {
 						"type": "Basic",
@@ -254,8 +257,34 @@
 					"referenceName": "ls_azure_sqldb",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "initial_endpoint",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Saving API-Key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_endpoint",
+					"value": {
+						"value": "@concat(pipeline().parameters.par_init_endpoint,'/people.json')",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"parameters": {
+			"par_init_endpoint": {
+				"type": "string",
+				"defaultValue": "https://api.delighted.com/v1/"
+			}
+		},
 		"variables": {
 			"response_body": {
 				"type": "String"
@@ -264,6 +293,9 @@
 				"type": "String"
 			},
 			"var_API-Key": {
+				"type": "String"
+			},
+			"var_endpoint": {
 				"type": "String"
 			}
 		},
