@@ -4,8 +4,7 @@
 		"description": "get survey responses from delighted",
 		"parameters": {
 			"ednpoint": {
-				"type": "string",
-				"defaultValue": "https://api.delighted.com/v1/"
+				"type": "string"
 			},
 			"APIkey": {
 				"type": "string"
