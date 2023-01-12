@@ -295,27 +295,27 @@
 				"type": "string",
 				"defaultValue": "land"
 			},
-			"par_snk_dir": {
+			"par_ps_snk_dir": {
 				"type": "string",
 				"defaultValue": "delighted/raw"
 			},
-			"par_snk_filename": {
+			"par_ps_snk_filename": {
 				"type": "string",
 				"defaultValue": "survey.json"
 			},
-			"par_src_until_date": {
+			"par_ps_src_until_date": {
 				"type": "string",
 				"defaultValue": "2023-01-07"
 			},
-			"par_src_endpoint": {
+			"par_ps_src_endpoint": {
 				"type": "string",
 				"defaultValue": "https://api.delighted.com/v1/survey_responses.json"
 			},
-			"receiver": {
+			"par_ps_receiver": {
 				"type": "string",
 				"defaultValue": "chenerjun@gmail.com"
 			},
-			"cc": {
+			"par_ps_cc": {
 				"type": "string",
 				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
 			}
