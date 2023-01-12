@@ -206,7 +206,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "var_endpoint",
-								"value": "'stop'"
+								"value": "stop"
 							}
 						},
 						{
@@ -223,6 +223,23 @@
 							"userProperties": [],
 							"typeProperties": {
 								"waitTimeInSeconds": 1
+							}
+						},
+						{
+							"name": "reset_endpoint",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "list_people",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_endpoint",
+								"value": "stop"
 							}
 						}
 					],
