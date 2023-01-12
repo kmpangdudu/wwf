@@ -32,7 +32,7 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "response_body",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -44,16 +44,39 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "WebActvityOutput",
+					"variableName": "response_body",
 					"value": {
 						"value": "@activity('Web1').output.Response",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "response_header",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "response_header",
+					"value": {
+						"value": "@activity('Web1').output.ADFWebActivityResponseHeaders.Link",
 						"type": "Expression"
 					}
 				}
 			}
 		],
 		"variables": {
-			"WebActvityOutput": {
+			"response_body": {
+				"type": "String"
+			},
+			"response_header": {
 				"type": "String"
 			}
 		},
