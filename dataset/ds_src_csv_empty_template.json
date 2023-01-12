@@ -1,6 +1,7 @@
 {
-	"name": "ds_src_template",
+	"name": "ds_src_csv_empty_template",
 	"properties": {
+		"description": "no header, no quote",
 		"linkedServiceName": {
 			"referenceName": "ls_AzureBlobStorage",
 			"type": "LinkedServiceReference"
