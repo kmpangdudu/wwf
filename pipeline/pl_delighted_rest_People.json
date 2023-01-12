@@ -208,6 +208,22 @@
 								"variableName": "var_endpoint",
 								"value": "''"
 							}
+						},
+						{
+							"name": "Stop looping",
+							"type": "Wait",
+							"dependsOn": [
+								{
+									"activity": "reset_endpoint_to_empty",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
 						}
 					],
 					"timeout": "0.12:00:00"
