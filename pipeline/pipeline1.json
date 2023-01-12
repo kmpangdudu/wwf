@@ -5,7 +5,14 @@
 			{
 				"name": "next_page_url",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "ingest_people",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var",
@@ -16,16 +23,9 @@
 				}
 			},
 			{
-				"name": "save_people_to_temp",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "next_page_url",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"name": "ingest_people",
+				"type": "WebActivity",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -33,75 +33,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"additionalColumns": [
-							{
-								"name": "people",
-								"value": {
-									"value": "@activity('ingest_people').output.Response",
-									"type": "Expression"
-								}
-							}
-						],
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": false,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ""
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "people",
-									"type": "String"
-								},
-								"sink": {
-									"ordinal": 1
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_src_land_last_success_load_delighted",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_snk_csv_empty_template",
-						"type": "DatasetReference",
-						"parameters": {
-							"snk_filename": "p1.json"
-						}
-					}
-				]
+				"userProperties": []
 			}
 		],
 		"variables": {
