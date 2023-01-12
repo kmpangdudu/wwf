@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"variableName": "var",
 					"value": {
-						"value": "@substring(activity('ingest_people').output.ADFWebActivityResponseHeaders.Link\n,1,sub(length(activity('ingest_people').output.ADFWebActivityResponseHeaders.Link),12))",
+						"value": "@substring(activity('ingest_people').output.ADFWebActivityResponseHeaders.Link\n,1,sub(length(activity('ingest_people').output.ADFWebActivityResponseHeaders.Link),15))",
 						"type": "Expression"
 					}
 				}
