@@ -111,7 +111,7 @@
 					"storedProcedureName": "[land].[udsp_logpipeline]",
 					"storedProcedureParameters": {
 						"pl_category": {
-							"value": "delighted",
+							"value": "survey",
 							"type": "String"
 						},
 						"pl_name": {
@@ -138,14 +138,14 @@
 						},
 						"pl_load_start_date": {
 							"value": {
-								"value": "@pipeline().parameters.par_src_start_date",
+								"value": "@pipeline().parameters.par_ps_src_start_date",
 								"type": "Expression"
 							},
 							"type": "String"
 						},
 						"pl_load_until_date": {
 							"value": {
-								"value": "@pipeline().parameters.par_src_until_date",
+								"value": "@pipeline().parameters.par_ps_src_until_date",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -280,7 +280,7 @@
 					"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
 					"method": "POST",
 					"body": {
-						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The periodical dumping survey answer from delighted processing failed at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The survey Data periodical dumping failed.\"\n   }",
+						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The periodical dumping survey answer from delighted processing failed at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.par_ps_receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.par_ps_cc}\",\n    \"subject\" : \"No-Reply: The survey Data periodical dumping failed.\"\n   }",
 						"type": "Expression"
 					}
 				}
