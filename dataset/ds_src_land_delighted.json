@@ -6,11 +6,11 @@
 			"type": "LinkedServiceReference",
 			"parameters": {
 				"ednpoint": {
-					"value": "@dataset().par_src_ednpoint",
+					"value": "@dataset().par_ds_src_ednpoint",
 					"type": "Expression"
 				},
 				"APIkey": {
-					"value": "@dataset().par_src_apikey",
+					"value": "@dataset().par_ds_src_apikey",
 					"type": "Expression"
 				}
 			}
@@ -36,7 +36,7 @@
 		"type": "RestResource",
 		"typeProperties": {
 			"relativeUrl": {
-				"value": "@concat(\n    dataset().par_src_ednpoint\n    , '&since=', dataset().par_src_updated_since\n    , '&until=', dataset().par_src_updated_until\n)",
+				"value": "@concat(\n    dataset().par_ds_src_ednpoint\n    , '&since=', dataset().par_ds_src__since\n    , '&until=', dataset().par_ds_src_until\n)",
 				"type": "Expression"
 			}
 		},
