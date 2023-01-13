@@ -4,361 +4,21 @@
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
 			{
-				"name": "lkp_last_success_load_date",
-				"description": "logged created date will be added one day as the new loading start date.",
-				"type": "Lookup",
+				"name": "initial_var_api_pagination",
+				"description": "reset Var_API_Pagination to empty",
+				"type": "SetVariable",
 				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT \n        [pl_log_id]\n      , [pl_category]\n      , [pl_status]\n      , [pl_Createdtimestamp] as [last_timestamp]\n      , [pl_Createdtimestamp] + 1     as [nextStart_timestamp]\n      , [pl_Createdtimestamp] + 86400 as [tomorrow_timestamp]\n      , convert(varchar(10),  [pl_create_date], 112) as lastdate_short\n      , convert(varchar(10),  [pl_create_date], 23) as lastdate\n      , convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as nextdate\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'delighted' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc \n",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "ds_src_land_pipeline_log",
-						"type": "DatasetReference"
-					},
-					"firstRowOnly": true
-				}
-			},
-			{
-				"name": "delta_start_date",
-				"description": "last success load plus 1 second as new load start.",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "lkp_last_success_load_date",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_start_delta",
+					"variableName": "var_delta_survey_API_pagination ",
 					"value": {
-						"value": "@string(\n    activity('lkp_last_success_load_date').output.firstRow.nextStart_timestamp\n)",
+						"value": "@concat(pipeline().parameters.par_src_endpoint\n, 'survey_responses.json'\n, '?page=1'\n)",
 						"type": "Expression"
 					}
 				}
 			},
 			{
-				"name": "delta_get_delighted_survey_responses",
-				"description": "Listing survey responses from delighted rest api",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Wait1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "RestSource",
-						"httpRequestTimeout": "00:01:40",
-						"requestInterval": "00.00:00:00.010",
-						"requestMethod": "GET",
-						"paginationRules": {
-							"supportRFC5988": "true"
-						}
-					},
-					"sink": {
-						"type": "JsonSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"filePattern": "arrayOfObjects"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_src_land_delighted",
-						"type": "DatasetReference",
-						"parameters": {
-							"par_src_page": {
-								"value": "@pipeline().parameters.par_src_page",
-								"type": "Expression"
-							},
-							"par_ds_src_since": {
-								"value": "@variables('var_start_delta')",
-								"type": "Expression"
-							},
-							"par_ds_src_until": {
-								"value": "@variables('var_until_delta')",
-								"type": "Expression"
-							},
-							"par_ds_src_ednpoint": {
-								"value": "@pipeline().parameters.par_src_endpoint",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_snk_land_delighted_json",
-						"type": "DatasetReference",
-						"parameters": {
-							"par_ds_snk_delighted_container": {
-								"value": "@pipeline().parameters.par_snk_container",
-								"type": "Expression"
-							},
-							"par_ds_snk_delighted_dir": {
-								"value": "@pipeline().parameters.par_snk_dir",
-								"type": "Expression"
-							},
-							"par_ds_snk_delighted_file": {
-								"value": "@concat('survey'\n, '-'\n, activity('lkp_last_success_load_date').output.firstRow.lastdate_short\n, '-'\n,formatDateTime(utcNow(),'yyyyMMdd-HHmm')\n, '.json'\n)",
-								"type": "Expression"
-							}
-						}
-					}
-				]
-			},
-			{
-				"name": "LogPLActivitySuccess",
-				"description": "log pipeline activity",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "delta_get_delighted_survey_responses",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[land].[udsp_logpipeline]",
-					"storedProcedureParameters": {
-						"pl_category": {
-							"value": "delighted",
-							"type": "String"
-						},
-						"pl_name": {
-							"value": {
-								"value": "@pipeline().Pipeline",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"adf_name": {
-							"value": {
-								"value": "@pipeline().DataFactory",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"pl_status": {
-							"value": "1",
-							"type": "Int32"
-						},
-						"pl_load_type": {
-							"value": "delta",
-							"type": "String"
-						},
-						"pl_load_start_date": {
-							"value": {
-								"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"pl_load_until_date": {
-							"value": {
-								"value": "@formatDateTime(convertFromUtc(utcNow(), 'Eastern Standard Time'),\r\n'yyyy-MM-dd'\r\n)",
-								"type": "Expression"
-							},
-							"type": "String"
-						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "ls_azure_sqldb",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
-				"name": "LogPLActivityfailed",
-				"description": "log pipeline activity failed",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "delta_get_delighted_survey_responses",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[land].[udsp_logpipeline]",
-					"storedProcedureParameters": {
-						"pl_category": {
-							"value": "delighted",
-							"type": "String"
-						},
-						"pl_name": {
-							"value": {
-								"value": "@pipeline().Pipeline",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"adf_name": {
-							"value": {
-								"value": "@pipeline().DataFactory",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"pl_status": {
-							"value": "0",
-							"type": "Int32"
-						},
-						"pl_load_type": {
-							"value": "delta",
-							"type": "String"
-						},
-						"pl_load_start_date": {
-							"value": {
-								"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate\n",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"pl_load_until_date": {
-							"value": {
-								"value": "@formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyy-MM-dd')",
-								"type": "Expression"
-							},
-							"type": "String"
-						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "ls_azure_sqldb",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
-				"name": "timestamp now",
-				"description": "by default, it is current timestamp",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "delta_start_date",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_until_delta",
-					"value": {
-						"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Success notice",
-				"description": "successful lod survey notification",
-				"type": "WebActivity",
-				"dependsOn": [
-					{
-						"activity": "LogPLActivitySuccess",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
-					"method": "POST",
-					"body": {
-						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey answer from delighted processing is success at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The survey Data delta dumping success.\"\n   }",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Faiure notice",
-				"description": "successful lod survey notification",
-				"type": "WebActivity",
-				"dependsOn": [
-					{
-						"activity": "LogPLActivityfailed",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
-					"method": "POST",
-					"body": {
-						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey answer from delighted processing failed at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The survey Data delta dumping failed.\"\n   }",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "ingest_people",
+				"name": "loop_page_delta_survey",
 				"type": "Until",
 				"dependsOn": [
 					{
@@ -371,13 +31,14 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@less(length(variables('var_API_pagination ')), 1)",
+						"value": "@equals(variables('var_delta_survey_API_pagination ')\r\n, '[]'\r\n)",
 						"type": "Expression"
 					},
 					"activities": [
 						{
-							"name": "consuming_listPeople",
-							"type": "WebActivity",
+							"name": "delta_get_delighted_survey_responses",
+							"description": "Listing survey responses from delighted rest api",
+							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
@@ -388,105 +49,268 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"url": {
-									"value": "@variables('var_API_pagination ')",
-									"type": "Expression"
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
 								},
-								"method": "GET",
-								"authentication": {
-									"type": "Basic",
-									"username": {
-										"value": "@variables('var_API-Key')",
-										"type": "Expression"
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
 									},
-									"password": {
-										"type": "AzureKeyVaultSecret",
-										"store": {
-											"referenceName": "ls_fusedata_AzureKeyVault",
-											"type": "LinkedServiceReference"
+									"formatSettings": {
+										"type": "JsonWriteSettings",
+										"filePattern": "arrayOfObjects"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_src_land_delighted",
+									"type": "DatasetReference",
+									"parameters": {
+										"par_ds_src_since": {
+											"value": "@variables('var_start_delta')",
+											"type": "Expression"
 										},
-										"secretName": "Delighted"
+										"par_ds_src_until": {
+											"value": "@variables('var_until_delta')",
+											"type": "Expression"
+										},
+										"par_ds_src_ednpoint": {
+											"value": "@pipeline().parameters.par_src_endpoint",
+											"type": "Expression"
+										}
 									}
 								}
-							}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_snk_land_delighted_json",
+									"type": "DatasetReference",
+									"parameters": {
+										"par_ds_snk_delighted_container": {
+											"value": "@pipeline().parameters.par_snk_container",
+											"type": "Expression"
+										},
+										"par_ds_snk_delighted_dir": {
+											"value": "@pipeline().parameters.par_snk_dir",
+											"type": "Expression"
+										},
+										"par_ds_snk_delighted_file": {
+											"value": "@concat('survey'\n, '-'\n, activity('lkp_last_success_load_date').output.firstRow.lastdate_short\n, '-'\n,formatDateTime(utcNow(),'yyyyMMdd-HHmm')\n, '.json'\n)",
+											"type": "Expression"
+										}
+									}
+								}
+							]
 						},
 						{
-							"name": "update_var_api_pagination",
-							"description": "using response header information to see whether or not sends next request",
-							"type": "SetVariable",
+							"name": "Log delta survey Success",
+							"description": "log pipeline activity",
+							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "consuming_listPeople",
+									"activity": "delta_get_delighted_survey_responses",
 									"dependencyConditions": [
 										"Succeeded"
 									]
 								}
 							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_API_pagination ",
-								"value": {
-									"value": "@activity('consuming_listPeople').output",
-									"type": "Expression"
+								"storedProcedureName": "[land].[udsp_logpipeline]",
+								"storedProcedureParameters": {
+									"pl_category": {
+										"value": "delighted",
+										"type": "String"
+									},
+									"pl_name": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"adf_name": {
+										"value": {
+											"value": "@pipeline().DataFactory",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"pl_status": {
+										"value": "1",
+										"type": "Int32"
+									},
+									"pl_load_type": {
+										"value": "delta",
+										"type": "String"
+									},
+									"pl_load_start_date": {
+										"value": {
+											"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"pl_load_until_date": {
+										"value": {
+											"value": "@formatDateTime(convertFromUtc(utcNow(), 'Eastern Standard Time'),\r\n'yyyy-MM-dd'\r\n)",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
 								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_azure_sqldb",
+								"type": "LinkedServiceReference"
 							}
 						},
 						{
-							"name": "list_pipeline failed",
-							"type": "Fail",
+							"name": "Log delta survey failed",
+							"description": "log pipeline activity failed",
+							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "consuming_listPeople",
+									"activity": "delta_get_delighted_survey_responses",
 									"dependencyConditions": [
 										"Failed"
 									]
 								}
 							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
 							"userProperties": [],
 							"typeProperties": {
-								"message": "ListPeople failed",
-								"errorCode": "500"
+								"storedProcedureName": "[land].[udsp_logpipeline]",
+								"storedProcedureParameters": {
+									"pl_category": {
+										"value": "delighted",
+										"type": "String"
+									},
+									"pl_name": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"adf_name": {
+										"value": {
+											"value": "@pipeline().DataFactory",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"pl_status": {
+										"value": "0",
+										"type": "Int32"
+									},
+									"pl_load_type": {
+										"value": "delta",
+										"type": "String"
+									},
+									"pl_load_start_date": {
+										"value": {
+											"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate\n",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"pl_load_until_date": {
+										"value": {
+											"value": "@formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyy-MM-dd')",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_azure_sqldb",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "delta survey Success notice",
+							"description": "successful lod survey notification",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Log delta survey Success",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
+								"method": "POST",
+								"body": {
+									"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey answer from delighted processing is success at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The survey Data delta dumping success.\"\n   }",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "delta survey Faiure notice",
+							"description": "successful lod survey notification",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Log delta survey failed",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
+								"method": "POST",
+								"body": {
+									"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey answer from delighted processing failed at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The survey Data delta dumping failed.\"\n   }",
+									"type": "Expression"
+								}
 							}
 						}
 					],
 					"timeout": "0.12:00:00"
-				}
-			},
-			{
-				"name": "Wait1",
-				"type": "Wait",
-				"dependsOn": [
-					{
-						"activity": "ingest_people",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 1
-				}
-			},
-			{
-				"name": "initial_var_api_pagination",
-				"description": "reset Var_API_Pagination to empty",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "timestamp now",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_API_pagination ",
-					"value": {
-						"value": "@concat(pipeline().parameters.par_src_endpoint\n, 'people.json'\n)",
-						"type": "Expression"
-					}
 				}
 			}
 		],
@@ -513,21 +337,22 @@
 			},
 			"cc": {
 				"type": "string",
-				"defaultValue": "erjun.chen@teamfus.ca"
+				"defaultValue": "erjun.chen@teamfus.ca,echen@jbssa.com"
 			}
 		},
 		"variables": {
-			"var_start_delta": {
+			"var_start_delta_survey": {
 				"type": "String"
 			},
-			"var_until_delta": {
+			"var_until_delta_survey": {
 				"type": "String"
 			},
-			"var_API-Key": {
+			"var_delta_API-Key": {
 				"type": "String"
 			},
-			"var_API_pagination ": {
-				"type": "String"
+			"var_delta_survey_API_pagination ": {
+				"type": "String",
+				"defaultValue": "1"
 			}
 		},
 		"folder": {
