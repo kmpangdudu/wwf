@@ -290,6 +290,10 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_delighted_rest_delta_People",
+									"type": "PipelineReference"
+								},
 								"waitOnCompletion": true
 							}
 						}
