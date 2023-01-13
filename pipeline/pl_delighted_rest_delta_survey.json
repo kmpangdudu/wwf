@@ -223,7 +223,7 @@
 					"storedProcedureName": "[land].[udsp_logpipeline]",
 					"storedProcedureParameters": {
 						"pl_category": {
-							"value": "delighted",
+							"value": "survey",
 							"type": "String"
 						},
 						"pl_name": {
@@ -293,7 +293,7 @@
 					"storedProcedureName": "[land].[udsp_logpipeline]",
 					"storedProcedureParameters": {
 						"pl_category": {
-							"value": "delighted",
+							"value": "survey",
 							"type": "String"
 						},
 						"pl_name": {
