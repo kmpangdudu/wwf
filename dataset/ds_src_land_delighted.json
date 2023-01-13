@@ -16,7 +16,7 @@
 			}
 		},
 		"parameters": {
-			"par_ds_src__since": {
+			"par_ds_src_since": {
 				"type": "string"
 			},
 			"par_ds_src_until": {
