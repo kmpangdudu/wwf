@@ -9,7 +9,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Stored procedure1",
+						"activity": "store_period_survey",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -205,10 +205,29 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"authentication": {
+						"type": "Basic",
+						"username": {
+							"value": "@pipeline().parameters.par_ps_API_Key",
+							"type": "Expression"
+						},
+						"password": {
+							"type": "AzureKeyVaultSecret",
+							"store": {
+								"referenceName": "ls_fusedata_AzureKeyVault",
+								"type": "LinkedServiceReference"
+							},
+							"secretName": "Delighted"
+						}
+					}
+				}
 			},
 			{
-				"name": "Stored procedure1",
+				"name": "store_period_survey",
+				"description": "store_period_survey to table",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
@@ -225,7 +244,23 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[udsp_insert_surveytemp]",
+					"storedProcedureParameters": {
+						"r": {
+							"value": {
+								"value": "@activity('Web1').output.Response",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sqldb",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"parameters": {
