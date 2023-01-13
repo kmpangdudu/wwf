@@ -116,7 +116,7 @@
 							]
 						},
 						{
-							"name": "update_pagination",
+							"name": "whether_has_more_page",
 							"description": "check whether it has more page or not",
 							"type": "IfCondition",
 							"dependsOn": [
@@ -146,6 +146,26 @@
 									}
 								],
 								"ifTrueActivities": [
+									{
+										"name": "update_pagination",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "Set variable1",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "var_delta_survey_API_pagination ",
+											"value": {
+												"value": "@add(int(variables('var_bridge')),1)",
+												"type": "Expression"
+											}
+										}
+									},
 									{
 										"name": "Set variable1",
 										"type": "SetVariable",
@@ -397,6 +417,10 @@
 			"var_delta_survey_API_pagination ": {
 				"type": "String",
 				"defaultValue": "1"
+			},
+			"var_bridge": {
+				"type": "String",
+				"defaultValue": "0"
 			}
 		},
 		"folder": {
