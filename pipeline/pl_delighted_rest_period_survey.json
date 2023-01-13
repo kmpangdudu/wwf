@@ -272,6 +272,28 @@
 					"referenceName": "ls_azure_sqldb",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "initial_var_api_pagination",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": []
+			},
+			{
+				"name": "loop_page_period_survey",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "initial_var_api_pagination",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"timeout": "0.12:00:00"
+				}
 			}
 		],
 		"parameters": {
@@ -312,8 +334,22 @@
 			}
 		},
 		"variables": {
-			"var_ps_delta_interval_day": {
+			"var_period_survey_api_pagination": {
+				"type": "String",
+				"defaultValue": "1"
+			},
+			"var_start_period_survey": {
 				"type": "String"
+			},
+			"var_until_period_survey": {
+				"type": "String"
+			},
+			"var_period_API-Key": {
+				"type": "String"
+			},
+			"var_period_bridge": {
+				"type": "String",
+				"defaultValue": "0"
 			}
 		},
 		"folder": {
