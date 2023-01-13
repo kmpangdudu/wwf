@@ -270,7 +270,11 @@
 				"name": "initial_var_api_pagination",
 				"type": "SetVariable",
 				"dependsOn": [],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_period_survey_api_pagination",
+					"value": "1"
+				}
 			},
 			{
 				"name": "loop_page_period_survey",
@@ -328,9 +332,6 @@
 				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
 			},
 			"par_ps_API_Key": {
-				"type": "string"
-			},
-			"par_last_success_date": {
 				"type": "string"
 			}
 		},
