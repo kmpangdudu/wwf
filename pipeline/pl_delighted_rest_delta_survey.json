@@ -10,7 +10,7 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "var_delta_survey_API_pagination ",
+					"variableName": "var_delta_survey_API_pagination",
 					"value": {
 						"value": "1",
 						"type": "Expression"
@@ -31,7 +31,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(variables('var_delta_survey_API_pagination ')\r\n, '[]'\r\n)",
+						"value": "@equals(variables('var_delta_survey_API_pagination ')\n, 'stop'\n)",
 						"type": "Expression"
 					},
 					"activities": [
@@ -137,7 +137,7 @@
 										"dependsOn": [],
 										"userProperties": [],
 										"typeProperties": {
-											"variableName": "var_delta_survey_API_pagination ",
+											"variableName": "var_delta_survey_API_pagination",
 											"value": {
 												"value": "stop",
 												"type": "Expression"
@@ -151,7 +151,7 @@
 										"type": "SetVariable",
 										"dependsOn": [
 											{
-												"activity": "Set variable1",
+												"activity": "move_to_var_bridge",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -167,10 +167,17 @@
 										}
 									},
 									{
-										"name": "Set variable1",
+										"name": "move_to_var_bridge",
 										"type": "SetVariable",
 										"dependsOn": [],
-										"userProperties": []
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "var_bridge",
+											"value": {
+												"value": "@variables('var_delta_survey_API_pagination ')",
+												"type": "Expression"
+											}
+										}
 									}
 								]
 							}
@@ -414,7 +421,7 @@
 			"var_delta_API-Key": {
 				"type": "String"
 			},
-			"var_delta_survey_API_pagination ": {
+			"var_delta_survey_API_pagination": {
 				"type": "String",
 				"defaultValue": "1"
 			},
