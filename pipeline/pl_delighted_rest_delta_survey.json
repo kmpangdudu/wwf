@@ -156,7 +156,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": {
-									"value": "@pipeline().parameters.par_src_endpoint",
+									"value": "@concat(pipeline().parameters.par_src_endpoint\n,'?since=',variables('var_start_delta_survey')\n,'&until=',variables('var_until_delta_survey')\n,'&page=',variables('var_delta_survey_API_pagination')\n)",
 									"type": "Expression"
 								},
 								"method": "GET",
