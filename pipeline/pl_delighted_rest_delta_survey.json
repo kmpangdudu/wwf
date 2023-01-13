@@ -116,7 +116,7 @@
 							]
 						},
 						{
-							"name": "whether_it_has_more",
+							"name": "update_pagination",
 							"description": "check whether it has more page or not",
 							"type": "IfCondition",
 							"dependsOn": [
@@ -131,7 +131,7 @@
 							"typeProperties": {
 								"ifFalseActivities": [
 									{
-										"name": "update_var_api_pagination",
+										"name": "stop_loop",
 										"description": "update var_api_pagination to stop loop",
 										"type": "SetVariable",
 										"dependsOn": [],
