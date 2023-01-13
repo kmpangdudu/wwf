@@ -1,5 +1,5 @@
 {
-	"name": "pl_delighted_rest_delta_load",
+	"name": "pl_delighted_rest_delta_survey",
 	"properties": {
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
