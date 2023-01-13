@@ -22,7 +22,7 @@
 				"type": "Until",
 				"dependsOn": [
 					{
-						"activity": "initial_var_api_pagination",
+						"activity": "Wait1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -382,6 +382,22 @@
 						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey answer from delighted processing failed at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The survey Data delta dumping failed.\"\n   }",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "initial_var_api_pagination",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
 				}
 			}
 		],
