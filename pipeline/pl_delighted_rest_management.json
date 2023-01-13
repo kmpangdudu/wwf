@@ -163,7 +163,7 @@
 					],
 					"ifTrueActivities": [
 						{
-							"name": "Execute delta load pipeline",
+							"name": "Execute delta load survey",
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
@@ -179,7 +179,33 @@
 									"referenceName": "pl_delighted_rest_delta_survey",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"par_snk_container": {
+										"value": "@pipeline().parameters.par_m_snk_container",
+										"type": "Expression"
+									},
+									"par_snk_dir": {
+										"value": "@pipeline().parameters.par_m_snk_dir",
+										"type": "Expression"
+									},
+									"par_snk_filename": {
+										"value": "@pipeline().parameters.par_m_snk_filename",
+										"type": "Expression"
+									},
+									"par_src_endpoint": {
+										"value": "@concat(pipeline().parameters.par_m_init_endpoint\r\n,'/survey_responses.json/'\r\n)",
+										"type": "Expression"
+									},
+									"receiver": {
+										"value": "@pipeline().parameters.par_m_receiver",
+										"type": "Expression"
+									},
+									"cc": {
+										"value": "@pipeline().parameters.par_m_cc",
+										"type": "Expression"
+									}
+								}
 							}
 						},
 						{
