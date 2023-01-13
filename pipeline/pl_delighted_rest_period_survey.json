@@ -195,7 +195,7 @@
 				}
 			},
 			{
-				"name": "Web1",
+				"name": "period_load_survey",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
@@ -207,6 +207,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"url": {
+						"value": "@pipeline().parameters.par_ps_src_endpoint",
+						"type": "Expression"
+					},
 					"method": "GET",
 					"authentication": {
 						"type": "Basic",
@@ -231,7 +235,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Web1",
+						"activity": "period_load_survey",
 						"dependencyConditions": [
 							"Succeeded"
 						]
