@@ -38,7 +38,41 @@
 									"referenceName": "pl_delighted_rest_period_survey",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"par_ps_src_start_date": {
+										"value": "@pipeline().parameters.par_m_start_date",
+										"type": "Expression"
+									},
+									"par_ps_snk_container": {
+										"value": "@pipeline().parameters.par_m_snk_container",
+										"type": "Expression"
+									},
+									"par_ps_snk_dir": {
+										"value": "@pipeline().parameters.par_m_snk_dir",
+										"type": "Expression"
+									},
+									"par_ps_snk_filename": {
+										"value": "@pipeline().parameters.par_m_snk_filename",
+										"type": "Expression"
+									},
+									"par_ps_src_until_date": {
+										"value": "@pipeline().parameters.par_m_until_date",
+										"type": "Expression"
+									},
+									"par_ps_src_endpoint": {
+										"value": "@pipeline().parameters.par_m_init_endpoint",
+										"type": "Expression"
+									},
+									"par_ps_receiver": {
+										"value": "@pipeline().parameters.par_m_receiver",
+										"type": "Expression"
+									},
+									"par_ps_cc": {
+										"value": "@pipeline().parameters.par_m_cc",
+										"type": "Expression"
+									}
+								}
 							}
 						},
 						{
@@ -48,7 +82,7 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_period_start",
+								"variableName": "var_ps_period_start",
 								"value": {
 									"value": "@string(\ndiv(sub(ticks(convertToUtc(pipeline().parameters.par_m_start_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000)\n)",
 									"type": "Expression"
@@ -69,7 +103,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_period_until",
+								"variableName": "var_ps_period_until",
 								"value": {
 									"value": "@string(\nadd(86390,div(sub(ticks(convertToUtc(pipeline().parameters.par_m_until_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000))\n)",
 									"type": "Expression"
