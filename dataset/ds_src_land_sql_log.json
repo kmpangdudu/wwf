@@ -1,5 +1,5 @@
 {
-	"name": "ds_src_land_SQL_log",
+	"name": "ds_src_land_sql_log",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azure_sqldb",
