@@ -9,7 +9,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "store_period_survey",
+						"activity": "loop_page_period_survey",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -79,7 +79,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "period_load_survey",
+						"activity": "loop_page_period_survey",
 						"dependencyConditions": [
 							"Failed"
 						]
@@ -240,14 +240,7 @@
 				"name": "store_period_survey",
 				"description": "store_period_survey to table",
 				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "period_load_survey",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -281,6 +274,7 @@
 			},
 			{
 				"name": "loop_page_period_survey",
+				"description": "loop load period survey answer",
 				"type": "Until",
 				"dependsOn": [
 					{
@@ -292,6 +286,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"expression": {
+						"value": "@equals(\r\n    variables('var_period_survey_api_pagination')\r\n    ,'0'\r\n)",
+						"type": "Expression"
+					},
 					"timeout": "0.12:00:00"
 				}
 			}
