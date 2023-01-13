@@ -22,7 +22,7 @@
 				"type": "Until",
 				"dependsOn": [
 					{
-						"activity": "Wait1",
+						"activity": "initial_var_api_pagination",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -36,92 +36,12 @@
 					},
 					"activities": [
 						{
-							"name": "delta_get_delighted_survey_responses",
-							"description": "Listing survey responses from delighted rest api",
-							"type": "Copy",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "RestSource",
-									"httpRequestTimeout": "00:01:40",
-									"requestInterval": "00.00:00:00.010",
-									"requestMethod": "GET",
-									"paginationRules": {
-										"supportRFC5988": "true"
-									}
-								},
-								"sink": {
-									"type": "JsonSink",
-									"storeSettings": {
-										"type": "AzureBlobStorageWriteSettings"
-									},
-									"formatSettings": {
-										"type": "JsonWriteSettings",
-										"filePattern": "arrayOfObjects"
-									}
-								},
-								"enableStaging": false
-							},
-							"inputs": [
-								{
-									"referenceName": "ds_src_land_rest",
-									"type": "DatasetReference",
-									"parameters": {
-										"par_ds_delta_since": {
-											"value": "@variables('var_start_delta_survey')",
-											"type": "Expression"
-										},
-										"par_ds_delta_until": {
-											"value": "@variables('var_until_delta_survey')",
-											"type": "Expression"
-										},
-										"par_ds_src_ednpoint": {
-											"value": "@concat(pipeline().parameters.par_src_endpoint\n,'?since=',variables('var_start_delta_survey')\n,'&until=',variables('var_until_delta_survey')\n,'&page=',variables('var_delta_survey_API_pagination ')\n)",
-											"type": "Expression"
-										},
-										"par_ds_src_apikey": {
-											"value": "@variables('var_delta_API-Key')",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "ds_snk_land_delighted_json",
-									"type": "DatasetReference",
-									"parameters": {
-										"par_ds_snk_delighted_container": {
-											"value": "@pipeline().parameters.par_snk_container",
-											"type": "Expression"
-										},
-										"par_ds_snk_delighted_dir": {
-											"value": "@pipeline().parameters.par_snk_dir",
-											"type": "Expression"
-										},
-										"par_ds_snk_delighted_file": {
-											"value": "@concat('survey'\n, '-'\n, activity('lkp_last_success_load_date').output.firstRow.lastdate_short\n, '-'\n,formatDateTime(utcNow(),'yyyyMMdd-HHmm')\n, '.json'\n)",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						},
-						{
 							"name": "whether_has_more_page",
 							"description": "check whether it has more page or not",
 							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "delta_get_delighted_survey_responses",
+									"activity": "delta_survey_response",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -129,9 +49,13 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
+								"expression": {
+									"value": "@equals(activity('delta_survey_response').output.Response,'[]')",
+									"type": "Expression"
+								},
 								"ifFalseActivities": [
 									{
-										"name": "stop_loop",
+										"name": "no_page_stop_loop",
 										"description": "update var_api_pagination to stop loop",
 										"type": "SetVariable",
 										"dependsOn": [],
@@ -169,7 +93,14 @@
 									{
 										"name": "move_to_var_bridge",
 										"type": "SetVariable",
-										"dependsOn": [],
+										"dependsOn": [
+											{
+												"activity": "save_survey_answer",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
 										"userProperties": [],
 										"typeProperties": {
 											"variableName": "var_bridge",
@@ -178,8 +109,67 @@
 												"type": "Expression"
 											}
 										}
+									},
+									{
+										"name": "save_survey_answer",
+										"type": "SqlServerStoredProcedure",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"storedProcedureName": "[dbo].[udsp_insert_surveytemp]",
+											"storedProcedureParameters": {
+												"r": {
+													"value": {
+														"value": "@activity('delta_survey_response').output.Response",
+														"type": "Expression"
+													},
+													"type": "String"
+												}
+											}
+										},
+										"linkedServiceName": {
+											"referenceName": "ls_azure_sqldb",
+											"type": "LinkedServiceReference"
+										}
 									}
 								]
+							}
+						},
+						{
+							"name": "delta_survey_response",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": []
+						},
+						{
+							"name": "failed_stop_loop",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "delta_survey_response",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_delta_survey_API_pagination",
+								"value": "0"
 							}
 						}
 					],
@@ -382,22 +372,6 @@
 						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey answer from delighted processing failed at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The survey Data delta dumping failed.\"\n   }",
 						"type": "Expression"
 					}
-				}
-			},
-			{
-				"name": "Wait1",
-				"type": "Wait",
-				"dependsOn": [
-					{
-						"activity": "initial_var_api_pagination",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 1
 				}
 			}
 		],
