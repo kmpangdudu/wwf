@@ -250,7 +250,7 @@
 						},
 						"pl_load_start_date": {
 							"value": {
-								"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate",
+								"value": "@pipeline().parameters.par_delta_last_load",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -320,7 +320,7 @@
 						},
 						"pl_load_start_date": {
 							"value": {
-								"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate\n",
+								"value": "@pipeline().parameters.par_delta_last_load",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -422,6 +422,9 @@
 			"cc": {
 				"type": "string",
 				"defaultValue": "erjun.chen@teamfus.ca,echen@jbssa.com"
+			},
+			"par_delta_last_load": {
+				"type": "string"
 			}
 		},
 		"variables": {

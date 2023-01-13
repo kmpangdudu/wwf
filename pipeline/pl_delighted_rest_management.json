@@ -86,7 +86,7 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_start_delta_timestamp",
+								"variableName": "var_m_start_delta",
 								"value": {
 									"value": "@string(\ndiv(sub(ticks(convertToUtc(pipeline().parameters.par_m_start_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000)\n)",
 									"type": "Expression"
@@ -107,7 +107,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_until_delta_timestamp",
+								"variableName": "var_m_until_delta",
 								"value": {
 									"value": "@string(\nadd(86390,div(sub(ticks(convertToUtc(pipeline().parameters.par_m_until_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000))\n)",
 									"type": "Expression"
@@ -241,7 +241,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "last_success_load",
+									"activity": "lkp_last_success_load_date",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -249,7 +249,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_start_delta_timestamp",
+								"variableName": "var_m_start_delta",
 								"value": {
 									"value": "@string(\n    activity('lkp_last_success_load_date').output.firstRow.nextStart_timestamp\n)",
 									"type": "Expression"
@@ -270,7 +270,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_until_delta_timestamp",
+								"variableName": "var_m_until_delta",
 								"value": {
 									"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
 									"type": "Expression"
@@ -295,26 +295,6 @@
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true
-							}
-						},
-						{
-							"name": "last_success_load",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "lkp_last_success_load_date",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_last_success_date",
-								"value": {
-									"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate",
-									"type": "Expression"
-								}
 							}
 						}
 					]
@@ -404,19 +384,16 @@
 			"var_m_API-Key": {
 				"type": "String"
 			},
-			"var_m_period_start_date": {
+			"var_m_period_start": {
 				"type": "String"
 			},
-			"var_m_period_until_date": {
+			"var_m_period_until": {
 				"type": "String"
 			},
-			"var_m_start_delta_timestamp": {
+			"var_m_start_delta": {
 				"type": "String"
 			},
-			"var_m_until_delta_timestamp": {
-				"type": "String"
-			},
-			"var_m_last_success_date": {
+			"var_m_until_delta": {
 				"type": "String"
 			}
 		},
