@@ -4,7 +4,7 @@
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
 			{
-				"name": "LogPLActivitySuccess",
+				"name": "Log_priod_load_survey_Success",
 				"description": "log pipeline activity",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
@@ -74,10 +74,17 @@
 				}
 			},
 			{
-				"name": "LogPLActivityfailed",
+				"name": "Log_priod_load_survey_failed",
 				"description": "log pipeline activity failed",
 				"type": "SqlServerStoredProcedure",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "period_load_survey",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -142,7 +149,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "LogPLActivitySuccess",
+						"activity": "Log_priod_load_survey_Success",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -171,7 +178,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "LogPLActivityfailed",
+						"activity": "Log_priod_load_survey_failed",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -208,7 +215,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "@pipeline().parameters.par_ps_src_endpoint",
+						"value": "@concat(\n    pipeline().parameters.par_ps_src_endpoint\n    ,'survey_responses.json'\n    ,'?since=',\n    ,'&until=',\n    ,'&page=',\n)",
 						"type": "Expression"
 					},
 					"method": "GET",
@@ -254,7 +261,7 @@
 					"storedProcedureParameters": {
 						"r": {
 							"value": {
-								"value": "@activity('Web1').output.Response",
+								"value": "@activity('period_load_survey').output.Response",
 								"type": "Expression"
 							},
 							"type": "String"
