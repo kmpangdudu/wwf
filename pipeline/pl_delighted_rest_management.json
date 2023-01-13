@@ -276,6 +276,22 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "Execute_delta_people",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "timestamp now",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"waitOnCompletion": true
+							}
 						}
 					]
 				}
