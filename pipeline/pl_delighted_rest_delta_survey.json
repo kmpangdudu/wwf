@@ -31,7 +31,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(variables('var_delta_survey_API_pagination ')\n, 'stop'\n)",
+						"value": "@equals(variables('var_delta_survey_API_pagination')\n, '0'\n)",
 						"type": "Expression"
 					},
 					"activities": [
@@ -153,7 +153,29 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"url": {
+									"value": "@pipeline().parameters.par_src_endpoint",
+									"type": "Expression"
+								},
+								"method": "GET",
+								"authentication": {
+									"type": "Basic",
+									"username": {
+										"value": "@variables('var_delta_API-Key')",
+										"type": "Expression"
+									},
+									"password": {
+										"type": "AzureKeyVaultSecret",
+										"store": {
+											"referenceName": "ls_fusedata_AzureKeyVault",
+											"type": "LinkedServiceReference"
+										},
+										"secretName": "Delighted"
+									}
+								}
+							}
 						},
 						{
 							"name": "failed_stop_loop",
