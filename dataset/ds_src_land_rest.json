@@ -1,5 +1,5 @@
 {
-	"name": "ds_src_land_delighted",
+	"name": "ds_src_land_rest",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_delighted_api",
@@ -16,10 +16,10 @@
 			}
 		},
 		"parameters": {
-			"par_ds_src_since": {
+			"par_ds_delta_since": {
 				"type": "string"
 			},
-			"par_ds_src_until": {
+			"par_ds_delta_until": {
 				"type": "string"
 			},
 			"par_ds_src_ednpoint": {
@@ -34,12 +34,6 @@
 		},
 		"annotations": [],
 		"type": "RestResource",
-		"typeProperties": {
-			"relativeUrl": {
-				"value": "@concat(\n    dataset().par_ds_src_ednpoint\n    , '&since=', dataset().par_ds_src__since\n    , '&until=', dataset().par_ds_src_until\n)",
-				"type": "Expression"
-			}
-		},
 		"schema": []
 	}
 }
