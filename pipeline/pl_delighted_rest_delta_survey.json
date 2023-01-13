@@ -67,9 +67,9 @@
 										],
 										"userProperties": [],
 										"typeProperties": {
-											"variableName": "var_delta_survey_API_pagination ",
+											"variableName": "var_delta_survey_API_pagination",
 											"value": {
-												"value": "@add(int(variables('var_bridge')),1)",
+												"value": "@string(add(int(variables('var_bridge')),1))",
 												"type": "Expression"
 											}
 										}
@@ -89,7 +89,7 @@
 										"typeProperties": {
 											"variableName": "var_bridge",
 											"value": {
-												"value": "@variables('var_delta_survey_API_pagination ')",
+												"value": "@variables('var_delta_survey_API_pagination')",
 												"type": "Expression"
 											}
 										}
