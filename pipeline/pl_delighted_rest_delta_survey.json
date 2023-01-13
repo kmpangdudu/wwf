@@ -72,19 +72,23 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "ds_src_land_delighted",
+									"referenceName": "ds_src_land_rest",
 									"type": "DatasetReference",
 									"parameters": {
-										"par_ds_src_since": {
-											"value": "@variables('var_start_delta')",
+										"par_ds_delta_since": {
+											"value": "@variables('var_start_delta_survey')",
 											"type": "Expression"
 										},
-										"par_ds_src_until": {
-											"value": "@variables('var_until_delta')",
+										"par_ds_delta_until": {
+											"value": "@variables('var_until_delta_survey')",
 											"type": "Expression"
 										},
 										"par_ds_src_ednpoint": {
-											"value": "@pipeline().parameters.par_src_endpoint",
+											"value": "@concat(pipeline().parameters.par_src_endpoint\n,'?since=',variables('var_start_delta_survey')\n,'&until=',variables('var_until_delta_survey')\n,'&page=',\n)",
+											"type": "Expression"
+										},
+										"par_ds_src_apikey": {
+											"value": "@variables('var_delta_API-Key')",
 											"type": "Expression"
 										}
 									}
