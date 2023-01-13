@@ -169,7 +169,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "pl_delighted_rest_delta_load",
+									"referenceName": "pl_delighted_rest_delta_survey",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true
