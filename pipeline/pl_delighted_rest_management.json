@@ -86,7 +86,7 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_ps_period_start",
+								"variableName": "var_m_start_delta",
 								"value": {
 									"value": "@string(\ndiv(sub(ticks(convertToUtc(pipeline().parameters.par_m_start_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000)\n)",
 									"type": "Expression"
@@ -107,7 +107,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_ps_period_until",
+								"variableName": "var_m_until_delta",
 								"value": {
 									"value": "@string(\nadd(86390,div(sub(ticks(convertToUtc(pipeline().parameters.par_m_until_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000))\n)",
 									"type": "Expression"
