@@ -1,0 +1,257 @@
+{
+	"name": "pl_delighted_rest_period_People_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "initial_endpoint",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_endpoint",
+					"value": {
+						"value": "@concat(pipeline().parameters.par_init_endpoint,'people.json/')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "loop_list_people_period",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "initial_endpoint",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(variables('var_endpoint'), 'stop')\n",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "list_people",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": {
+									"value": "@concat(variables('var_endpoint'),'?'\n, 'since=', pipeline().parameters.par_p_start_date\n, '&until=', pipeline().parameters.par_p_until_date\n)",
+									"type": "Expression"
+								},
+								"method": "GET",
+								"authentication": {
+									"type": "Basic",
+									"username": {
+										"value": "@pipeline().parameters.par_p_API_Key",
+										"type": "Expression"
+									},
+									"password": {
+										"type": "AzureKeyVaultSecret",
+										"store": {
+											"referenceName": "ls_fusedata_AzureKeyVault",
+											"type": "LinkedServiceReference"
+										},
+										"secretName": "Delighted"
+									}
+								}
+							}
+						},
+						{
+							"name": "get_response_header",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "list_people",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "response_header",
+								"value": {
+									"value": "@activity('list_people').output.ADFWebActivityResponseHeaders.Link",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Stored_response_to_tb",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "list_people",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[udsp_insert_raw]",
+								"storedProcedureParameters": {
+									"r": {
+										"value": {
+											"value": "@activity('list_people').output.Response",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_azure_sqldb",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "update_endpoint",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "get_response_header",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_endpoint",
+								"value": {
+									"value": "@substring(variables('response_header'),1\n,sub(length(variables('response_header')),14)\n)\n ",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "reset_endpoint_to_stop_loop",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "get_response_header",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_endpoint",
+								"value": "stop"
+							}
+						},
+						{
+							"name": "Stop looping",
+							"type": "Wait",
+							"dependsOn": [
+								{
+									"activity": "reset_endpoint_to_stop_loop",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
+						},
+						{
+							"name": "reset_endpoint",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "list_people",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_endpoint",
+								"value": "stop"
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "Move_on_next_Progress",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "loop_list_people_period",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			}
+		],
+		"parameters": {
+			"par_init_endpoint": {
+				"type": "string",
+				"defaultValue": "https://api.delighted.com/v1/"
+			},
+			"receiver": {
+				"type": "string",
+				"defaultValue": "chenerjun@gmail.com"
+			},
+			"cc": {
+				"type": "string",
+				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
+			},
+			"par_p_start_date": {
+				"type": "string"
+			},
+			"par_p_until_date": {
+				"type": "string"
+			},
+			"par_p_API_Key": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"response_body": {
+				"type": "String"
+			},
+			"response_header": {
+				"type": "String"
+			},
+			"var_endpoint": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "land/bak/20230112"
+		},
+		"annotations": []
+	}
+}

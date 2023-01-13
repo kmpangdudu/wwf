@@ -1,0 +1,401 @@
+{
+	"name": "pl_delighted_rest_management_copy1",
+	"properties": {
+		"description": "Listing survey responses from delighted rest api",
+		"activities": [
+			{
+				"name": "check_load_type_Is_delta",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Saving API-Key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@or(\n    or(\n        or(\n        or(equals('y',pipeline().parameters.is_delta_load),equals('Y',pipeline().parameters.is_delta_load)),\n        or(equals('yes',pipeline().parameters.is_delta_load),equals('YES',pipeline().parameters.is_delta_load))\n        ),\n        or(\n        or(equals('t',pipeline().parameters.is_delta_load),equals('T',pipeline().parameters.is_delta_load)),\n        or(equals('ture',pipeline().parameters.is_delta_load),equals('TURE',pipeline().parameters.is_delta_load))\n        )\n    )\n, equals(1, '1')\n)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Execute_period_load_survey",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "period_until_date",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_delighted_rest_period_survey",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"par_ps_src_start_date": {
+										"value": "@variables('var_m_period_start')",
+										"type": "Expression"
+									},
+									"par_ps_snk_container": {
+										"value": "@pipeline().parameters.par_m_snk_container",
+										"type": "Expression"
+									},
+									"par_ps_snk_dir": {
+										"value": "@pipeline().parameters.par_m_snk_dir",
+										"type": "Expression"
+									},
+									"par_ps_snk_filename": {
+										"value": "@pipeline().parameters.par_m_snk_filename",
+										"type": "Expression"
+									},
+									"par_ps_src_until_date": {
+										"value": "@variables('var_m_period_until')",
+										"type": "Expression"
+									},
+									"par_ps_src_endpoint": {
+										"value": "@pipeline().parameters.par_m_init_endpoint",
+										"type": "Expression"
+									},
+									"par_ps_receiver": {
+										"value": "@pipeline().parameters.par_m_receiver",
+										"type": "Expression"
+									},
+									"par_ps_cc": {
+										"value": "@pipeline().parameters.par_m_cc",
+										"type": "Expression"
+									},
+									"par_ps_API_Key": {
+										"value": "@variables('var_m_API-Key')",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "period_start_date",
+							"description": "load delighted survey data from this date at 12:00 AM",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_ps_period_start",
+								"value": {
+									"value": "@string(\ndiv(sub(ticks(convertToUtc(pipeline().parameters.par_m_start_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000)\n)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "period_until_date",
+							"description": "period load until this date at 11:59 PM",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "period_start_date",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_ps_period_until",
+								"value": {
+									"value": "@string(\nadd(86390,div(sub(ticks(convertToUtc(pipeline().parameters.par_m_until_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000))\n)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Execute_period_load_people",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "period_until_date",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_delighted_rest_period_People",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"par_init_endpoint": {
+										"value": "@pipeline().parameters.par_m_init_endpoint",
+										"type": "Expression"
+									},
+									"receiver": {
+										"value": "@pipeline().parameters.par_m_receiver",
+										"type": "Expression"
+									},
+									"cc": {
+										"value": "@pipeline().parameters.par_m_cc",
+										"type": "Expression"
+									},
+									"par_p_start_date": {
+										"value": "@variables('var_m_period_start')",
+										"type": "Expression"
+									},
+									"par_p_until_date": {
+										"value": "@variables('var_m_period_until')",
+										"type": "Expression"
+									},
+									"par_p_API_Key": {
+										"value": "@variables('var_m_API-Key')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Execute delta load survey",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "timestamp now",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_delighted_rest_delta_survey",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"par_snk_container": {
+										"value": "@pipeline().parameters.par_m_snk_container",
+										"type": "Expression"
+									},
+									"par_snk_dir": {
+										"value": "@pipeline().parameters.par_m_snk_dir",
+										"type": "Expression"
+									},
+									"par_snk_filename": {
+										"value": "@pipeline().parameters.par_m_snk_filename",
+										"type": "Expression"
+									},
+									"par_src_endpoint": {
+										"value": "@concat(pipeline().parameters.par_m_init_endpoint\r\n,'/survey_responses.json/'\r\n)",
+										"type": "Expression"
+									},
+									"receiver": {
+										"value": "@pipeline().parameters.par_m_receiver",
+										"type": "Expression"
+									},
+									"cc": {
+										"value": "@pipeline().parameters.par_m_cc",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "lkp_last_success_load_date",
+							"description": "logged created date will be added one day as the new loading start date.",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT \n        [pl_log_id]\n      , [pl_category]\n      , [pl_status]\n      , [pl_Createdtimestamp] as [last_timestamp]\n      , [pl_Createdtimestamp] + 1     as [nextStart_timestamp]\n      , [pl_Createdtimestamp] + 86400 as [tomorrow_timestamp]\n      , convert(varchar(10),  [pl_create_date], 112) as lastdate_short\n      , convert(varchar(10),  [pl_create_date], 23) as lastdate\n      , convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as nextdate\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'survey' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc \n",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "delta_start_date",
+							"description": "last success load plus 1 second as new load start.",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "lkp_last_success_load_date",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_m_start_delta",
+								"value": {
+									"value": "@string(\n    activity('lkp_last_success_load_date').output.firstRow.nextStart_timestamp\n)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "timestamp now",
+							"description": "by default, it is current timestamp",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "delta_start_date",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_m_until_delta",
+								"value": {
+									"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Execute_delta_people",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "timestamp now",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_delighted_rest_delta_People",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Saving API-Key",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "API_Key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_m_API-Key",
+					"value": {
+						"value": "@activity('API_Key').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "API_Key",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://kv-wildfork-nonprod.vault.azure.net/secrets/delighted-apikey/177d9c82363448c7a5b3a7da1714a128?api-version=7.0",
+					"method": "GET",
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"is_delta_load": {
+				"type": "string",
+				"defaultValue": "y"
+			},
+			"par_m_start_date": {
+				"type": "string",
+				"defaultValue": "2023-01-01"
+			},
+			"par_m_until_date": {
+				"type": "string",
+				"defaultValue": "2023-01-07"
+			},
+			"par_m_receiver": {
+				"type": "string",
+				"defaultValue": "chenerjun@gmail.com"
+			},
+			"par_m_cc": {
+				"type": "string",
+				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
+			},
+			"par_m_init_endpoint": {
+				"type": "string",
+				"defaultValue": "https://api.delighted.com/v1/"
+			},
+			"par_m_snk_container": {
+				"type": "string",
+				"defaultValue": "land"
+			},
+			"par_m_snk_dir": {
+				"type": "string",
+				"defaultValue": "delighted/raw"
+			},
+			"par_m_snk_filename": {
+				"type": "string",
+				"defaultValue": "survey.json"
+			}
+		},
+		"variables": {
+			"var_m_API-Key": {
+				"type": "String"
+			},
+			"var_m_period_start": {
+				"type": "String"
+			},
+			"var_m_period_until": {
+				"type": "String"
+			},
+			"var_m_start_delta": {
+				"type": "String"
+			},
+			"var_m_until_delta": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "land/bak/20230112"
+		},
+		"annotations": []
+	}
+}
