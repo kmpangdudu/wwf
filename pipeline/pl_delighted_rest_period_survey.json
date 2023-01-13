@@ -43,24 +43,20 @@
 						"referenceName": "ds_src_land_delighted",
 						"type": "DatasetReference",
 						"parameters": {
-							"par_src_page": {
-								"value": "@pipeline().parameters.par_src_page",
+							"par_ds_src_since": {
+								"value": "@pipeline().parameters.par_ps_src_start_date",
 								"type": "Expression"
 							},
-							"par_src_updated_since": {
-								"value": "@variables('var_period_start')",
+							"par_ds_src_until": {
+								"value": "@pipeline().parameters.par_ps_src_until_date",
 								"type": "Expression"
 							},
-							"par_src_updated_until": {
-								"value": "@variables('var_period_until')",
+							"par_ds_src_ednpoint": {
+								"value": "@pipeline().parameters.par_ps_src_endpoint",
 								"type": "Expression"
 							},
-							"par_src_ednpoint": {
-								"value": "@pipeline().parameters.par_src_endpoint",
-								"type": "Expression"
-							},
-							"par_src_apikey": {
-								"value": "@variables('var_API-Key')",
+							"par_ds_src_apikey": {
+								"value": "@pipeline().parameters.par_ps_API_Key",
 								"type": "Expression"
 							}
 						}
@@ -318,19 +314,13 @@
 			"par_ps_cc": {
 				"type": "string",
 				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
+			},
+			"par_ps_API_Key": {
+				"type": "string"
 			}
 		},
 		"variables": {
-			"var__ps_delta_interval_day": {
-				"type": "String"
-			},
-			"var_ps_period_start": {
-				"type": "String"
-			},
-			"var_ps_period_until": {
-				"type": "String"
-			},
-			"var_ps_API_Key": {
+			"var_ps_delta_interval_day": {
 				"type": "String"
 			}
 		},
