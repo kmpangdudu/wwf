@@ -55,22 +55,6 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "no_page_stop_loop",
-										"description": "update var_api_pagination to stop loop",
-										"type": "SetVariable",
-										"dependsOn": [],
-										"userProperties": [],
-										"typeProperties": {
-											"variableName": "var_delta_survey_API_pagination",
-											"value": {
-												"value": "stop",
-												"type": "Expression"
-											}
-										}
-									}
-								],
-								"ifTrueActivities": [
-									{
 										"name": "update_pagination",
 										"type": "SetVariable",
 										"dependsOn": [
@@ -137,6 +121,22 @@
 										"linkedServiceName": {
 											"referenceName": "ls_azure_sqldb",
 											"type": "LinkedServiceReference"
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "no_page_stop_loop",
+										"description": "update var_api_pagination to stop loop",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "var_delta_survey_API_pagination",
+											"value": {
+												"value": "stop",
+												"type": "Expression"
+											}
 										}
 									}
 								]
