@@ -503,10 +503,6 @@
 				"type": "string",
 				"defaultValue": "survey.json"
 			},
-			"par_src_page": {
-				"type": "string",
-				"defaultValue": "100"
-			},
 			"par_src_endpoint": {
 				"type": "string",
 				"defaultValue": "https://api.delighted.com/v1/"
