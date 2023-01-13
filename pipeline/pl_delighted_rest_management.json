@@ -343,6 +343,12 @@
 			},
 			"var_m_period_until": {
 				"type": "String"
+			},
+			"var_m_start_delta": {
+				"type": "String"
+			},
+			"var_m_until_delta": {
+				"type": "String"
 			}
 		},
 		"folder": {
