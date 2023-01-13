@@ -36,7 +36,7 @@
 					},
 					"activities": [
 						{
-							"name": "whether_has_more_page",
+							"name": "no_more_page",
 							"description": "check whether it has more page or not",
 							"type": "IfCondition",
 							"dependsOn": [
@@ -76,6 +76,7 @@
 									},
 									{
 										"name": "move_to_var_bridge",
+										"description": "bridge var",
 										"type": "SetVariable",
 										"dependsOn": [
 											{
