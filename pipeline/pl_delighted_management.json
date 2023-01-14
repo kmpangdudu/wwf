@@ -358,7 +358,7 @@
 							}
 						},
 						{
-							"name": "lkp_last_success_load_date",
+							"name": "lkp_last_success_load_survey",
 							"description": "logged created date will be added one day as the new loading start date.",
 							"type": "Lookup",
 							"dependsOn": [],
@@ -390,13 +390,13 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "last_success_load",
+									"activity": "last_success_load_survey_datetime",
 									"dependencyConditions": [
 										"Succeeded"
 									]
 								},
 								{
-									"activity": "init_last_success_load",
+									"activity": "init_last_success_load_survey_datetime",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -459,11 +459,11 @@
 							}
 						},
 						{
-							"name": "last_success_load",
+							"name": "last_success_load_survey_datetime",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "lkp_last_success_load_date",
+									"activity": "lkp_last_success_load_survey",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -471,19 +471,19 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_last_success_date",
+								"variableName": "var_m_last_success_Load_survey_timestamp",
 								"value": {
-									"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate\n",
+									"value": "@activity('lkp_last_success_load_survey').output.firstRow.pl_Created_timestamp_EST",
 									"type": "Expression"
 								}
 							}
 						},
 						{
-							"name": "init_last_success_load",
+							"name": "init_last_success_load_survey_datetime",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "last_success_load",
+									"activity": "last_success_load_survey_datetime",
 									"dependencyConditions": [
 										"Failed"
 									]
