@@ -1,5 +1,5 @@
 {
-	"name": "pl_delighted_rest_period_survey",
+	"name": "pl_delighted_period_survey",
 	"properties": {
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [

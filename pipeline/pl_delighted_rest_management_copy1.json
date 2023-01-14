@@ -35,7 +35,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "pl_delighted_rest_period_survey",
+									"referenceName": "pl_delighted_period_survey",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
@@ -128,7 +128,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "pl_delighted_rest_period_People",
+									"referenceName": "pl_delighted_period_People",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
@@ -176,7 +176,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "pl_delighted_rest_delta_survey",
+									"referenceName": "pl_delighted_delta_survey",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
@@ -287,7 +287,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "pl_delighted_rest_delta_People",
+									"referenceName": "pl_delighted_delta_People",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true
