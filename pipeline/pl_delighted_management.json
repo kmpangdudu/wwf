@@ -86,7 +86,7 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_start_delta_timestamp",
+								"variableName": "var_m_start_delta_people_timestamp",
 								"value": {
 									"value": "@string(\ndiv(sub(ticks(convertToUtc(pipeline().parameters.par_m_start_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000)\n)",
 									"type": "Expression"
@@ -198,7 +198,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_until_delta_timestamp",
+								"variableName": "var_m_until_delta_people_timestamp",
 								"value": {
 									"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
 									"type": "Expression"
@@ -358,8 +358,8 @@
 							}
 						},
 						{
-							"name": "lkp_last_success_load_survey",
-							"description": "",
+							"name": "lkp_last_success_load_date",
+							"description": "logged created date will be added one day as the new loading start date.",
 							"type": "Lookup",
 							"dependsOn": [],
 							"policy": {
@@ -373,7 +373,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT top 1 \n       [pl_load_start_datetime_EST]\n      ,[pl_load_start_timestamp_EST]\n      ,[pl_load_start_datetime_UTC]\n      ,[pl_load_until_datetime_EST]\n      ,[pl_load_until_timestamp_EST]\n      ,[pl_load_until_datetime_UTC]\n\t  ,[pl_next_delta_datetime_EST]\n      ,[pl_next_delta_timestamp_EST]\n      ,[pl_next_delta_datetime_UTC]\n\t  ,[pl_created_datetime_EST]\n      ,[pl_Created_timestamp_EST]\n      ,[pl_created_datetime_UTC]\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'survey' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc ",
+									"sqlReaderQuery": "SELECT \n        [pl_log_id]\n      , [pl_category]\n      , [pl_status]\n      , [pl_Createdtimestamp] as [last_timestamp]\n      , [pl_Createdtimestamp] + 1     as [nextStart_timestamp]\n      , [pl_Createdtimestamp] + 86400 as [tomorrow_timestamp]\n      , convert(varchar(10),  [pl_create_date], 112) as lastdate_short\n      , convert(varchar(10),  [pl_create_date], 23) as lastdate\n      , convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as nextdate\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'survey' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc \n",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -385,18 +385,18 @@
 							}
 						},
 						{
-							"name": "delta_survey_start_timestamp",
+							"name": "delta_start_date",
 							"description": "last success load plus 1 second as new load start.",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "last_success_load_survey",
+									"activity": "last_success_load",
 									"dependencyConditions": [
 										"Succeeded"
 									]
 								},
 								{
-									"activity": "init_last_success_load_survey",
+									"activity": "init_last_success_load",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -404,7 +404,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_start_delta_timestamp",
+								"variableName": "var_m_start_delta_people_timestamp",
 								"value": {
 									"value": "@string(\n    activity('lkp_last_success_load_date').output.firstRow.nextStart_timestamp\n)",
 									"type": "Expression"
@@ -417,7 +417,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "delta_survey_start_timestamp",
+									"activity": "delta_start_date",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -431,7 +431,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_until_delta_timestamp",
+								"variableName": "var_m_until_delta_people_timestamp",
 								"value": {
 									"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
 									"type": "Expression"
@@ -459,11 +459,11 @@
 							}
 						},
 						{
-							"name": "last_success_load_survey",
+							"name": "last_success_load",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "lkp_last_success_load_survey",
+									"activity": "lkp_last_success_load_date",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -471,19 +471,19 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_last_success_Load_survey_timestamp",
+								"variableName": "var_m_last_success_date",
 								"value": {
-									"value": "@activity('lkp_last_success_load_survey').output.firstRow.pl_Created_timestamp_EST",
+									"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate\n",
 									"type": "Expression"
 								}
 							}
 						},
 						{
-							"name": "init_last_success_load_survey",
+							"name": "init_last_success_load",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "last_success_load_survey",
+									"activity": "last_success_load",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -491,8 +491,8 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_last_success_Load_survey_timestamp",
-								"value": ""
+								"variableName": "var_m_last_success_date",
+								"value": "2023-01-01"
 							}
 						},
 						{
@@ -501,7 +501,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "delta_survey_start_timestamp",
+									"activity": "delta_start_date",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -509,93 +509,8 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_start_delta_timestamp",
+								"variableName": "var_m_start_delta_people_timestamp",
 								"value": "1672549200"
-							}
-						},
-						{
-							"name": "lkp_last_success_load_people",
-							"description": "",
-							"type": "Lookup",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT top 1 \n       [pl_load_start_datetime_EST]\n      ,[pl_load_start_timestamp_EST]\n      ,[pl_load_start_datetime_UTC]\n      ,[pl_load_until_datetime_EST]\n      ,[pl_load_until_timestamp_EST]\n      ,[pl_load_until_datetime_UTC]\n\t  ,[pl_next_delta_datetime_EST]\n      ,[pl_next_delta_timestamp_EST]\n      ,[pl_next_delta_datetime_UTC]\n\t  ,[pl_created_datetime_EST]\n      ,[pl_Created_timestamp_EST]\n      ,[pl_created_datetime_UTC]\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'people' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc ",
-									"queryTimeout": "02:00:00",
-									"partitionOption": "None"
-								},
-								"dataset": {
-									"referenceName": "ds_src_land_sql_log",
-									"type": "DatasetReference"
-								},
-								"firstRowOnly": true
-							}
-						},
-						{
-							"name": "last_success_load_people",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "lkp_last_success_load_people",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_last_success_Load_people_timestamp",
-								"value": {
-									"value": "@activity('lkp_last_success_load_people').output.firstRow.pl_Created_timestamp_EST",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "init_last_success_load_people",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "last_success_load_people",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_last_success_Load_people_timestamp",
-								"value": ""
-							}
-						},
-						{
-							"name": "delta_people_start_timestamp",
-							"description": "last success load plus 1 second as new load start.",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "last_success_load_people",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_start_delta_timestamp",
-								"value": {
-									"value": "@string(\n    activity('lkp_last_success_load_date').output.firstRow.nextStart_timestamp\n)",
-									"type": "Expression"
-								}
 							}
 						}
 					]
@@ -691,10 +606,10 @@
 			"var_m_period_until_date_timestamp": {
 				"type": "String"
 			},
-			"var_m_start_delta_timestamp": {
+			"var_m_start_delta_people_timestamp": {
 				"type": "String"
 			},
-			"var_m_until_delta_timestamp": {
+			"var_m_until_delta_people_timestamp": {
 				"type": "String"
 			},
 			"var_m_last_success_date": {
@@ -704,6 +619,12 @@
 				"type": "String"
 			},
 			"var_m_last_success_Load_people_timestamp": {
+				"type": "String"
+			},
+			"var_m_start_delta_survey_timestamp": {
+				"type": "String"
+			},
+			"var_m_until_delta_survey_timestamp": {
 				"type": "String"
 			}
 		},
