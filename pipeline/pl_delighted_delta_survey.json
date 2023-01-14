@@ -257,7 +257,7 @@
 						},
 						"pl_load_start_date": {
 							"value": {
-								"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate",
+								"value": "@activity('lkp_last_success_load_date').output.firstRow.last_timestamp",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -327,7 +327,7 @@
 						},
 						"pl_load_start_date": {
 							"value": {
-								"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate\n",
+								"value": "@activity('lkp_last_success_load_date').output.firstRow.last_timestamp\n",
 								"type": "Expression"
 							},
 							"type": "String"
