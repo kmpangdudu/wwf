@@ -113,7 +113,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_until_delta_timestamp",
+								"variableName": "var_m_period_until_date_timestamp",
 								"value": {
 									"value": "@string(\nadd(86390,div(sub(ticks(convertToUtc(pipeline().parameters.par_m_until_date, 'Eastern Standard Time')), ticks('1970-01-01')),10000000))\n)",
 									"type": "Expression"
@@ -180,7 +180,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_start_delta_timestamp",
+								"variableName": "var_m_period_start_date_timestamp",
 								"value": "1672549200"
 							}
 						},
@@ -600,10 +600,10 @@
 			"var_m_API-Key": {
 				"type": "String"
 			},
-			"var_m_period_start_date": {
+			"var_m_period_start_date_timestamp": {
 				"type": "String"
 			},
-			"var_m_period_until_date": {
+			"var_m_period_until_date_timestamp": {
 				"type": "String"
 			},
 			"var_m_start_delta_timestamp": {
