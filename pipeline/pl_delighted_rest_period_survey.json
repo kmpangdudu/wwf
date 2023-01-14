@@ -202,41 +202,6 @@
 				}
 			},
 			{
-				"name": "period_load_survey",
-				"type": "WebActivity",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": {
-						"value": "@concat(\n    pipeline().parameters.par_ps_src_endpoint\n    ,'survey_responses.json'\n    ,'?since=',\n    ,'&until=',\n    ,'&page=',\n)",
-						"type": "Expression"
-					},
-					"method": "GET",
-					"authentication": {
-						"type": "Basic",
-						"username": {
-							"value": "@pipeline().parameters.par_ps_API_Key",
-							"type": "Expression"
-						},
-						"password": {
-							"type": "AzureKeyVaultSecret",
-							"store": {
-								"referenceName": "ls_fusedata_AzureKeyVault",
-								"type": "LinkedServiceReference"
-							},
-							"secretName": "Delighted"
-						}
-					}
-				}
-			},
-			{
 				"name": "store_period_survey",
 				"description": "store_period_survey to table",
 				"type": "SqlServerStoredProcedure",
@@ -294,6 +259,93 @@
 						"value": "@equals(\r\n    variables('var_period_survey_api_pagination')\r\n    ,'0'\r\n)",
 						"type": "Expression"
 					},
+					"activities": [
+						{
+							"name": "period_load_survey_response",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": {
+									"value": "@concat(\n    pipeline().parameters.par_ps_src_endpoint\n    ,'survey_responses.json'\n    ,'?since=',\n    ,'&until=',\n    ,'&page=',\n)",
+									"type": "Expression"
+								},
+								"method": "GET",
+								"authentication": {
+									"type": "Basic",
+									"username": {
+										"value": "@pipeline().parameters.par_ps_API_Key",
+										"type": "Expression"
+									},
+									"password": {
+										"type": "AzureKeyVaultSecret",
+										"store": {
+											"referenceName": "ls_fusedata_AzureKeyVault",
+											"type": "LinkedServiceReference"
+										},
+										"secretName": "Delighted"
+									}
+								}
+							}
+						},
+						{
+							"name": "failed_stop_loop",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "period_load_survey_response",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_period_survey_api_pagination",
+								"value": "0"
+							}
+						},
+						{
+							"name": "is_it_no_more_page",
+							"description": "check to see if has more pages",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "period_load_survey_response",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(\nvariables('var_period_survey_api_pagination')\n, '0')",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "no_page_stop_loop_period_surver",
+										"description": "no_more page,\nstop_loop_period_surver",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "var_period_survey_api_pagination",
+											"value": "0"
+										}
+									}
+								]
+							}
+						}
+					],
 					"timeout": "0.12:00:00"
 				}
 			}
@@ -343,7 +395,7 @@
 			"var_period_survey_start_timestamp": {
 				"type": "String"
 			},
-			"varil_period_survey_until_timestamp": {
+			"var_period_survey_until_timestamp": {
 				"type": "String"
 			},
 			"var_period_API-Key": {
