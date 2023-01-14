@@ -373,7 +373,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT top 1 \n       [pl_load_start_datetime_EST]\n      ,[pl_load_start_timestamp_EST]\n      ,[pl_load_start_datetime_UTC]\n      ,[pl_load_until_datetime_EST]\n      ,[pl_load_until_timestamp_EST]\n      ,[pl_load_until_datetime_UTC]\n\t  ,[pl_next_delta_datetime_EST]\n      ,[pl_next_delta_timestamp_EST]\n      ,[pl_next_delta_datetime_UTC]\n\t  ,[pl_created_datetime_EST]\n      ,[pl_Created_timestamp_EST]\n      ,[pl_created_datetime_UTC]\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'survey' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc \n",
+									"sqlReaderQuery": "SELECT top 1 \n       [pl_load_start_datetime_EST]\n      ,[pl_load_start_timestamp]\n      ,[pl_load_start_datetime_UTC]\n      ,[pl_load_until_datetime_EST]\n      ,[pl_load_until_timestamp]\n      ,[pl_load_until_datetime_UTC]\n\t  ,[pl_next_delta_datetime_EST]\n      ,[pl_next_delta_timestamp]\n      ,[pl_next_delta_datetime_UTC]\n\t  ,[pl_created_datetime_EST]\n      ,[pl_Created_timestamp]\n      ,[pl_created_datetime_UTC]\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'survey' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc \n",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -406,7 +406,7 @@
 							"typeProperties": {
 								"variableName": "var_m_start_delta_survey_timestamp",
 								"value": {
-									"value": "@string(\n    activity('lkp_last_success_load_date').output.firstRow.nextStart_timestamp\n)",
+									"value": "@string(\n    add(\n    int(activity('lkp_last_success_load_survey').output.firstRow.pl_Created_timestamp)\n    ,1)\n)",
 									"type": "Expression"
 								}
 							}
@@ -530,7 +530,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT top 1 \n       [pl_load_start_datetime_EST]\n      ,[pl_load_start_timestamp_EST]\n      ,[pl_load_start_datetime_UTC]\n      ,[pl_load_until_datetime_EST]\n      ,[pl_load_until_timestamp_EST]\n      ,[pl_load_until_datetime_UTC]\n\t  ,[pl_next_delta_datetime_EST]\n      ,[pl_next_delta_timestamp_EST]\n      ,[pl_next_delta_datetime_UTC]\n\t  ,[pl_created_datetime_EST]\n      ,[pl_Created_timestamp_EST]\n      ,[pl_created_datetime_UTC]\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'people' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc \n",
+									"sqlReaderQuery": "SELECT TOP 1\n       [pl_load_start_datetime_EST]\n      ,[pl_load_start_timestamp]\n      ,[pl_load_start_datetime_UTC]\n      ,[pl_load_until_datetime_EST]\n      ,[pl_load_until_timestamp]\n      ,[pl_load_until_datetime_UTC]\n\t  ,[pl_next_delta_datetime_EST]\n      ,[pl_next_delta_timestamp]\n      ,[pl_next_delta_datetime_UTC]\n\t  ,[pl_created_datetime_EST]\n      ,[pl_Created_timestamp]\n      ,[pl_created_datetime_UTC]\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'people' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc ",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
