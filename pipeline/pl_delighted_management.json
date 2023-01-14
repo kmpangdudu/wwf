@@ -613,28 +613,16 @@
 			"var_m_until_delta_people_timestamp": {
 				"type": "String"
 			},
-			"var_m_last_success_people_datetime": {
+			"var_m_last_period_people_datetime": {
 				"type": "String"
 			},
-			"var_m_last_success_Load_people_timestamp": {
+			"var_m_last_period_people_timestamp": {
 				"type": "String"
 			},
-			"var_m_last_success_Load_survey_timestamp": {
+			"var_m_last_delta_people_datetime": {
 				"type": "String"
 			},
-			"var_m_start_delta_survey_timestamp": {
-				"type": "String"
-			},
-			"var_m_until_delta_survey_timestamp": {
-				"type": "String"
-			},
-			"var_m_period_start_survey_timestamp": {
-				"type": "String"
-			},
-			"var_m_period_until_survey_timestamp": {
-				"type": "String"
-			},
-			"var_m_last_success_survey_datetime": {
+			"var_m_last_delta_people_timestamp": {
 				"type": "String"
 			}
 		},
