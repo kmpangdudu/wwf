@@ -385,7 +385,7 @@
 							}
 						},
 						{
-							"name": "delta_start_date",
+							"name": "delta_survey_start_timestamp",
 							"description": "last success load plus 1 second as new load start.",
 							"type": "SetVariable",
 							"dependsOn": [
@@ -396,7 +396,7 @@
 									]
 								},
 								{
-									"activity": "init_last_success_load",
+									"activity": "init_last_success_load_survey",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -417,7 +417,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "delta_start_date",
+									"activity": "delta_survey_start_timestamp",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -471,15 +471,15 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_last_success_date",
+								"variableName": "var_m_last_success_Load_survey_timestamp",
 								"value": {
-									"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate\n",
+									"value": "@activity('lkp_last_success_load_survey').output.firstRow.pl_Created_timestamp_EST",
 									"type": "Expression"
 								}
 							}
 						},
 						{
-							"name": "init_last_success_load",
+							"name": "init_last_success_load_survey",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -491,8 +491,8 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_last_success_date",
-								"value": "2023-01-01"
+								"variableName": "var_m_last_success_Load_survey_timestamp",
+								"value": ""
 							}
 						},
 						{
@@ -501,7 +501,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "delta_start_date",
+									"activity": "delta_survey_start_timestamp",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -553,9 +553,47 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_last_success_date",
+								"variableName": "var_m_last_success_Load_people_timestamp",
 								"value": {
-									"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate\n",
+									"value": "@activity('lkp_last_success_load_people').output.firstRow.pl_Created_timestamp_EST",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "init_last_success_load_people",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "last_success_load_people",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_m_last_success_Load_people_timestamp",
+								"value": ""
+							}
+						},
+						{
+							"name": "delta_people_start_timestamp",
+							"description": "last success load plus 1 second as new load start.",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "last_success_load_people",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_m_start_delta_timestamp",
+								"value": {
+									"value": "@string(\n    activity('lkp_last_success_load_date').output.firstRow.nextStart_timestamp\n)",
 									"type": "Expression"
 								}
 							}
