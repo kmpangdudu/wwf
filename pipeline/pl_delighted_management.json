@@ -385,7 +385,7 @@
 							}
 						},
 						{
-							"name": "delta_start_date",
+							"name": "delta_survey_start_date",
 							"description": "last success load plus 1 second as new load start.",
 							"type": "SetVariable",
 							"dependsOn": [
@@ -417,7 +417,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "delta_start_date",
+									"activity": "delta_survey_start_date",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -502,7 +502,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "delta_start_date",
+									"activity": "delta_survey_start_date",
 									"dependencyConditions": [
 										"Failed"
 									]
