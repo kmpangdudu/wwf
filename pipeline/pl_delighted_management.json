@@ -471,15 +471,16 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_last_success_Load_survey_timestamp",
+								"variableName": "var_m_last_success_survey_datetime",
 								"value": {
-									"value": "@activity('lkp_last_success_load_survey').output.firstRow.pl_Created_timestamp_EST",
+									"value": "@activity('lkp_last_success_load_survey').output.firstRow.pl_created_datetime_UTC",
 									"type": "Expression"
 								}
 							}
 						},
 						{
 							"name": "init_last_success_load_survey_datetime",
+							"description": "default 2023-01-01",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -491,7 +492,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_last_success_people_datetime",
+								"variableName": "var_m_last_success_survey_datetime",
 								"value": "2023-01-01"
 							}
 						},
