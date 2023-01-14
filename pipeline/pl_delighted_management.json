@@ -316,7 +316,7 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "timestamp now",
+									"activity": "survey_timestamp now",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -412,7 +412,7 @@
 							}
 						},
 						{
-							"name": "timestamp now",
+							"name": "survey_timestamp now",
 							"description": "by default, it is current timestamp",
 							"type": "SetVariable",
 							"dependsOn": [
@@ -431,7 +431,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_until_delta_people_timestamp",
+								"variableName": "var_m_until_delta_survey_timestamp",
 								"value": {
 									"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
 									"type": "Expression"
@@ -443,7 +443,7 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "timestamp now",
+									"activity": "people_timestamp now",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -626,6 +626,33 @@
 								"variableName": "var_m_start_delta_people_timestamp",
 								"value": {
 									"value": "1672531201",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "people_timestamp now",
+							"description": "by default, it is current timestamp",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "delta_people_start_timestamp",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "init_people_start_timestamp",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_m_until_delta_people_timestamp",
+								"value": {
+									"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
 									"type": "Expression"
 								}
 							}
