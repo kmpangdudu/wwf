@@ -41,7 +41,7 @@
 								"waitOnCompletion": true,
 								"parameters": {
 									"par_ps_src_start_date": {
-										"value": "@variables('var_m_period_start')",
+										"value": "@variables('var_m_start_delta_timestamp')",
 										"type": "Expression"
 									},
 									"par_ps_snk_container": {
@@ -57,7 +57,7 @@
 										"type": "Expression"
 									},
 									"par_ps_src_until_date": {
-										"value": "@variables('var_m_period_until')",
+										"value": "@variables('var_m_until_delta_timestamp')",
 										"type": "Expression"
 									},
 									"par_ps_src_endpoint": {
@@ -103,6 +103,12 @@
 									"dependencyConditions": [
 										"Succeeded"
 									]
+								},
+								{
+									"activity": "force_init_start_date_timestamp",
+									"dependencyConditions": [
+										"Succeeded"
+									]
 								}
 							],
 							"userProperties": [],
@@ -120,6 +126,149 @@
 							"dependsOn": [
 								{
 									"activity": "period_until_date",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_delighted_rest_period_People",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"par_init_endpoint": {
+										"value": "@pipeline().parameters.par_m_init_endpoint",
+										"type": "Expression"
+									},
+									"receiver": {
+										"value": "@pipeline().parameters.par_m_receiver",
+										"type": "Expression"
+									},
+									"cc": {
+										"value": "@pipeline().parameters.par_m_cc",
+										"type": "Expression"
+									},
+									"par_p_start_date": {
+										"value": "@variables('var_m_period_start')",
+										"type": "Expression"
+									},
+									"par_p_until_date": {
+										"value": "@variables('var_m_period_until')",
+										"type": "Expression"
+									},
+									"par_p_API_Key": {
+										"value": "@variables('var_m_API-Key')",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "force_init_start_date_timestamp",
+							"description": "force init_start_date_timestamp to 2023-01-01\n1672549200",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "period_start_date",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_m_start_delta_timestamp",
+								"value": "1672549200"
+							}
+						},
+						{
+							"name": "force init_until_date_timestamp",
+							"description": "init_until_date_timestamp to current timestamp",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "period_until_date",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_m_until_delta_timestamp",
+								"value": {
+									"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Execute_period_load_survey_copy1",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "force init_until_date_timestamp",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_delighted_rest_period_survey",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"par_ps_src_start_date": {
+										"value": "@variables('var_m_start_delta_timestamp')",
+										"type": "Expression"
+									},
+									"par_ps_snk_container": {
+										"value": "@pipeline().parameters.par_m_snk_container",
+										"type": "Expression"
+									},
+									"par_ps_snk_dir": {
+										"value": "@pipeline().parameters.par_m_snk_dir",
+										"type": "Expression"
+									},
+									"par_ps_snk_filename": {
+										"value": "@pipeline().parameters.par_m_snk_filename",
+										"type": "Expression"
+									},
+									"par_ps_src_until_date": {
+										"value": "@variables('var_m_until_delta_timestamp')",
+										"type": "Expression"
+									},
+									"par_ps_src_endpoint": {
+										"value": "@pipeline().parameters.par_m_init_endpoint",
+										"type": "Expression"
+									},
+									"par_ps_receiver": {
+										"value": "@pipeline().parameters.par_m_receiver",
+										"type": "Expression"
+									},
+									"par_ps_cc": {
+										"value": "@pipeline().parameters.par_m_cc",
+										"type": "Expression"
+									},
+									"par_ps_API_Key": {
+										"value": "@variables('var_m_API-Key')",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Execute_period_load_people_copy1",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "force init_until_date_timestamp",
 									"dependencyConditions": [
 										"Succeeded"
 									]
