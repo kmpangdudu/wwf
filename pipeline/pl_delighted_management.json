@@ -390,7 +390,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "last_success_load",
+									"activity": "last_success_load_survey",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -459,7 +459,7 @@
 							}
 						},
 						{
-							"name": "last_success_load",
+							"name": "last_success_load_survey",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -483,7 +483,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "last_success_load",
+									"activity": "last_success_load_survey",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -538,6 +538,26 @@
 									"type": "DatasetReference"
 								},
 								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "last_success_load_people",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "lkp_last_success_load_people",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_m_last_success_date",
+								"value": {
+									"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate\n",
+									"type": "Expression"
+								}
 							}
 						}
 					]
