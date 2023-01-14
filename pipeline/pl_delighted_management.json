@@ -373,7 +373,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT \n        [pl_log_id]\n      , [pl_category]\n      , [pl_status]\n      , [pl_Createdtimestamp] as [last_timestamp]\n      , [pl_Createdtimestamp] + 1     as [nextStart_timestamp]\n      , [pl_Createdtimestamp] + 86400 as [tomorrow_timestamp]\n      , convert(varchar(10),  [pl_create_date], 112) as lastdate_short\n      , convert(varchar(10),  [pl_create_date], 23) as lastdate\n      , convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as nextdate\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'survey' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc \n",
+									"sqlReaderQuery": "SELECT top 1 \n       [pl_load_start_datetime_EST]\n      ,[pl_load_start_timestamp_EST]\n      ,[pl_load_start_datetime_UTC]\n      ,[pl_load_until_datetime_EST]\n      ,[pl_load_until_timestamp_EST]\n      ,[pl_load_until_datetime_UTC]\n\t  ,[pl_next_delta_datetime_EST]\n      ,[pl_next_delta_timestamp_EST]\n      ,[pl_next_delta_datetime_UTC]\n\t  ,[pl_created_datetime_EST]\n      ,[pl_Created_timestamp_EST]\n      ,[pl_created_datetime_UTC]\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'survey' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc \n",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
