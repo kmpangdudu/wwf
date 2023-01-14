@@ -340,10 +340,10 @@
 				"type": "String",
 				"defaultValue": "1"
 			},
-			"var_start_period_survey": {
+			"var_period_survey_start_timestamp": {
 				"type": "String"
 			},
-			"var_until_period_survey": {
+			"varil_period_survey_until_timestamp": {
 				"type": "String"
 			},
 			"var_period_API-Key": {
