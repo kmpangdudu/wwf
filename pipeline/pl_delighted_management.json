@@ -615,10 +615,10 @@
 			"var_m_last_success_people_datetime": {
 				"type": "String"
 			},
-			"var_m_last_success_Load_survey_timestamp": {
+			"var_m_last_success_Load_people_timestamp": {
 				"type": "String"
 			},
-			"var_m_last_success_Load_people_timestamp": {
+			"var_m_last_success_Load_survey_timestamp": {
 				"type": "String"
 			},
 			"var_m_start_delta_survey_timestamp": {
