@@ -4,7 +4,7 @@
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
 			{
-				"name": "check_load_type_Is_delta",
+				"name": "Is_it_delta",
 				"type": "IfCondition",
 				"dependsOn": [
 					{
