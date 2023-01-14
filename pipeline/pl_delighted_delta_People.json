@@ -247,6 +247,23 @@
 			},
 			"var_endpoint": {
 				"type": "String"
+			},
+			"var_start_timestamp_delta_people": {
+				"type": "String"
+			},
+			"var_until_timestamp_delta_people": {
+				"type": "String"
+			},
+			"var_delta_API-Key": {
+				"type": "String"
+			},
+			"var_delta_people_API_pagination": {
+				"type": "String",
+				"defaultValue": "1"
+			},
+			"var_bridge_people": {
+				"type": "String",
+				"defaultValue": "0"
 			}
 		},
 		"folder": {
