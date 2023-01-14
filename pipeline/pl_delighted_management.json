@@ -312,52 +312,6 @@
 					],
 					"ifTrueActivities": [
 						{
-							"name": "Execute delta load survey",
-							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "survey_timestamp now",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "pl_delighted_delta_survey",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"par_snk_container": {
-										"value": "@pipeline().parameters.par_m_snk_container",
-										"type": "Expression"
-									},
-									"par_snk_dir": {
-										"value": "@pipeline().parameters.par_m_snk_dir",
-										"type": "Expression"
-									},
-									"par_snk_filename": {
-										"value": "@pipeline().parameters.par_m_snk_filename",
-										"type": "Expression"
-									},
-									"par_src_endpoint": {
-										"value": "@concat(pipeline().parameters.par_m_init_endpoint\r\n,'/survey_responses.json/'\r\n)",
-										"type": "Expression"
-									},
-									"receiver": {
-										"value": "@pipeline().parameters.par_m_receiver",
-										"type": "Expression"
-									},
-									"cc": {
-										"value": "@pipeline().parameters.par_m_cc",
-										"type": "Expression"
-									}
-								}
-							}
-						},
-						{
 							"name": "lkp_last_success_load_survey",
 							"description": "logged created date will be added one day as the new loading start date.",
 							"type": "Lookup",
@@ -436,26 +390,6 @@
 									"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
 									"type": "Expression"
 								}
-							}
-						},
-						{
-							"name": "Execute_delta_people",
-							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "people_timestamp now",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "pl_delighted_delta_People",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true
 							}
 						},
 						{
