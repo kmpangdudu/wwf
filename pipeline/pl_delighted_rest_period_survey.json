@@ -202,36 +202,6 @@
 				}
 			},
 			{
-				"name": "store_period_survey",
-				"description": "store_period_survey to table",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[udsp_insert_surveytemp]",
-					"storedProcedureParameters": {
-						"r": {
-							"value": {
-								"value": "@activity('period_load_survey').output.Response",
-								"type": "Expression"
-							},
-							"type": "String"
-						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "ls_azure_sqldb",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
 				"name": "initial_var_api_pagination",
 				"type": "SetVariable",
 				"dependsOn": [],
@@ -274,7 +244,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": {
-									"value": "@concat(\n    pipeline().parameters.par_ps_src_endpoint\n    ,'survey_responses.json'\n    ,'?since=',\n    ,'&until=',\n    ,'&page=',\n)",
+									"value": "@concat(\n    pipeline().parameters.par_ps_src_endpoint\n    ,'survey_responses.json'\n    ,'?since=',variables('var_period_survey_start_timestamp')\n    ,'&until=',variables('var_period_survey_until_timestamp')\n    ,'&page=',variables('var_period_survey_api_pagination')\n)",
 									"type": "Expression"
 								},
 								"method": "GET",
@@ -330,6 +300,80 @@
 									"value": "@equals(\nvariables('var_period_survey_api_pagination')\n, '0')",
 									"type": "Expression"
 								},
+								"ifFalseActivities": [
+									{
+										"name": "store_period_survey_response",
+										"description": "store_period_survey to table",
+										"type": "SqlServerStoredProcedure",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"storedProcedureName": "[dbo].[udsp_insert_surveytemp]",
+											"storedProcedureParameters": {
+												"r": {
+													"value": {
+														"value": "@activity('period_load_survey_response').output.Response",
+														"type": "Expression"
+													},
+													"type": "String"
+												}
+											}
+										},
+										"linkedServiceName": {
+											"referenceName": "ls_azure_sqldb",
+											"type": "LinkedServiceReference"
+										}
+									},
+									{
+										"name": "move_pagination_to_bridge",
+										"description": "move_pagination_to_bridge to updating it",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "store_period_survey_response",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "var_period_bridge",
+											"value": {
+												"value": "@variables('var_period_survey_api_pagination')",
+												"type": "Expression"
+											}
+										}
+									},
+									{
+										"name": "update_pagination",
+										"description": "update_pagination",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "move_pagination_to_bridge",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "var_period_survey_api_pagination",
+											"value": {
+												"value": "@string(add(int(variables('var_period_bridge')),1))",
+												"type": "Expression"
+											}
+										}
+									}
+								],
 								"ifTrueActivities": [
 									{
 										"name": "no_page_stop_loop_period_surver",
