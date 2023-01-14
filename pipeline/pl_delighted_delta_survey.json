@@ -7,7 +7,14 @@
 				"name": "initial_var_api_pagination",
 				"description": "reset Var_API_Pagination to empty",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "lkp_last_success_load_date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var_delta_survey_API_pagination",
@@ -394,6 +401,31 @@
 					"body": {
 						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey answer from delighted processing failed at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The survey Data delta dumping failed.\"\n   }",
 						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "lkp_last_success_load_date",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT \n        [pl_log_id]\n      , [pl_category]\n      , [pl_status]\n      , [pl_Createdtimestamp] as [last_timestamp]\n      , [pl_Createdtimestamp] + 1     as [nextStart_timestamp]\n      , [pl_Createdtimestamp] + 86400 as [tomorrow_timestamp]\n      , convert(varchar(10),  [pl_create_date], 112) as lastdate_short\n      , convert(varchar(10),  [pl_create_date], 23) as lastdate\n      , convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as nextdate\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'survey' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc ",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_src_land_sql_log",
+						"type": "DatasetReference"
 					}
 				}
 			}
