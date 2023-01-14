@@ -404,7 +404,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_m_start_delta_people_timestamp",
+								"variableName": "var_m_start_delta_survey_timestamp",
 								"value": {
 									"value": "@string(\n    activity('lkp_last_success_load_date').output.firstRow.nextStart_timestamp\n)",
 									"type": "Expression"
