@@ -36,7 +36,7 @@
 					},
 					"activities": [
 						{
-							"name": "no_more_page",
+							"name": "is_it_no_more_page",
 							"description": "check whether it has more page or not",
 							"type": "IfCondition",
 							"dependsOn": [
@@ -157,7 +157,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": {
-									"value": "@concat(pipeline().parameters.par_src_endpoint\n,'?since=',variables('var_start_delta_survey')\n,'&until=',variables('var_until_delta_survey')\n,'&page=',variables('var_delta_survey_API_pagination')\n)",
+									"value": "@concat(pipeline().parameters.par_src_endpoint\n,'?since=',variables('var_start_timestamp_delta_survey')\n,'&until=',variables('var_until_timestamp_delta_survey')\n,'&page=',variables('var_delta_survey_API_pagination')\n)",
 									"type": "Expression"
 								},
 								"method": "GET",
@@ -223,7 +223,7 @@
 					"storedProcedureName": "[land].[udsp_logpipeline]",
 					"storedProcedureParameters": {
 						"pl_category": {
-							"value": "survey",
+							"value": "delighted",
 							"type": "String"
 						},
 						"pl_name": {
@@ -250,7 +250,7 @@
 						},
 						"pl_load_start_date": {
 							"value": {
-								"value": "@pipeline().parameters.par_delta_last_load",
+								"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -293,7 +293,7 @@
 					"storedProcedureName": "[land].[udsp_logpipeline]",
 					"storedProcedureParameters": {
 						"pl_category": {
-							"value": "survey",
+							"value": "delighted",
 							"type": "String"
 						},
 						"pl_name": {
@@ -320,7 +320,7 @@
 						},
 						"pl_load_start_date": {
 							"value": {
-								"value": "@pipeline().parameters.par_delta_last_load",
+								"value": "@activity('lkp_last_success_load_date').output.firstRow.lastdate\n",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -422,16 +422,13 @@
 			"cc": {
 				"type": "string",
 				"defaultValue": "erjun.chen@teamfus.ca,echen@jbssa.com"
-			},
-			"par_delta_last_load": {
-				"type": "string"
 			}
 		},
 		"variables": {
-			"var_start_delta_survey": {
+			"var_start_timestamp_delta_survey": {
 				"type": "String"
 			},
-			"var_until_delta_survey": {
+			"var_until_timestamp_delta_survey": {
 				"type": "String"
 			},
 			"var_delta_API-Key": {
