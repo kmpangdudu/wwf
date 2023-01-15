@@ -10,7 +10,7 @@
 				"typeProperties": {
 					"variableName": "var_endpoint",
 					"value": {
-						"value": "@concat(pipeline().parameters.par_init_endpoint,'people.json/')",
+						"value": "@pipeline().parameters.par_init_endpoint",
 						"type": "Expression"
 					}
 				}
