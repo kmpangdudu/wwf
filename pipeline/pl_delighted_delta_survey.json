@@ -31,7 +31,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(variables('var_delta_people_pagination')\n, '0'\n)",
+						"value": "@equals(variables('var_delta_survey_pagination')\n, '0'\n)",
 						"type": "Expression"
 					},
 					"activities": [
@@ -157,7 +157,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": {
-									"value": "@concat(pipeline().parameters.par_src_endpoint\n,'?since=',variables('var_start_timestamp_delta_survey')\n,'&until=',variables('var_until_timestamp_delta_survey')\n,'&page=',variables('var_delta_survey_API_pagination')\n)",
+									"value": "@concat(pipeline().parameters.par_src_endpoint\n,'?since=',variables('var_start_timestamp_delta_survey')\n,'&until=',variables('var_until_timestamp_delta_survey')\n,'&page=',variables('var_delta_survey_pagination')\n)",
 									"type": "Expression"
 								},
 								"method": "GET",
