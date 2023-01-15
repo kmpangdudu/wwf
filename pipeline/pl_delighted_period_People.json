@@ -252,7 +252,7 @@
 				"type": "string",
 				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
 			},
-			"par_p_start_delat_people_timestap": {
+			"par_p_start_delat_people_timestamp": {
 				"type": "string"
 			},
 			"par_p_start_delta_people_datetime": {
