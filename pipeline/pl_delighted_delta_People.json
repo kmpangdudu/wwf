@@ -69,42 +69,6 @@
 							}
 						},
 						{
-							"name": "Stored_response_to_tb",
-							"type": "SqlServerStoredProcedure",
-							"dependsOn": [
-								{
-									"activity": "list_people",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"storedProcedureName": "[dbo].[udsp_insert_peopletemp]",
-								"storedProcedureParameters": {
-									"r": {
-										"value": {
-											"value": "@activity('list_people').output.Response",
-											"type": "Expression"
-										},
-										"type": "String"
-									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "ls_azure_sqldb",
-								"type": "LinkedServiceReference"
-							}
-						},
-						{
 							"name": "reset_endpoint",
 							"type": "SetVariable",
 							"dependsOn": [
@@ -182,6 +146,69 @@
 												"value": "@substring(variables('response_header'),1\n,sub(length(variables('response_header')),14)\n)\n ",
 												"type": "Expression"
 											}
+										}
+									}
+								]
+							}
+						},
+						{
+							"name": "is_respone_empty",
+							"description": "check to see if response empty",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "list_people",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(activity('list_people').output.Response\n,'[]'\n)\n",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Stored_response_to_tb",
+										"type": "SqlServerStoredProcedure",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"storedProcedureName": "[dbo].[udsp_insert_peopletemp]",
+											"storedProcedureParameters": {
+												"r": {
+													"value": {
+														"value": "@activity('list_people').output.Response",
+														"type": "Expression"
+													},
+													"type": "String"
+												}
+											}
+										},
+										"linkedServiceName": {
+											"referenceName": "ls_azure_sqldb",
+											"type": "LinkedServiceReference"
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "reset_endpoint_copy1",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "var_endpoint",
+											"value": "stop"
 										}
 									}
 								]
