@@ -492,6 +492,70 @@
 									}
 								}
 							}
+						},
+						{
+							"name": "combine_survey_pages",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Execute delta load survey",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "truncate table dbo.surveyRaw;\n\ninsert into dbo.surveyRaw \n                 select string_agg(surveyRaw, '<<<--->>>') within group (order by surveyRaw_id) as  surveyRaw\n                           from  dbo.surveytemp ;\n\nupdate   [dbo].[surveyRaw]    set [surveyRaw] = REPLACE ([surveyRaw], ']<<<--->>>[',',') ;\n\nselect 1;\n\n",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "ds_src_land_sql_log",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "combine_people_pages",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Execute delta load people",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "truncate table [dbo].[peopleRaw];\n\ninsert into [dbo].[peopleRaw]  ([peopleRaw]) \n   select string_agg( [peoplebody],'<<<--->>>') within group (order by peopletemp_id) as peopleRaw  from   [dbo].[peopletemp];\n\nupdate [dbo].[peopleRaw]  set [peopleRaw] = REPLACE ([peopleRaw], ']<<<--->>>[',',');\n\nselect 1;\n\n\n\n ",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "ds_src_land_sql_log",
+									"type": "DatasetReference"
+								}
+							}
 						}
 					]
 				}
