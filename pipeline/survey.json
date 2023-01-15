@@ -5,7 +5,14 @@
 			{
 				"name": "survey",
 				"type": "WebActivity",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "delta survey Success notice_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -39,7 +46,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "API_Key",
+						"activity": "delta survey Success notice",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -59,7 +66,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "survey",
+						"activity": "Saving API-Key",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -79,6 +86,57 @@
 					"authentication": {
 						"type": "MSI",
 						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "delta survey Success notice",
+				"description": "successful lod survey notification",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "survey",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
+					"method": "POST",
+					"body": {
+						"value": "{\n    \"dataFactoryName\" : pipeline().DataFactory, \n    \"message\" : \"The delta dumping survey from delighted is success at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" :pipeline().Pipeline, \n    \"receiver\" : pipeline().parameters.par_m_receiver,\n    \"cc\":pipeline().parameters.par_m_cc,\n    \"subject\" : \"No-Reply: The survey Data delta dumping success.\"\n   }",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "delta survey Success notice_copy1",
+				"description": "successful lod survey notification",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
+					"method": "POST",
+					"body": {
+						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey from delighted is success at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" :\"@{pipeline().Pipeline}\", \n    \"receiver\" : pipeline().parameters.par_m_receiver,\n    \"cc\":pipeline().parameters.par_m_cc,\n    \"subject\" : \"No-Reply: The survey Data delta dumping success.\"\n   }",
+						"type": "Expression"
 					}
 				}
 			}
