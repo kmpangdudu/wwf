@@ -539,6 +539,10 @@
 									"par_c1_start_delta_survey_datetime": {
 										"value": "@variables('var_m_start_delta_survey_datetime')",
 										"type": "Expression"
+									},
+									"par_api_key": {
+										"value": "@variables('var_m_API-Key')",
+										"type": "Expression"
 									}
 								}
 							}
