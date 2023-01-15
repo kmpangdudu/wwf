@@ -5,19 +5,12 @@
 			{
 				"name": "initial_endpoint",
 				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "initial_var_delta_people_API_pagination",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var_endpoint",
 					"value": {
-						"value": "@concat(pipeline().parameters.par_init_endpoint,'people.json/')",
+						"value": "@pipeline().parameters.par_init_endpoint",
 						"type": "Expression"
 					}
 				}
@@ -206,27 +199,6 @@
 				}
 			},
 			{
-				"name": "initial_var_delta_people_API_pagination",
-				"description": "initial_var_delta_people_API_pagination",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "lkp_last_success_load_date",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_delta_people_API_pagination",
-					"value": {
-						"value": "1",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "log_delta_people_success",
 				"description": "log_delta_people_success",
 				"type": "SqlServerStoredProcedure",
@@ -358,31 +330,6 @@
 					"referenceName": "ls_azure_sqldb",
 					"type": "LinkedServiceReference"
 				}
-			},
-			{
-				"name": "lkp_last_success_load_date",
-				"type": "Lookup",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT \n        [pl_log_id]\n      , [pl_category]\n      , [pl_status]\n      , [pl_Createdtimestamp] as [last_timestamp]\n      , [pl_Createdtimestamp] + 1     as [nextStart_timestamp]\n      , [pl_Createdtimestamp] + 86400 as [tomorrow_timestamp]\n      , convert(varchar(10),  [pl_create_date], 112) as lastdate_short\n      , convert(varchar(10),  [pl_create_date], 23) as lastdate\n      , convert(varchar(10), dateadd(day, 1, [pl_create_date]), 23) as nextdate\n  FROM [land].[pipeline_activity_log]\n  where [pl_category] = 'people' and [pl_status]  = 1 and pl_load_type = 'delta'\n  order by [pl_log_id] desc ",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "ds_src_land_sql_log",
-						"type": "DatasetReference"
-					}
-				}
 			}
 		],
 		"parameters": {
@@ -392,16 +339,16 @@
 			},
 			"receiver": {
 				"type": "string",
-				"defaultValue": "chenerjun@gmail.com"
+				"defaultValue": "chenerjun@live.com"
 			},
 			"cc": {
 				"type": "string",
 				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
 			},
-			"par_p_start_date": {
+			"par_c1_start_delta_people_timestamp": {
 				"type": "string"
 			},
-			"par_p_until_date": {
+			"par_c1_start_delta_people_datetime": {
 				"type": "string"
 			},
 			"par_p_API_Key": {
