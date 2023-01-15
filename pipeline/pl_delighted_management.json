@@ -448,8 +448,8 @@
 							}
 						},
 						{
-							"name": "placeholder",
-							"type": "Wait",
+							"name": "Execute delta load people",
+							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
 									"activity": "delta_people_start_timestamp",
@@ -460,7 +460,33 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"waitTimeInSeconds": 1
+								"pipeline": {
+									"referenceName": "pl_delighted_period_People",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"par_init_endpoint": {
+										"value": "@concat(pipeline().parameters.par_m_init_endpoint\n,'people.json/'\n)",
+										"type": "Expression"
+									},
+									"receiver": {
+										"value": "@pipeline().parameters.par_m_receiver",
+										"type": "Expression"
+									},
+									"cc": {
+										"value": "@pipeline().parameters.par_m_cc",
+										"type": "Expression"
+									},
+									"par_p_start_date": {
+										"value": "@variables('var_m_start_delta_people_timestamp')",
+										"type": "Expression"
+									},
+									"par_p_API_Key": {
+										"value": "@variables('var_m_API-Key')",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
