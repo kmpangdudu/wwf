@@ -685,7 +685,7 @@
 			},
 			"par_m_receiver": {
 				"type": "string",
-				"defaultValue": "chenerjun@gmail.com"
+				"defaultValue": "chenerjun@live.com"
 			},
 			"par_m_cc": {
 				"type": "string",
