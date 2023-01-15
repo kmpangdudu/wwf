@@ -488,14 +488,6 @@
 										"value": "@variables('var_m_until_delta_survey_timestamp')",
 										"type": "Expression"
 									},
-									"par_c1_last_delta_survey_datetime": {
-										"value": "@variables('var_m_last_delta_survey_datetime')",
-										"type": "Expression"
-									},
-									"par_c1_last_delta_survey_timestamp": {
-										"value": "@variables('var_m_last_delta_survey_timestamp')",
-										"type": "Expression"
-									},
 									"par_c1_start_delta_survey_datetime": {
 										"value": "@variables('var_m_start_delta_survey_datetime')",
 										"type": "Expression"
