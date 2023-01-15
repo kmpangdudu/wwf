@@ -234,7 +234,10 @@
 							"type": "String"
 						},
 						"pl_load_start_date": {
-							"value": "",
+							"value": {
+								"value": "@pipeline().parameters.par_c1_start_delta_survey_datetime",
+								"type": "Expression"
+							},
 							"type": "DateTime"
 						},
 						"pl_load_type": {
