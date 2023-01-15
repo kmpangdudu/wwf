@@ -646,7 +646,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "var_m_start_delta_survey_datetime",
-								"value": ""
+								"value": {
+									"value": "@addSeconds(\nactivity('lkp_last_success_load_survey').output.firstRow.pl_created_datetime_UTC\n,1)",
+									"type": "Expression"
+								}
 							}
 						},
 						{
@@ -670,7 +673,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "var_m_start_delta_people_datetime",
-								"value": ""
+								"value": {
+									"value": "@addSeconds(\nactivity('lkp_last_success_load_people').output.firstRow.pl_created_datetime_UTC\n,1\n)",
+									"type": "Expression"
+								}
 							}
 						},
 						{
@@ -704,7 +710,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "var_m_start_delta_survey_datetime",
-								"value": ""
+								"value": "2023-01-01"
 							}
 						},
 						{
