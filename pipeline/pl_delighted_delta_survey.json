@@ -453,6 +453,10 @@
 			"var_bridge": {
 				"type": "String",
 				"defaultValue": "0"
+			},
+			"var_delta_people_API_pagination": {
+				"type": "String",
+				"defaultValue": "1"
 			}
 		},
 		"folder": {
