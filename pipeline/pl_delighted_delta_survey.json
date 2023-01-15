@@ -31,7 +31,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(variables('var_delta_survey_API_pagination')\n, '0'\n)",
+						"value": "@equals(variables('var_delta_people_pagination')\n, '0'\n)",
 						"type": "Expression"
 					},
 					"activities": [
