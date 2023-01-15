@@ -69,26 +69,6 @@
 							}
 						},
 						{
-							"name": "get_response_header",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "list_people",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "response_header",
-								"value": {
-									"value": "@activity('list_people').output.ADFWebActivityResponseHeaders.Link",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "Stored_response_to_tb",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
@@ -125,43 +105,6 @@
 							}
 						},
 						{
-							"name": "update_endpoint",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "get_response_header",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_endpoint",
-								"value": {
-									"value": "@substring(variables('response_header'),1\n,sub(length(variables('response_header')),14)\n)\n ",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "reset_endpoint_to_stop_loop",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "get_response_header",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_endpoint",
-								"value": "stop"
-							}
-						},
-						{
 							"name": "reset_endpoint",
 							"type": "SetVariable",
 							"dependsOn": [
@@ -176,6 +119,61 @@
 							"typeProperties": {
 								"variableName": "var_endpoint",
 								"value": "stop"
+							}
+						},
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "list_people",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"ifFalseActivities": [
+									{
+										"name": "reset_endpoint_to_stop_loop",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "var_endpoint",
+											"value": "stop"
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "get_response_header",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "response_header",
+											"value": {
+												"value": "@activity('list_people').output.ADFWebActivityResponseHeaders.Link",
+												"type": "Expression"
+											}
+										}
+									},
+									{
+										"name": "update_endpoint",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "var_endpoint",
+											"value": {
+												"value": "@substring(variables('response_header'),1\n,sub(length(variables('response_header')),14)\n)\n ",
+												"type": "Expression"
+											}
+										}
+									}
+								]
 							}
 						}
 					],
