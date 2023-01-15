@@ -360,27 +360,6 @@
 							}
 						},
 						{
-							"name": "survey_timestamp now",
-							"description": "by default, it is current timestamp as a until datetime",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "delta_survey_start_timestamp",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_until_delta_survey_timestamp",
-								"value": {
-									"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "lkp_last_success_load_people",
 							"description": "logged created date will be added one day as the new loading start date.",
 							"type": "Lookup",
@@ -429,32 +408,11 @@
 							}
 						},
 						{
-							"name": "people_timestamp now",
-							"description": "by default, it is current timestamp as a until datetime",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "delta_people_start_timestamp",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_until_delta_people_timestamp",
-								"value": {
-									"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "Execute delta load survey",
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "survey_timestamp now",
+									"activity": "delta_survey_start_timestamp",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -482,10 +440,6 @@
 									},
 									"par_c1_start_delta_survey_timestamp": {
 										"value": "@variables('var_m_start_delta_survey_timestamp')",
-										"type": "Expression"
-									},
-									"par_c1_until_delta_survey_timestamp": {
-										"value": "@variables('var_m_until_delta_survey_timestamp')",
 										"type": "Expression"
 									},
 									"par_c1_start_delta_survey_datetime": {
@@ -546,7 +500,7 @@
 							"type": "Wait",
 							"dependsOn": [
 								{
-									"activity": "people_timestamp now",
+									"activity": "delta_people_start_timestamp",
 									"dependencyConditions": [
 										"Succeeded"
 									]

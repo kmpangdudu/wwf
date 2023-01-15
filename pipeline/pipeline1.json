@@ -103,6 +103,34 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "survey_timestamp now",
+				"description": "by default, it is current timestamp as a until datetime",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_m_until_delta_survey_timestamp",
+					"value": {
+						"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "people_timestamp now",
+				"description": "by default, it is current timestamp as a until datetime",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_m_until_delta_people_timestamp",
+					"value": {
+						"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"folder": {
