@@ -267,7 +267,7 @@
 						},
 						"pl_status": {
 							"value": "1",
-							"type": "Boolean"
+							"type": "Int32"
 						}
 					}
 				},
