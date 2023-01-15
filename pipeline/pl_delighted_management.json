@@ -630,7 +630,10 @@
 							"description": "last success load plus 1 second as new load start.",
 							"type": "SetVariable",
 							"dependsOn": [],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": ""
+							}
 						}
 					]
 				}
@@ -765,6 +768,18 @@
 				"type": "String"
 			},
 			"var_m_last_delta_survey_timestamp": {
+				"type": "String"
+			},
+			"var_m_start_delta_survey_datetime": {
+				"type": "String"
+			},
+			"var_m_period_start_survey_datetime": {
+				"type": "String"
+			},
+			"var_m_start_delta_people_datetime": {
+				"type": "String"
+			},
+			"var_m_period_start_people_datetime": {
 				"type": "String"
 			}
 		},
