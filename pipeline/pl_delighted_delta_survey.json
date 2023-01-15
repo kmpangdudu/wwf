@@ -171,7 +171,7 @@
 								"authentication": {
 									"type": "Basic",
 									"username": {
-										"value": "@variables('var_delta_API-Key')",
+										"value": "@pipeline().parameters.par_api_key",
 										"type": "Expression"
 									},
 									"password": {
