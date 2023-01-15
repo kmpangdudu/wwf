@@ -696,23 +696,26 @@
 			},
 			"var_m_start_delta_people_timestamp": {
 				"type": "String",
-				"defaultValue": "1672531201"
+				"defaultValue": "1672531200"
 			},
 			"var_m_until_delta_people_timestamp": {
 				"type": "String"
 			},
 			"var_m_last_period_people_datetime": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "2023-01-01"
 			},
 			"var_m_last_period_people_timestamp": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "1672531200"
 			},
 			"var_m_last_delta_people_datetime": {
 				"type": "String",
 				"defaultValue": "2023-01-01"
 			},
 			"var_m_last_delta_people_timestamp": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "1672531200"
 			},
 			"var_m_period_start_survey_timestamp": {
 				"type": "String"
@@ -722,10 +725,11 @@
 			},
 			"var_m_start_delta_survey_timestamp": {
 				"type": "String",
-				"defaultValue": "1672531201"
+				"defaultValue": "1672531200"
 			},
 			"var_m_until_delta_survey_timestamp": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "1672531200"
 			},
 			"var_m_last_period_survey_datetime": {
 				"type": "String"
@@ -738,7 +742,8 @@
 				"defaultValue": "2023-01-01"
 			},
 			"var_m_last_delta_survey_timestamp": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "1672531200"
 			},
 			"var_m_start_delta_survey_datetime": {
 				"type": "String",
