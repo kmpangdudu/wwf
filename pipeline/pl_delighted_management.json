@@ -348,12 +348,6 @@
 									"dependencyConditions": [
 										"Succeeded"
 									]
-								},
-								{
-									"activity": "init_delta_survey_start_datetime",
-									"dependencyConditions": [
-										"Succeeded"
-									]
 								}
 							],
 							"userProperties": [],
@@ -374,12 +368,6 @@
 									"activity": "delta_survey_start_timestamp",
 									"dependencyConditions": [
 										"Succeeded"
-									]
-								},
-								{
-									"activity": "init_survey_start_timestamp",
-									"dependencyConditions": [
-										"Failed"
 									]
 								}
 							],
@@ -408,45 +396,6 @@
 								"variableName": "var_m_last_delta_survey_datetime",
 								"value": {
 									"value": "@activity('lkp_last_success_load_survey').output.firstRow.pl_created_datetime_UTC",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "init_last_success_load_survey_datetime",
-							"description": "default 2023-01-01",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "last_success_delta_survey_datetime",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_last_delta_survey_datetime",
-								"value": "2023-01-01"
-							}
-						},
-						{
-							"name": "init_survey_start_timestamp",
-							"description": "init to 2023-01-01 timestamp 1672549200 \nplus 1 ",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "delta_survey_start_timestamp",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_start_delta_survey_timestamp",
-								"value": {
-									"value": "1672531201",
 									"type": "Expression"
 								}
 							}
@@ -499,36 +448,12 @@
 							}
 						},
 						{
-							"name": "init_last_success_load_people_datetime",
-							"description": "default 2023-01-01",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "last_success_delta_people_datetime",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_last_delta_people_datetime",
-								"value": "2023-01-01"
-							}
-						},
-						{
 							"name": "delta_people_start_timestamp",
 							"description": "last success load plus 1 second as new load start.",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
 									"activity": "delta_people_start_datetime",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								},
-								{
-									"activity": "init_delta_people_start_datetime",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -544,39 +469,12 @@
 							}
 						},
 						{
-							"name": "init_people_start_timestamp",
-							"description": "init to 2023-01-01 timestamp 1672549200 \nplus 1 ",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "delta_people_start_timestamp",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_start_delta_people_timestamp",
-								"value": {
-									"value": "1672531201",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "people_timestamp now",
 							"description": "by default, it is current timestamp",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
 									"activity": "delta_people_start_timestamp",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								},
-								{
-									"activity": "init_people_start_timestamp",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -655,12 +553,6 @@
 									"dependencyConditions": [
 										"Succeeded"
 									]
-								},
-								{
-									"activity": "init_last_success_load_survey_datetime",
-									"dependencyConditions": [
-										"Succeeded"
-									]
 								}
 							],
 							"userProperties": [],
@@ -679,12 +571,6 @@
 							"dependsOn": [
 								{
 									"activity": "last_success_delta_people_datetime",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								},
-								{
-									"activity": "init_last_success_load_people_datetime",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -713,42 +599,6 @@
 							"userProperties": [],
 							"typeProperties": {
 								"waitTimeInSeconds": 1
-							}
-						},
-						{
-							"name": "init_delta_survey_start_datetime",
-							"description": "last success load plus 1 second as new load start.",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "delta_survey_start_datetime",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_start_delta_survey_datetime",
-								"value": "2023-01-01"
-							}
-						},
-						{
-							"name": "init_delta_people_start_datetime",
-							"description": "last success load plus 1 second as new load start.",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "delta_people_start_datetime",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_start_delta_people_datetime",
-								"value": "2023-01-01"
 							}
 						}
 					]
@@ -845,7 +695,8 @@
 				"type": "String"
 			},
 			"var_m_start_delta_people_timestamp": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "1672531201"
 			},
 			"var_m_until_delta_people_timestamp": {
 				"type": "String"
@@ -857,7 +708,8 @@
 				"type": "String"
 			},
 			"var_m_last_delta_people_datetime": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "2023-01-01"
 			},
 			"var_m_last_delta_people_timestamp": {
 				"type": "String"
@@ -869,7 +721,8 @@
 				"type": "String"
 			},
 			"var_m_start_delta_survey_timestamp": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "1672531201"
 			},
 			"var_m_until_delta_survey_timestamp": {
 				"type": "String"
@@ -881,13 +734,15 @@
 				"type": "String"
 			},
 			"var_m_last_delta_survey_datetime": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "2023-01-01"
 			},
 			"var_m_last_delta_survey_timestamp": {
 				"type": "String"
 			},
 			"var_m_start_delta_survey_datetime": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "2023-01-01"
 			},
 			"var_m_period_start_survey_datetime": {
 				"type": "String"
