@@ -41,7 +41,7 @@
 							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "delta_survey_response",
+									"activity": "delta_survey",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -144,7 +144,7 @@
 							}
 						},
 						{
-							"name": "delta_survey_response",
+							"name": "delta_survey",
 							"type": "WebActivity",
 							"dependsOn": [],
 							"policy": {
@@ -183,7 +183,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "delta_survey_response",
+									"activity": "delta_survey",
 									"dependencyConditions": [
 										"Failed"
 									]
