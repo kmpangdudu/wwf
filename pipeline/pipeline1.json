@@ -111,7 +111,7 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "var_m_until_delta_survey_timestamp",
+					"variableName": "whatever ",
 					"value": {
 						"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
 						"type": "Expression"
@@ -133,6 +133,11 @@
 				}
 			}
 		],
+		"variables": {
+			"whatever ": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "land/test"
 		},
