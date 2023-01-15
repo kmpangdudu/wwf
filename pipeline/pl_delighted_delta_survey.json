@@ -4,13 +4,13 @@
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
 			{
-				"name": "initial_var_api_pagination",
+				"name": "initial_var_survey_pagination",
 				"description": "reset Var_API_Pagination to 1 default",
 				"type": "SetVariable",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "var_delta_survey_API_pagination",
+					"variableName": "var_delta_survey_pagination",
 					"value": {
 						"value": "1",
 						"type": "Expression"
@@ -22,7 +22,7 @@
 				"type": "Until",
 				"dependsOn": [
 					{
-						"activity": "initial_var_api_pagination",
+						"activity": "initial_var_survey_pagination",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -191,7 +191,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "var_delta_survey_API_pagination",
+								"variableName": "var_delta_survey_pagination",
 								"value": "0"
 							}
 						}
@@ -446,7 +446,7 @@
 			"var_delta_API-Key": {
 				"type": "String"
 			},
-			"var_delta_survey_API_pagination": {
+			"var_delta_survey_pagination": {
 				"type": "String",
 				"defaultValue": "1"
 			},
@@ -454,7 +454,7 @@
 				"type": "String",
 				"defaultValue": "0"
 			},
-			"var_delta_people_API_pagination": {
+			"var_delta_people_pagination": {
 				"type": "String",
 				"defaultValue": "1"
 			}
