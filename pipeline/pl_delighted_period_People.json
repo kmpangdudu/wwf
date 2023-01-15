@@ -246,7 +246,7 @@
 			},
 			"receiver": {
 				"type": "string",
-				"defaultValue": "chenerjun@gmail.com"
+				"defaultValue": "chenerjun@live.com"
 			},
 			"cc": {
 				"type": "string",
