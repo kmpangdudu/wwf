@@ -1,0 +1,51 @@
+{
+	"name": "survey",
+	"properties": {
+		"activities": [
+			{
+				"name": "survey",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat('https://api.delighted.com/v1/survey_responses.json?'\n, 'per_page=',pipeline().parameters.per_page\n, '&since=',pipeline().parameters.since\n)",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"authentication": {
+						"type": "Basic",
+						"username": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ",
+						"password": {
+							"type": "AzureKeyVaultSecret",
+							"store": {
+								"referenceName": "ls_fusedata_AzureKeyVault",
+								"type": "LinkedServiceReference"
+							},
+							"secretName": "Delighted"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"per_page": {
+				"type": "string"
+			},
+			"since": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "land/test"
+		},
+		"annotations": []
+	}
+}
