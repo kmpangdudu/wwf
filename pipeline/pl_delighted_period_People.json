@@ -47,7 +47,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": {
-									"value": "@concat(variables('var_endpoint'),'?'\n, 'since=', pipeline().parameters.par_p_start_date\n, '&until=', pipeline().parameters.par_p_until_date\n)",
+									"value": "@concat(variables('var_endpoint'),'?'\n, 'since=', pipeline().parameters.par_p_start_delat_people_timestamp\n, '&until=', string(div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000))\n)",
 									"type": "Expression"
 								},
 								"method": "GET",
