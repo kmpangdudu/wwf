@@ -364,7 +364,7 @@
 		"parameters": {
 			"par_init_endpoint": {
 				"type": "string",
-				"defaultValue": "https://api.delighted.com/v1/"
+				"defaultValue": "https://api.delighted.com/v1/people.json"
 			},
 			"receiver": {
 				"type": "string",
