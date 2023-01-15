@@ -425,6 +425,9 @@
 			},
 			"par_c1_start_delta_survey_datetime": {
 				"type": "string"
+			},
+			"par_api_key": {
+				"type": "string"
 			}
 		},
 		"variables": {
