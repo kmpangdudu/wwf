@@ -322,7 +322,7 @@
 						},
 						"pl_status": {
 							"value": "0",
-							"type": "Boolean"
+							"type": "Int32"
 						}
 					}
 				},
