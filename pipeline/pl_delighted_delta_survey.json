@@ -164,7 +164,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": {
-									"value": "@concat(pipeline().parameters.par_src_endpoint\n,'?since=',variables('var_start_timestamp_delta_survey')\n,'&until=',string(div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000))\n,'&page=',variables('var_delta_survey_pagination')\n)",
+									"value": "@concat(pipeline().parameters.par_src_endpoint\n,'?since=',pipeline().parameters.par_c1_start_delta_survey_timestamp\n,'&until=',string(div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000))\n,'&page=',variables('var_delta_survey_pagination')\n)",
 									"type": "Expression"
 								},
 								"method": "GET",
