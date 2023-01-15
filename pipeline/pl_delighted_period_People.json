@@ -209,7 +209,56 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[land].[udsp_logpipeline]",
+					"storedProcedureParameters": {
+						"adf_name": {
+							"value": {
+								"value": "@pipeline().DataFactory",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"pl_category": {
+							"value": "people",
+							"type": "String"
+						},
+						"pl_load_start_date": {
+							"value": {
+								"value": "@pipeline().parameters.par_p_start_delta_people_datetime",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"pl_load_type": {
+							"value": "delta",
+							"type": "String"
+						},
+						"pl_load_until_date": {
+							"value": {
+								"value": "@utcNow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"pl_name": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"pl_status": {
+							"value": "1",
+							"type": "Boolean"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sqldb",
+					"type": "LinkedServiceReference"
+				}
 			},
 			{
 				"name": "log delta people faild",
@@ -229,7 +278,44 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[land].[udsp_logpipeline]",
+					"storedProcedureParameters": {
+						"adf_name": {
+							"value": "",
+							"type": "String"
+						},
+						"pl_category": {
+							"value": "",
+							"type": "String"
+						},
+						"pl_load_start_date": {
+							"value": "",
+							"type": "DateTime"
+						},
+						"pl_load_type": {
+							"value": "",
+							"type": "String"
+						},
+						"pl_load_until_date": {
+							"value": "",
+							"type": "DateTime"
+						},
+						"pl_name": {
+							"value": "",
+							"type": "String"
+						},
+						"pl_status": {
+							"value": "",
+							"type": "Boolean"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sqldb",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"parameters": {
