@@ -1,5 +1,5 @@
 {
-	"name": "pl_delighted_management",
+	"name": "pl_API_Manager",
 	"properties": {
 		"description": "Listing survey responses from delighted rest api",
 		"activities": [
