@@ -245,7 +245,10 @@
 							"type": "String"
 						},
 						"pl_load_until_date": {
-							"value": "",
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
 							"type": "DateTime"
 						},
 						"pl_name": {
@@ -317,14 +320,14 @@
 						},
 						"pl_load_start_date": {
 							"value": {
-								"value": "@activity('lkp_last_success_load_date').output.firstRow.last_timestamp\n",
+								"value": "@pipeline().parameters.par_c1_start_delta_survey_datetime",
 								"type": "Expression"
 							},
 							"type": "String"
 						},
 						"pl_load_until_date": {
 							"value": {
-								"value": "@formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyy-MM-dd')",
+								"value": "@utcNow()",
 								"type": "Expression"
 							},
 							"type": "String"
