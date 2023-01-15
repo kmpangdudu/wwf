@@ -222,9 +222,28 @@
 				"typeProperties": {
 					"storedProcedureName": "[land].[udsp_logpipeline]",
 					"storedProcedureParameters": {
+						"adf_name": {
+							"value": {
+								"value": "@pipeline().DataFactory",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
 						"pl_category": {
 							"value": "survey",
 							"type": "String"
+						},
+						"pl_load_start_date": {
+							"value": "",
+							"type": "DateTime"
+						},
+						"pl_load_type": {
+							"value": "delta",
+							"type": "String"
+						},
+						"pl_load_until_date": {
+							"value": "",
+							"type": "DateTime"
 						},
 						"pl_name": {
 							"value": {
@@ -233,34 +252,9 @@
 							},
 							"type": "String"
 						},
-						"adf_name": {
-							"value": {
-								"value": "@pipeline().DataFactory",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
 						"pl_status": {
 							"value": "1",
-							"type": "Int32"
-						},
-						"pl_load_type": {
-							"value": "delta",
-							"type": "String"
-						},
-						"pl_load_start_date": {
-							"value": {
-								"value": "@activity('lkp_last_success_load_date').output.firstRow.last_timestamp",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"pl_load_until_date": {
-							"value": {
-								"value": "@formatDateTime(convertFromUtc(utcNow(), 'Eastern Standard Time'),\r\n'yyyy-MM-dd'\r\n)",
-								"type": "Expression"
-							},
-							"type": "String"
+							"type": "Boolean"
 						}
 					}
 				},
