@@ -37,7 +37,14 @@
 			{
 				"name": "Saving API-Key",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "API_Key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var_delta_API-Key",
@@ -50,7 +57,14 @@
 			{
 				"name": "API_Key",
 				"type": "WebActivity",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "survey",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,

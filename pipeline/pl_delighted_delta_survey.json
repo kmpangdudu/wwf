@@ -7,14 +7,7 @@
 				"name": "initial_var_survey_pagination",
 				"description": "reset Var_API_Pagination to 1 default",
 				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Saving API-Key",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var_delta_survey_pagination",
@@ -372,47 +365,6 @@
 					"body": {
 						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey answer from delighted processing failed at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.receiver}\" ,\n    \"cc\":\"@{pipeline().parameters.cc}\",\n    \"subject\" : \"No-Reply: The survey Data delta dumping failed.\"\n   }",
 						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Saving API-Key",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "API_Key",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_delta_API-Key",
-					"value": {
-						"value": "@activity('API_Key').output.value",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "API_Key",
-				"type": "WebActivity",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://kv-wildfork-nonprod.vault.azure.net/secrets/delighted-apikey/177d9c82363448c7a5b3a7da1714a128?api-version=7.0",
-					"method": "GET",
-					"authentication": {
-						"type": "MSI",
-						"resource": "https://vault.azure.net"
 					}
 				}
 			}
