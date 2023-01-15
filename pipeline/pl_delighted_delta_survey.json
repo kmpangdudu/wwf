@@ -90,7 +90,7 @@
 										"typeProperties": {
 											"variableName": "var_bridge",
 											"value": {
-												"value": "@variables('var_delta_survey_API_pagination')",
+												"value": "@variables('var_delta_survey_pagination')",
 												"type": "Expression"
 											}
 										}
