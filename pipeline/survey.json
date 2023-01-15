@@ -7,7 +7,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "delta survey Success notice_copy1",
+						"activity": "If Condition1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -46,7 +46,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "delta survey Success notice",
+						"activity": "API_Key",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -66,7 +66,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "Saving API-Key",
+						"activity": "survey",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -90,37 +90,7 @@
 				}
 			},
 			{
-				"name": "delta survey Success notice",
-				"description": "successful lod survey notification",
-				"type": "WebActivity",
-				"dependsOn": [
-					{
-						"activity": "survey",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
-					"method": "POST",
-					"body": {
-						"value": "{\n    \"dataFactoryName\" : pipeline().DataFactory, \n    \"message\" : \"The delta dumping survey from delighted is success at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" :pipeline().Pipeline, \n    \"receiver\" : pipeline().parameters.par_m_receiver,\n    \"cc\":pipeline().parameters.par_m_cc,\n    \"subject\" : \"No-Reply: The survey Data delta dumping success.\"\n   }",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "delta survey Success notice_copy1",
-				"description": "successful lod survey notification",
+				"name": "people",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
@@ -132,12 +102,69 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
-					"method": "POST",
-					"body": {
-						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey from delighted is success at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" :\"@{pipeline().Pipeline}\", \n    \"receiver\" : pipeline().parameters.par_m_receiver,\n    \"cc\":pipeline().parameters.par_m_cc,\n    \"subject\" : \"No-Reply: The survey Data delta dumping success.\"\n   }",
+					"url": {
+						"value": "@concat('https://api.delighted.com/v1/people.json?'\n, 'since=','123'\n)",
 						"type": "Expression"
+					},
+					"method": "GET",
+					"authentication": {
+						"type": "Basic",
+						"username": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ",
+						"password": {
+							"type": "AzureKeyVaultSecret",
+							"store": {
+								"referenceName": "ls_fusedata_AzureKeyVault",
+								"type": "LinkedServiceReference"
+							},
+							"secretName": "Delighted"
+						}
 					}
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "people",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@contains(\r\nactivity('people').output.ADFWebActivityResponseHeaders\r\n, 'Link')",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "aa",
+								"value": {
+									"value": "no",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Set variable2",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "aa",
+								"value": "HAS"
+							}
+						}
+					]
 				}
 			}
 		],
@@ -149,6 +176,11 @@
 			"since": {
 				"type": "string",
 				"defaultValue": "1673792804"
+			}
+		},
+		"variables": {
+			"aa": {
+				"type": "String"
 			}
 		},
 		"folder": {
