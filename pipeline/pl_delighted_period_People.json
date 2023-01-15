@@ -283,31 +283,37 @@
 					"storedProcedureName": "[land].[udsp_logpipeline]",
 					"storedProcedureParameters": {
 						"adf_name": {
-							"value": "",
+							"value": {
+								"value": "@pipeline().DataFactory",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"pl_category": {
-							"value": "",
+							"value": "people",
 							"type": "String"
 						},
 						"pl_load_start_date": {
-							"value": "",
+							"value": "2023-01-01",
 							"type": "DateTime"
 						},
 						"pl_load_type": {
-							"value": "",
+							"value": "delta",
 							"type": "String"
 						},
 						"pl_load_until_date": {
-							"value": "",
+							"value": "2023-01-07",
 							"type": "DateTime"
 						},
 						"pl_name": {
-							"value": "",
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"pl_status": {
-							"value": "",
+							"value": "0",
 							"type": "Boolean"
 						}
 					}
@@ -332,13 +338,16 @@
 				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
 			},
 			"par_p_start_delat_people_timestamp": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "1672549200"
 			},
 			"par_p_start_delta_people_datetime": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "2023-01-01"
 			},
 			"par_p_API_Key": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "j9HsbUD0W8zhN14uoKv2HfIO7JIlxXzJ"
 			}
 		},
 		"variables": {
