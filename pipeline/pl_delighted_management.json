@@ -624,6 +624,13 @@
 									}
 								}
 							}
+						},
+						{
+							"name": "delta_survey_start_datetime",
+							"description": "last success load plus 1 second as new load start.",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": []
 						}
 					]
 				}
