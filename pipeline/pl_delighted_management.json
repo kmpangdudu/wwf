@@ -478,8 +478,12 @@
 										"value": "@pipeline().parameters.par_m_cc",
 										"type": "Expression"
 									},
-									"par_p_start_date": {
+									"par_p_start_delat_people_timestamp": {
 										"value": "@variables('var_m_start_delta_people_timestamp')",
+										"type": "Expression"
+									},
+									"par_p_start_delta_people_datetime": {
+										"value": "@variables('var_m_start_delta_people_datetime')",
 										"type": "Expression"
 									},
 									"par_p_API_Key": {
