@@ -721,7 +721,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "",
+								"variableName": "var_m_start_delta_people_datetime",
 								"value": ""
 							}
 						}
