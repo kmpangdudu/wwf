@@ -199,20 +199,44 @@
 				}
 			},
 			{
-				"name": "Move_on_next_Progress",
-				"type": "Wait",
+				"name": "log delta people success",
+				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
 						"activity": "loop_list_people_period",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 1
-				}
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "log delta people faild",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "loop_list_people_period",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
 			}
 		],
 		"parameters": {
@@ -228,10 +252,10 @@
 				"type": "string",
 				"defaultValue": "erjun.chen@teamfuse.ca,echen@jbssa.com"
 			},
-			"par_p_start_date": {
+			"par_p_start_delat_people_timestap": {
 				"type": "string"
 			},
-			"par_p_until_date": {
+			"par_p_start_delta_people_datetime": {
 				"type": "string"
 			},
 			"par_p_API_Key": {
