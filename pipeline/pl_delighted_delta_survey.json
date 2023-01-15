@@ -50,7 +50,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@equals(activity('delta_survey_response').output.Response,'[]')",
+									"value": "@equals(activity('delta_survey').output.Response,'[]')",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
