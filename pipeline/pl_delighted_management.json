@@ -580,18 +580,6 @@
 			"par_m_init_endpoint": {
 				"type": "string",
 				"defaultValue": "https://api.delighted.com/v1/"
-			},
-			"par_m_snk_container": {
-				"type": "string",
-				"defaultValue": "land"
-			},
-			"par_m_snk_dir": {
-				"type": "string",
-				"defaultValue": "delighted/raw"
-			},
-			"par_m_snk_filename": {
-				"type": "string",
-				"defaultValue": "survey.json"
 			}
 		},
 		"variables": {
