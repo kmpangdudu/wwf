@@ -67,7 +67,7 @@
 										],
 										"userProperties": [],
 										"typeProperties": {
-											"variableName": "var_delta_survey_API_pagination",
+											"variableName": "var_delta_survey_pagination",
 											"value": {
 												"value": "@string(add(int(variables('var_bridge')),1))",
 												"type": "Expression"
