@@ -509,7 +509,7 @@
 								"waitOnCompletion": true,
 								"parameters": {
 									"par_src_endpoint": {
-										"value": "@concat(pipeline().parameters.par_m_init_endpoint\r\n,'/survey_responses.json/'\r\n)",
+										"value": "@concat(pipeline().parameters.par_m_init_endpoint\n,'survey_responses.json/'\n)",
 										"type": "Expression"
 									},
 									"receiver": {
