@@ -134,6 +134,10 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
+								"expression": {
+									"value": "@contains(activity('list_people').output.ADFWebActivityResponseHeaders\r\n,'Link'\r\n)",
+									"type": "Expression"
+								},
 								"ifFalseActivities": [
 									{
 										"name": "reset_endpoint_to_stop_loop",
@@ -163,7 +167,14 @@
 									{
 										"name": "update_endpoint",
 										"type": "SetVariable",
-										"dependsOn": [],
+										"dependsOn": [
+											{
+												"activity": "get_response_header",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
 										"userProperties": [],
 										"typeProperties": {
 											"variableName": "var_endpoint",
