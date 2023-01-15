@@ -361,7 +361,7 @@
 						},
 						{
 							"name": "survey_timestamp now",
-							"description": "by default, it is current timestamp",
+							"description": "by default, it is current timestamp as a until datetime",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -376,26 +376,6 @@
 								"variableName": "var_m_until_delta_survey_timestamp",
 								"value": {
 									"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "last_success_delta_survey_datetime",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "lkp_last_success_load_survey",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_last_delta_survey_datetime",
-								"value": {
-									"value": "@activity('lkp_last_success_load_survey').output.firstRow.pl_created_datetime_UTC",
 									"type": "Expression"
 								}
 							}
@@ -428,26 +408,6 @@
 							}
 						},
 						{
-							"name": "last_success_delta_people_datetime",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "lkp_last_success_load_people",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_last_period_people_datetime",
-								"value": {
-									"value": "@activity('lkp_last_success_load_people').output.firstRow.pl_created_datetime_UTC",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "delta_people_start_timestamp",
 							"description": "last success load plus 1 second as new load start.",
 							"type": "SetVariable",
@@ -470,7 +430,7 @@
 						},
 						{
 							"name": "people_timestamp now",
-							"description": "by default, it is current timestamp",
+							"description": "by default, it is current timestamp as a until datetime",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -553,7 +513,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "last_success_delta_survey_datetime",
+									"activity": "lkp_last_success_load_survey",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -574,7 +534,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "last_success_delta_people_datetime",
+									"activity": "lkp_last_success_load_people",
 									"dependencyConditions": [
 										"Succeeded"
 									]
