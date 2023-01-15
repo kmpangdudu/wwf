@@ -164,7 +164,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": {
-									"value": "@concat(pipeline().parameters.par_src_endpoint\n,'?since=',variables('var_start_timestamp_delta_survey')\n,'&until=',variables('var_until_timestamp_delta_survey')\n,'&page=',variables('var_delta_survey_pagination')\n)",
+									"value": "@concat(pipeline().parameters.par_src_endpoint\n,'?since=',variables('var_start_timestamp_delta_survey')\n,'&until=',string(div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000))\n,'&page=',variables('var_delta_survey_pagination')\n)",
 									"type": "Expression"
 								},
 								"method": "GET",
@@ -212,7 +212,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "survey_timestamp now",
+						"activity": "loop_page_delta_survey",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -282,9 +282,9 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "survey_timestamp now_copy1",
+						"activity": "loop_page_delta_survey",
 						"dependencyConditions": [
-							"Succeeded"
+							"Failed"
 						]
 					}
 				],
@@ -442,48 +442,6 @@
 					"authentication": {
 						"type": "MSI",
 						"resource": "https://vault.azure.net"
-					}
-				}
-			},
-			{
-				"name": "survey_timestamp now",
-				"description": "by default, it is current timestamp as a until datetime",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "loop_page_delta_survey",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_m_until_delta_survey_timestamp",
-					"value": {
-						"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "survey_timestamp now_copy1",
-				"description": "by default, it is current timestamp as a until datetime",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "loop_page_delta_survey",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "var_m_until_delta_survey_timestamp",
-					"value": {
-						"value": "@{div(sub(ticks(utcNow()), ticks('1970-01-01')),10000000)}",
-						"type": "Expression"
 					}
 				}
 			}
