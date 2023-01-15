@@ -162,22 +162,6 @@
 							}
 						},
 						{
-							"name": "Stop looping",
-							"type": "Wait",
-							"dependsOn": [
-								{
-									"activity": "reset_endpoint_to_stop_loop",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"waitTimeInSeconds": 1
-							}
-						},
-						{
 							"name": "reset_endpoint",
 							"type": "SetVariable",
 							"dependsOn": [
@@ -233,7 +217,10 @@
 							"type": "String"
 						},
 						"pl_load_start_date": {
-							"value": "",
+							"value": {
+								"value": "@pipeline().parameters.par_c1_start_delta_people_datetime",
+								"type": "Expression"
+							},
 							"type": "DateTime"
 						},
 						"pl_load_type": {
@@ -242,7 +229,7 @@
 						},
 						"pl_load_until_date": {
 							"value": {
-								"value": "@formatDateTime(convertFromUtc(utcNow(), 'Eastern Standard Time'),\n'yyyy-MM-dd'\n)",
+								"value": "@utcNow()",
 								"type": "Expression"
 							},
 							"type": "DateTime"
@@ -300,6 +287,10 @@
 							"type": "String"
 						},
 						"pl_load_start_date": {
+							"value": {
+								"value": "@pipeline().parameters.par_c1_start_delta_people_datetime",
+								"type": "Expression"
+							},
 							"type": "DateTime"
 						},
 						"pl_load_type": {
@@ -308,7 +299,7 @@
 						},
 						"pl_load_until_date": {
 							"value": {
-								"value": "@formatDateTime(convertFromUtc(utcNow(),'Eastern Standard Time'),'yyyy-MM-dd')",
+								"value": "@utcNow()",
 								"type": "Expression"
 							},
 							"type": "DateTime"
