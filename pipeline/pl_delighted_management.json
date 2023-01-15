@@ -306,7 +306,7 @@
 							"typeProperties": {
 								"variableName": "var_m_start_delta_survey_timestamp",
 								"value": {
-									"value": "@string(\n    add(\n    int(activity('lkp_last_success_load_survey').output.firstRow.pl_Created_timestamp)\n    ,1)\n)",
+									"value": "@activity('lkp_last_success_load_survey').output.firstRow.pl_load_until_timestamp",
 									"type": "Expression"
 								}
 							}
@@ -531,7 +531,7 @@
 					"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
 					"method": "POST",
 					"body": {
-						"value": "{\n    \"dataFactoryName\" : pipeline().DataFactory, \n    \"message\" : \"The delta dumping survey answer and people from delighted is success at @{convertFromUtc(utcNow(),'eastern standard time')}\",\n    \"pipelineName\" :pipeline().Pipeline, \n    \"receiver\" : pipeline().parameters.par_m_receiver,\n    \"cc\":pipeline().parameters.par_m_cc,\n    \"subject\" : \"No-Reply: The survey Data delta dumping success.\"\n   }",
+						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey from delighted is success at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" :\"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.par_m_receiver}\",\n    \"cc\":\"@{pipeline().parameters.par_m_cc}\",\n    \"subject\" : \"No-Reply: The survey Data delta dumping success.\"\n   }",
 						"type": "Expression"
 					}
 				}
@@ -560,7 +560,7 @@
 					"url": "https://prod-00.canadacentral.logic.azure.com:443/workflows/e08a5efe1c714c62950f71fff3290381/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7KWIblzVG-FWqD00-WOS3-3GIswFQcOVeTu6Jiqmf8A ",
 					"method": "POST",
 					"body": {
-						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey answer from delighted processing failed at @{convertFromUtc(utcnow(),'eastern standard time')}\",\n    \"pipelineName\" : \"@{pipeline().Pipeline}\", \n    \"receiver\" : pipeline().parameters.par_m_receiver,\n    \"cc\" : pipeline().parameters.par_m_cc,\n    \"subject\" : \"No-Reply: The survey Data delta dumping failed.\"\n   }",
+						"value": "{\n    \"dataFactoryName\" : \"@{pipeline().DataFactory}\", \n    \"message\" : \"The delta dumping survey from delighted faild at @{convertFromUtc(utcNow(),'eastern standard time')}\",\n    \"pipelineName\" :\"@{pipeline().Pipeline}\", \n    \"receiver\" : \"@{pipeline().parameters.par_m_receiver}\",\n    \"cc\":\"@{pipeline().parameters.par_m_cc}\",\n    \"subject\" : \"No-Reply: The survey Data delta dumping success.\"\n   }",
 						"type": "Expression"
 					}
 				}
