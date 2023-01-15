@@ -515,7 +515,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "truncate table [dbo].[surveyRaw];\n\ninsert into [dbo].[surveyRaw] ([surveyRaw])\n                 select string_agg([surveybody], '<<<--->>>') within group (order by [surveytemp_id]) as  surveyRaw\n                           from  [dbo].[surveytemp]  ;\n\nupdate   [dbo].[surveyRaw]    set [surveyRaw] = REPLACE ([surveyRaw], ']<<<--->>>[',',') ;\n\nselect 1;\n\n",
+									"sqlReaderQuery": "insert into [dbo].[surveyRaw] ([surveyRaw])\n                 select string_agg([surveybody], '<<<--->>>') within group (order by [surveytemp_id]) as  surveyRaw\n                           from  [dbo].[surveytemp]  ;\n\nupdate   [dbo].[surveyRaw]    set [surveyRaw] = REPLACE ([surveyRaw], ']<<<--->>>[',',') ;\n\ntruncate table  [dbo].[surveytemp];\nselect 1;\n\n",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
