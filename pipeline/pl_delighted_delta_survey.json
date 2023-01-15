@@ -133,9 +133,9 @@
 										"dependsOn": [],
 										"userProperties": [],
 										"typeProperties": {
-											"variableName": "var_delta_survey_API_pagination",
+											"variableName": "var_delta_survey_pagination",
 											"value": {
-												"value": "stop",
+												"value": "0",
 												"type": "Expression"
 											}
 										}
