@@ -37,10 +37,12 @@
 		],
 		"parameters": {
 			"per_page": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "20"
 			},
 			"since": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "1673792804"
 			}
 		},
 		"folder": {
