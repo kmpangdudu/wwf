@@ -399,18 +399,6 @@
 				"type": "string",
 				"defaultValue": "2023-01-01"
 			},
-			"par_ps_snk_container": {
-				"type": "string",
-				"defaultValue": "land"
-			},
-			"par_ps_snk_dir": {
-				"type": "string",
-				"defaultValue": "delighted/raw"
-			},
-			"par_ps_snk_filename": {
-				"type": "string",
-				"defaultValue": "survey.json"
-			},
 			"par_ps_src_until_date": {
 				"type": "string",
 				"defaultValue": "2023-01-07"
