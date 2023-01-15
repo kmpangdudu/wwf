@@ -44,18 +44,6 @@
 										"value": "@variables('var_m_period_start_survey_timestamp')",
 										"type": "Expression"
 									},
-									"par_ps_snk_container": {
-										"value": "@pipeline().parameters.par_m_snk_container",
-										"type": "Expression"
-									},
-									"par_ps_snk_dir": {
-										"value": "@pipeline().parameters.par_m_snk_dir",
-										"type": "Expression"
-									},
-									"par_ps_snk_filename": {
-										"value": "@pipeline().parameters.par_m_snk_filename",
-										"type": "Expression"
-									},
 									"par_ps_src_until_date": {
 										"value": "@variables('var_m_period_until_survey_timestamp')",
 										"type": "Expression"
@@ -100,12 +88,6 @@
 							"dependsOn": [
 								{
 									"activity": "period_start_date",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								},
-								{
-									"activity": "force_init_start_date_timestamp",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -167,24 +149,6 @@
 							}
 						},
 						{
-							"name": "force_init_start_date_timestamp",
-							"description": "force init_start_date_timestamp to 2023-01-01\n1672549200",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "period_start_date",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "var_m_period_start_people_timestamp",
-								"value": "1672549200"
-							}
-						},
-						{
 							"name": "force init_until_date_timestamp",
 							"description": "init_until_date_timestamp to current timestamp",
 							"type": "SetVariable",
@@ -226,18 +190,6 @@
 								"parameters": {
 									"par_ps_src_start_date": {
 										"value": "@variables('var_m_period_start_survey_timestamp')",
-										"type": "Expression"
-									},
-									"par_ps_snk_container": {
-										"value": "@pipeline().parameters.par_m_snk_container",
-										"type": "Expression"
-									},
-									"par_ps_snk_dir": {
-										"value": "@pipeline().parameters.par_m_snk_dir",
-										"type": "Expression"
-									},
-									"par_ps_snk_filename": {
-										"value": "@pipeline().parameters.par_m_snk_filename",
 										"type": "Expression"
 									},
 									"par_ps_src_until_date": {
