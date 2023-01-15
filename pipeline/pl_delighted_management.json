@@ -421,7 +421,7 @@
 							"typeProperties": {
 								"variableName": "var_m_start_delta_survey_datetime",
 								"value": {
-									"value": "@addSeconds(\nactivity('lkp_last_success_load_survey').output.firstRow.pl_created_datetime_UTC\n,1)",
+									"value": "@string(activity('lkp_last_success_load_survey').output.firstRow.pl_load_until_datetime_UTC)\n",
 									"type": "Expression"
 								}
 							}
@@ -442,7 +442,7 @@
 							"typeProperties": {
 								"variableName": "var_m_start_delta_people_datetime",
 								"value": {
-									"value": "@addSeconds(\nactivity('lkp_last_success_load_people').output.firstRow.pl_created_datetime_UTC\n,1\n)",
+									"value": "@string(activity('lkp_last_success_load_people').output.firstRow.pl_load_until_datetime_UTC)\n",
 									"type": "Expression"
 								}
 							}
