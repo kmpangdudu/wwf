@@ -1,0 +1,20 @@
+{
+	"name": "ds_dummy_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "ds_dummy_json.json",
+				"folderPath": "delighted",
+				"container": "land"
+			}
+		},
+		"schema": {}
+	}
+}
