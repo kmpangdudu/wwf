@@ -1,0 +1,68 @@
+{
+	"name": "ds_snk_snowflake_stg_survey_people",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_Snowflake",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "land/snk"
+		},
+		"annotations": [],
+		"type": "SnowflakeTable",
+		"schema": [
+			{
+				"name": "PERSON_RESPONSE_ID",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PERSON_RESPONSE_NAME",
+				"type": "VARCHAR",
+				"precision": 50,
+				"scale": 0
+			},
+			{
+				"name": "PERSON_RESPONSE_EMAIL",
+				"type": "VARCHAR",
+				"precision": 50,
+				"scale": 0
+			},
+			{
+				"name": "PERSON_RESPONSE_CREATED_AT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PERSON_RESPONSE_LAST_SENT_AT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PERSON_RESPONSE_LAST_RESPONDED_AT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PERSON_RESPONSE_NEXT_SURVEY_SCHEDULED_AT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "_PERSON_RESPONSE_STAGING_UPLOAD_DATE",
+				"type": "TIMESTAMP_NTZ",
+				"precision": 29,
+				"scale": 9
+			}
+		],
+		"typeProperties": {
+			"schema": "STAGING",
+			"table": "NPS_PERSON_RESPONSE"
+		}
+	}
+}
