@@ -547,7 +547,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "insert into  [dbo].[peopleRaw]  ([peopleRaw]) \n   select string_agg( [peoplebody],'<<<--->>>') within group (order by [peopletemp_id]) as peopleRaw  from   [dbo].[peopletemp];\n\nupdate [dbo].[peopleRaw]  set [peopleRaw] = REPLACE ([peopleRaw], ']<<<--->>>[',',');\n\ntruncate table  [dbo].[peopletemp];\nselect 1;\n\n\n\n ",
+									"sqlReaderQuery": "insert into  [dbo].[peopleRaw]  ([peopleRaw]) \n   select string_agg( [peoplebody],'<<<--->>>') within group (order by [peopletemp_id]) as peopleRaw  from   [dbo].[peopletemp];\n\nupdate [dbo].[peopleRaw]  set [peopleRaw] = REPLACE ([peopleRaw], ']<<<--->>>[',',');\n\n\ntruncate table  [dbo].[peopletemp];\nselect 1;\n\n\n\n ",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -555,6 +555,33 @@
 									"referenceName": "ds_src_land_sql_log",
 									"type": "DatasetReference"
 								}
+							}
+						},
+						{
+							"name": "flatten_people",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "combine_people_pages",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[land].[udsp_flatten_survey_people]"
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_azure_sqldb",
+								"type": "LinkedServiceReference"
 							}
 						}
 					]
