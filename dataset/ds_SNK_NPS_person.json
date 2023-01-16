@@ -2,7 +2,7 @@
 	"name": "ds_SNK_NPS_person",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_AzureBlobStorage",
+			"referenceName": "AzureBlobStorage_sas",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
