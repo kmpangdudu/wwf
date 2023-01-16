@@ -112,7 +112,7 @@
 											"storedProcedureParameters": {
 												"r": {
 													"value": {
-														"value": "@activity('delta_survey').output.Response",
+														"value": "@replace(\n    activity('delta_survey').output.Response\n    ,'\"','')",
 														"type": "Expression"
 													},
 													"type": "String"
