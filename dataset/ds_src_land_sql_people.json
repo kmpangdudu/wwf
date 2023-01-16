@@ -1,0 +1,64 @@
+{
+	"name": "ds_src_land_sql_people",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sqldb",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "land/src"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "survey_prople_SurrogateID",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "survey_prople_id",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "survey_prople_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "survey_prople_email",
+				"type": "nvarchar"
+			},
+			{
+				"name": "survey_prople_created_at",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "survey_prople_last_sent_at",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "survey_prople_last_responded_at",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "survey_prople_next_survey_scheduled_at",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "survey_prople_ETL_load_datetime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "land",
+			"table": "servey_people"
+		}
+	}
+}
