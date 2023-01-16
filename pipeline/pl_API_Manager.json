@@ -547,7 +547,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "insert into  [dbo].[peopleRaw]  ([peopleRaw]) \n   select string_agg( [peoplebody],'<<<--->>>') within group (order by [peopletemp_id]) as peopleRaw  from   [dbo].[peopletemp];\n\nupdate [dbo].[peopleRaw]  set [peopleRaw] = REPLACE ([peopleRaw], ']<<<--->>>[',',');\n\n\n-- truncate table  [dbo].[peopletemp];\nselect 1;\n\n\n\n ",
+									"sqlReaderQuery": "insert into  [dbo].[peopleRaw]  ([peopleRaw]) \n   select string_agg( [peoplebody],'<<<--->>>') within group (order by [peopletemp_id]) as peopleRaw  from   [dbo].[peopletemp];\n\nupdate [dbo].[peopleRaw]  set [peopleRaw] = REPLACE ([peopleRaw], ']<<<--->>>[',',');\n\n\ntruncate table  [dbo].[peopletemp];\nselect 1;\n\n\n\n ",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
