@@ -187,7 +187,7 @@
 											"storedProcedureParameters": {
 												"r": {
 													"value": {
-														"value": "@activity('list_people').output.Response",
+														"value": "@replace(\n   activity('list_people').output.Response\n    ,'\\\"','')",
 														"type": "Expression"
 													},
 													"type": "String"
