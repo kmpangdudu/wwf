@@ -18,7 +18,7 @@
 				"container": "land"
 			},
 			"columnDelimiter": ",",
-			"rowDelimiter": "\r\n",
+			"rowDelimiter": "\n",
 			"escapeChar": "\\",
 			"firstRowAsHeader": false,
 			"quoteChar": "\""
