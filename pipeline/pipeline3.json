@@ -28,7 +28,82 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "survey_prople_id",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_ID",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "survey_prople_name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "survey_prople_email",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_EMAIL",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "survey_prople_created_at",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_CREATED_AT",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "survey_prople_last_sent_at",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_LAST_SENT_AT",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "survey_prople_last_responded_at",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_LAST_RESPONDED_AT",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "survey_prople_next_survey_scheduled_at",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_NEXT_SURVEY_SCHEDULED_AT",
+									"type": "Int64"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
