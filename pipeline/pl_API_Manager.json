@@ -558,11 +558,11 @@
 							}
 						},
 						{
-							"name": "flatten_people",
+							"name": "flatten_people_copy1",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "combine_people_pages",
+									"activity": "combine_survey_pages",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -582,6 +582,22 @@
 							"linkedServiceName": {
 								"referenceName": "ls_azure_sqldb",
 								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Wait1",
+							"type": "Wait",
+							"dependsOn": [
+								{
+									"activity": "combine_people_pages",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
 							}
 						}
 					]
