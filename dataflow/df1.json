@@ -1,0 +1,39 @@
+{
+	"name": "df1",
+	"properties": {
+		"folder": {
+			"name": "delighted"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_dummy_json",
+						"type": "DatasetReference"
+					},
+					"name": "serc1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_snk_land_delighted_json",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> serc1",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> source1"
+			]
+		}
+	}
+}
