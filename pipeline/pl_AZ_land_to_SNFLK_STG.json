@@ -48,8 +48,8 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "survey_prople_id",
-									"type": "Int64"
+									"type": "String",
+									"ordinal": 1
 								},
 								"sink": {
 									"name": "PERSON_RESPONSE_ID",
@@ -58,8 +58,8 @@
 							},
 							{
 								"source": {
-									"name": "survey_prople_name",
-									"type": "String"
+									"type": "String",
+									"ordinal": 2
 								},
 								"sink": {
 									"name": "PERSON_RESPONSE_NAME",
@@ -68,8 +68,8 @@
 							},
 							{
 								"source": {
-									"name": "survey_prople_email",
-									"type": "String"
+									"type": "String",
+									"ordinal": 3
 								},
 								"sink": {
 									"name": "PERSON_RESPONSE_EMAIL",
@@ -78,8 +78,8 @@
 							},
 							{
 								"source": {
-									"name": "survey_prople_created_at",
-									"type": "Int64"
+									"type": "String",
+									"ordinal": 4
 								},
 								"sink": {
 									"name": "PERSON_RESPONSE_CREATED_AT",
@@ -88,8 +88,8 @@
 							},
 							{
 								"source": {
-									"name": "survey_prople_last_sent_at",
-									"type": "Int64"
+									"type": "String",
+									"ordinal": 5
 								},
 								"sink": {
 									"name": "PERSON_RESPONSE_LAST_SENT_AT",
@@ -98,8 +98,8 @@
 							},
 							{
 								"source": {
-									"name": "survey_prople_last_responded_at",
-									"type": "Int64"
+									"type": "String",
+									"ordinal": 6
 								},
 								"sink": {
 									"name": "PERSON_RESPONSE_LAST_RESPONDED_AT",
@@ -108,12 +108,22 @@
 							},
 							{
 								"source": {
-									"name": "survey_prople_next_survey_scheduled_at",
-									"type": "Int64"
+									"type": "String",
+									"ordinal": 7
 								},
 								"sink": {
 									"name": "PERSON_RESPONSE_NEXT_SURVEY_SCHEDULED_AT",
 									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 8
+								},
+								"sink": {
+									"name": "_PERSON_RESPONSE_STAGING_UPLOAD_DATE",
+									"type": "DateTime"
 								}
 							}
 						]
@@ -161,7 +171,14 @@
 							"fileExtension": ".txt"
 						}
 					},
-					"enableStaging": false,
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzureBlobStorage_sas",
+							"type": "LinkedServiceReference"
+						},
+						"path": "land/delighted/raw"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -247,18 +264,6 @@
 									"type": "String",
 									"physicalType": "String",
 									"ordinal": 7
-								}
-							},
-							{
-								"source": {
-									"name": "survey_prople_ETL_load_datetime",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								},
-								"sink": {
-									"type": "String",
-									"physicalType": "String",
-									"ordinal": 8
 								}
 							}
 						],
