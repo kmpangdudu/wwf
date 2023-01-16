@@ -1,6 +1,7 @@
 {
-	"name": "pipeline3",
+	"name": "pl_AZ_land_to_SNFLK_STG",
 	"properties": {
+		"description": "moving data from Land on Azure to Staging on Snowflake ",
 		"activities": [
 			{
 				"name": "copy_NPS_Person_Response_SNFLK",
@@ -120,7 +121,7 @@
 			}
 		],
 		"folder": {
-			"name": "land/test"
+			"name": "land"
 		},
 		"annotations": []
 	}
