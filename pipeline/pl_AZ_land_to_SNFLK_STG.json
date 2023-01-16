@@ -115,16 +115,6 @@
 									"name": "PERSON_RESPONSE_NEXT_SURVEY_SCHEDULED_AT",
 									"type": "Int64"
 								}
-							},
-							{
-								"source": {
-									"type": "DateTime",
-									"ordinal": 8
-								},
-								"sink": {
-									"name": "_PERSON_RESPONSE_STAGING_UPLOAD_DATE",
-									"type": "DateTime"
-								}
 							}
 						]
 					}
@@ -189,9 +179,9 @@
 									"physicalType": "bigint"
 								},
 								"sink": {
-									"name": "survey_prople_id",
 									"type": "String",
-									"physicalType": "String"
+									"physicalType": "String",
+									"ordinal": 1
 								}
 							},
 							{
@@ -201,9 +191,9 @@
 									"physicalType": "nvarchar"
 								},
 								"sink": {
-									"name": "survey_prople_name",
 									"type": "String",
-									"physicalType": "String"
+									"physicalType": "String",
+									"ordinal": 2
 								}
 							},
 							{
@@ -213,9 +203,9 @@
 									"physicalType": "nvarchar"
 								},
 								"sink": {
-									"name": "survey_prople_email",
 									"type": "String",
-									"physicalType": "String"
+									"physicalType": "String",
+									"ordinal": 3
 								}
 							},
 							{
@@ -225,9 +215,9 @@
 									"physicalType": "bigint"
 								},
 								"sink": {
-									"name": "survey_prople_created_at",
 									"type": "String",
-									"physicalType": "String"
+									"physicalType": "String",
+									"ordinal": 4
 								}
 							},
 							{
@@ -237,9 +227,9 @@
 									"physicalType": "bigint"
 								},
 								"sink": {
-									"name": "survey_prople_last_sent_at",
 									"type": "String",
-									"physicalType": "String"
+									"physicalType": "String",
+									"ordinal": 5
 								}
 							},
 							{
@@ -249,9 +239,9 @@
 									"physicalType": "bigint"
 								},
 								"sink": {
-									"name": "survey_prople_last_responded_at",
 									"type": "String",
-									"physicalType": "String"
+									"physicalType": "String",
+									"ordinal": 6
 								}
 							},
 							{
@@ -261,9 +251,9 @@
 									"physicalType": "bigint"
 								},
 								"sink": {
-									"name": "survey_prople_next_survey_scheduled_at",
 									"type": "String",
-									"physicalType": "String"
+									"physicalType": "String",
+									"ordinal": 7
 								}
 							}
 						],
