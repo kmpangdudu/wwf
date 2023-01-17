@@ -80,7 +80,8 @@
 				"          {additional_answers.value_select_many} = additional_answers.value.select_many,",
 				"          {additional_answers.question_id} = additional_answers.question.id,",
 				"          {additional_answers.question_type} = additional_answers.question.type,",
-				"          {additional_answers.question.text} = additional_answers.question.text",
+				"          {additional_answers.question.text} = additional_answers.question.text,",
+				"          person_properties_Delighted_Source = person_properties.{Delighted Source}",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1"
