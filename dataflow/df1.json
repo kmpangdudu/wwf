@@ -12,27 +12,62 @@
 						"referenceName": "ds_dummy_json",
 						"type": "DatasetReference"
 					},
-					"name": "serc1"
+					"name": "source1"
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_snk_land_delighted_json",
+						"referenceName": "ds_dummy_json",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "source2"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "flatten1"
+				}
+			],
 			"scriptLines": [
+				"source(output(",
+				"          additional_answers as (id as integer, question as (id as string, text as string, type as string), value as (email as string, free_response as string, name as string, scale as short, select_many as string, select_one as string))[],",
+				"          comment as string,",
+				"          created_at as integer,",
+				"          id as integer,",
+				"          notes as string[],",
+				"          permalink as string,",
+				"          person as integer,",
+				"          person_properties as ({Delighted Browser} as string, {Delighted Device Type} as string, {Delighted Link Name} as string, {Delighted Operating System} as string, {Delighted Source} as string, Ordernumber as long, {_kx} as string, utm_medium as string, utm_source as string),",
+				"          score as short,",
+				"          survey_type as string,",
+				"          tags as string[],",
+				"          updated_at as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> source1",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'arrayOfDocuments') ~> serc1",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'arrayOfDocuments') ~> source1"
+				"     documentForm: 'arrayOfDocuments') ~> source2",
+				"source1 foldDown(unroll(additional_answers),",
+				"     mapColumn(",
+				"          additional_answers,",
+				"          comment,",
+				"          created_at,",
+				"          id,",
+				"          notes,",
+				"          permalink,",
+				"          person,",
+				"          person_properties,",
+				"          score,",
+				"          survey_type,",
+				"          tags,",
+				"          updated_at",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1"
 			]
 		}
 	}
