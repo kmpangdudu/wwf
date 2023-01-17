@@ -1,0 +1,27 @@
+{
+	"name": "ds_SNK_NPS_Survey_response",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_sas",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "land/snk"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "NPS_Survey_Response.csv",
+				"folderPath": "delighted/raw",
+				"container": "land"
+			},
+			"columnDelimiter": ",",
+			"rowDelimiter": "\n",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
