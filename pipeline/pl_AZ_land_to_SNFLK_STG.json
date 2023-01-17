@@ -5,7 +5,7 @@
 		"activities": [
 			{
 				"name": "copy_NPS_Person_Response_SNFLK",
-				"description": "copy Delighted survey person response from AzureSQLDB to snowflakes staging",
+				"description": "copy Delighted survey person response from to snowflakes staging",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -137,7 +137,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "flatten_survey_response",
+						"activity": "copy_NPS_Survey_Response_SNFLK",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -308,6 +308,135 @@
 					},
 					"traceLevel": "Fine"
 				}
+			},
+			{
+				"name": "copy_NPS_Survey_Response_SNFLK",
+				"description": "copy Delighted survey response from Azure to snowflakes staging",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "flatten_survey_response",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SnowflakeSink",
+						"preCopyScript": "truncate table if exists  WILDFORK.STAGING.NPS_PERSON_RESPONSE;",
+						"importSettings": {
+							"type": "SnowflakeImportCopyCommand"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"type": "Int64",
+									"ordinal": 1
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_ID",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 2
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 3
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_EMAIL",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"type": "Int64",
+									"ordinal": 4
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_CREATED_AT",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"type": "Int64",
+									"ordinal": 5
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_LAST_SENT_AT",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"type": "Int64",
+									"ordinal": 6
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_LAST_RESPONDED_AT",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"type": "Int64",
+									"ordinal": 7
+								},
+								"sink": {
+									"name": "PERSON_RESPONSE_NEXT_SURVEY_SCHEDULED_AT",
+									"type": "Int64"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_SNK_NPS_person",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_snk_snowflake_stg_survey_people",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"folder": {
