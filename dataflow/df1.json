@@ -73,7 +73,8 @@
 				"          tags,",
 				"          additional_answers_id = additional_answers.id,",
 				"          additional_answers_value_email = additional_answers.value.email,",
-				"          {additional_answers.value_free_response} = additional_answers.value.free_response",
+				"          {additional_answers.value_free_response} = additional_answers.value.free_response,",
+				"          {additional_answers.value_name} = additional_answers.value.name",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1"
