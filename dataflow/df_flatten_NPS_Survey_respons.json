@@ -1,5 +1,5 @@
 {
-	"name": "df1",
+	"name": "df_flatten_NPS_Survey_respons",
 	"properties": {
 		"folder": {
 			"name": "delighted"
@@ -13,13 +13,6 @@
 						"type": "DatasetReference"
 					},
 					"name": "source1"
-				},
-				{
-					"dataset": {
-						"referenceName": "ds_dummy_json",
-						"type": "DatasetReference"
-					},
-					"name": "source2"
 				}
 			],
 			"sinks": [
@@ -55,10 +48,6 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'documentPerLine') ~> source1",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'arrayOfDocuments') ~> source2",
 				"source1 foldDown(unroll(additional_answers),",
 				"     mapColumn(",
 				"          id,",
