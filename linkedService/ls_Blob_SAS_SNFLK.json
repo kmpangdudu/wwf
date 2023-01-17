@@ -1,0 +1,11 @@
+{
+	"name": "ls_Blob_SAS_SNFLK",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"sasUri": "https://wildforknonprodsapdata.blob.core.windows.net/land?sp=racwdlmeop&st=2023-01-17T02:31:58Z&se=2023-12-31T10:31:58Z&spr=https&sv=2021-06-08&sr=c&sig=t6JZr8vaOFRMnwrS7E4TZxMxv4g1UEyzIfiI3XYPSf0%3D?sp=racwdlmeop&st=2023-01-17T02:31:58Z&se=2023-12-31T10:31:58Z&spr=https&sv=2021-06-08&sr=c&sig=t6JZr8vaOFRMnwrS7E4TZxMxv4g1UEyzIfiI3XYPSf0%3D"
+		}
+	}
+}
