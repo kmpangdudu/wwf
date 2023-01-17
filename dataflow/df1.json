@@ -70,7 +70,10 @@
 				"          person_properties_Delighted_Operating_System = person_properties.{Delighted Operating System},",
 				"          person_properties_Delighted_Browser = person_properties.{Delighted Browser},",
 				"          notes,",
-				"          tags",
+				"          tags,",
+				"          additional_answers_id = additional_answers.id,",
+				"          additional_answers_value_email = additional_answers.value.email,",
+				"          {additional_answers.value_free_response} = additional_answers.value.free_response",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1"
