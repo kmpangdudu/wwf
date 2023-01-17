@@ -9,7 +9,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Copy data1",
+						"activity": "NPS_Surver_person",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -133,9 +133,16 @@
 				]
 			},
 			{
-				"name": "Copy data1",
+				"name": "NPS_Surver_person",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "flatten_survey_response",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -276,6 +283,31 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "flatten_survey_response",
+				"description": "flatten_survey_response",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_flatten_NPS_Survey_respons",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"folder": {
