@@ -1,0 +1,36 @@
+{
+	"name": "pl_delighted_survey_response_flatten",
+	"properties": {
+		"activities": [
+			{
+				"name": "flatten_survey_response",
+				"description": "flatten_survey_response",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_flatten_NPS_Survey_respons",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "land"
+		},
+		"annotations": []
+	}
+}
