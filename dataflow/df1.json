@@ -79,7 +79,8 @@
 				"          {additional_answers.value_select_one} = additional_answers.value.select_one,",
 				"          {additional_answers.value_select_many} = additional_answers.value.select_many,",
 				"          {additional_answers.question_id} = additional_answers.question.id,",
-				"          email = additional_answers.value.email",
+				"          {additional_answers.question_type} = additional_answers.question.type,",
+				"          {additional_answers.question.text} = additional_answers.question.text",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1"
