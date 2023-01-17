@@ -31,7 +31,14 @@
 				"name": "copy_NPS_Survey_Response_SNFLK",
 				"description": "copy Delighted survey response from Azure to snowflakes staging",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "flatten_survey_response",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
