@@ -75,7 +75,8 @@
 				"          additional_answers_value_email = additional_answers.value.email,",
 				"          {additional_answers.value_free_response} = additional_answers.value.free_response,",
 				"          {additional_answers.value_name} = additional_answers.value.name,",
-				"          {additional_answers.value_scale} = additional_answers.value.scale",
+				"          {additional_answers.value_scale} = additional_answers.value.scale,",
+				"          {additional_answers.value_select_one} = additional_answers.value.select_one",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1"
