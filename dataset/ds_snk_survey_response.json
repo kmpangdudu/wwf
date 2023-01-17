@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "NPS_Response.csv",
+				"fileName": "NPS_survey_response.csv",
 				"folderPath": "delighted/raw",
 				"container": "land"
 			},
